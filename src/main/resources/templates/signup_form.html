@@ -15,21 +15,22 @@
                 <div class="form-group row">
                     <label class="col-form-label col-4">E-mail</label>
                     <div class="col-8">
-                        <input type="email" class="form-control" th:field="*{emailAddress}" required/>
+                        <input type="email" class="form-control" th:field="*{emailAddress}" required
+                               minlength="5" maxlength="45"/>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-4">Username</label>
                     <div class="col-8">
                         <input type="text" class="form-control" th:field="*{username}" required
-                               minlength="4" maxlength="20"/>
+                               minlength="4" maxlength="45"/>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-4">Password</label>
                     <div class="col-8">
                         <input type="password" class="form-control" th:field="*{password}" required
-                               minlength="6" maxlength="12"/>
+                               minlength="6" maxlength="64"/>
                     </div>
                 </div>
                 <div class="form-group row">

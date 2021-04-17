@@ -1,5 +1,8 @@
 package com.example.demo384test.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
@@ -8,12 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.sql.Date;
 
-@Entity
+@Data
+@NoArgsConstructor
+@EntityScan
+@Entity(name = "members")
 public class Member {
     @javax.persistence.Id
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
     @Column(nullable = false, length = 20)
     private String name;
     @Column(nullable = false, length = 20)
@@ -84,11 +90,11 @@ public class Member {
         this.birthDate = birthDate;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 }
