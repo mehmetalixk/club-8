@@ -1,0 +1,28 @@
+version: '3.9'
+
+x-db-variables: &db-variables
+  MYSQL_DATABASE: demo_app
+  MYSQL_ROOT_HOST: '%'
+  MYSQL_ROOT_PASSWORD: root
+
+x-app-variables: &app-variables
+  <<: *db-variables
+  WAIT_HOSTS: mysql:3306
+
+services:
+  app:
+    build: .
+    image: club-8-demo:latest
+    command: sh -c "/wait && java -jar /app.jar"
+    volumes:
+      - .:/app
+    environment: *app-variables
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+  mysql:
+    image: mysql
+    ports:
+      - "6033:3306"
+    environment: *db-variables
