@@ -26,3 +26,9 @@ services:
     ports:
       - "6033:3306"
     environment: *db-variables
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root--execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
