@@ -1,9 +1,10 @@
 version: '3.9'
 
 x-db-variables: &db-variables
-  MYSQL_DATABASE: demo_app
-  MYSQL_ROOT_HOST: '%'
+  MYSQL_DATABASE: demo_club8
   MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: root
+  MYSQL_PASSWORD: root
 
 x-app-variables: &app-variables
   <<: *db-variables
@@ -24,7 +25,7 @@ services:
   mysql:
     image: mysql
     ports:
-      - "6033:3306"
+      - "3306:3306"
     environment: *db-variables
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=root--execute \"SHOW DATABASES;\""
