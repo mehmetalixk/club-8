@@ -1,8 +1,10 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Permission;
 import com.example.demo384test.model.Role;
 import com.example.demo384test.repository.MemberRepository;
+import com.example.demo384test.repository.PermissionRepository;
 import com.example.demo384test.repository.RoleRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +25,20 @@ public class HomeController {
     private MemberRepository memberRepository;
     @Autowired
     private RoleRepository roleRepository;
-
+    @Autowired
+    private PermissionRepository permissionRepository;
     @Autowired
     private CustomMemberDetailsService memberService;
 
     @GetMapping("/")
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home");
-        return modelAndView;
+        return new ModelAndView("home");
     }
 
     @GetMapping("/register")
     public ModelAndView showSignUpForm(Model model) {
         model.addAttribute("member", new Member());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("signup_form");
-        return modelAndView;
+        return new ModelAndView("signup_form");
     }
 
     @PostMapping("/process_register")
@@ -48,44 +47,52 @@ public class HomeController {
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
         memberRepository.save(member);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("register_success");
-        return modelAndView;
+        return new ModelAndView("register_success");
     }
 
     @GetMapping("/list_members")
     public ModelAndView viewMemberList(Model model){
         List<Member> listMembers = memberRepository.findAll();
         model.addAttribute("listMembers", listMembers);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("members");
-        return modelAndView;
+        return new ModelAndView("members");
     }
 
     @GetMapping("/list_roles")
     public ModelAndView viewRoleList(Model model) {
         List<Role> listRoles = roleRepository.findAll();
         model.addAttribute("listRoles", listRoles);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("roles");
-        return modelAndView;
+        return new ModelAndView("roles");
     }
 
-    @GetMapping("/addrole")
+    @GetMapping("/add_role")
     public ModelAndView showAddRoleForm(Model model) {
         model.addAttribute("role", new Role());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("add_role");
-        return modelAndView;
+        return new ModelAndView();
     }
 
     @PostMapping("/process_add_role")
     public ModelAndView processAddRole(Role role) {
         roleRepository.save(role);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("register_success");
-        return modelAndView;
+        return new ModelAndView("register_success");
     }
 
+    @GetMapping("/list_permissions")
+    public ModelAndView viewPermissionList(Model model) {
+        List<Permission> listPermissions = permissionRepository.findAll();
+        model.addAttribute("listPermissions", listPermissions);
+        return new ModelAndView("permissions");
+    }
 
+    @GetMapping("/add_permission")
+    public ModelAndView showAddPermissionForm(Model model) {
+        model.addAttribute("permission", new Permission());
+        return new ModelAndView("add_permission");
+
+    }
+
+    @PostMapping("/process_add_permission")
+    public ModelAndView processAddPermission(Permission permission) {
+        permissionRepository.save(permission);
+        return new ModelAndView("register_success");
+    }
 }

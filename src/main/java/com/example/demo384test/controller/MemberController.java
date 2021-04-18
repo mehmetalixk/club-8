@@ -5,11 +5,17 @@ import com.example.demo384test.model.Member;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @Controller
-@RequestMapping(path="/demo")
+@RequestMapping(path="/members")
 public class MemberController {
     @Autowired
     private MemberRepository memberRepository;

@@ -3,8 +3,7 @@ package com.example.demo384test.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 @Entity
 @Table(name = "roles")
@@ -12,13 +11,21 @@ public class Role {
     @javax.persistence.Id
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "role_id")
     private Long id;
     @Column(nullable = false, length = 20)
     private String name;
 
+
     @ManyToMany
-    private Set<Member> members = new HashSet<>();
+    @JoinTable(
+            name = "role_permissions",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "permission_id", referencedColumnName = "id"))
+    private Collection<Permission> permissions;
+
+
 
 
     public Long getId() {
@@ -35,5 +42,9 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Collection<Permission> getPermissions() {
+        return this.permissions;
     }
 }

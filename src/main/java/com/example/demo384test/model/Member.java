@@ -5,11 +5,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 
 @Data
 @NoArgsConstructor
@@ -32,6 +30,16 @@ public class Member {
     private String emailAddress;
     private String gender;
     private Date birthDate;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "members_roles",
+            joinColumns = @JoinColumn(
+                    name = "member_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
 
     public String getName() {

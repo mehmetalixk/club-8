@@ -10,7 +10,7 @@
   <div>
     <h1>Member Registration of Club-8</h1>
   </div>
-  <form th:action="@{/process_add_role}" method="post" th:object="${role}">
+  <form th:action="@{/process_add_permission}" method="post" th:object="${permission}">
     <div class="m-3">
       <div class="form-group row">
         <label class="col-form-label col-4">Role Name</label>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div>
-        <button type="submit" class="btn btn-primary">Add Role</button>
+        <button type="submit" class="btn btn-primary">Add Permission</button>
       </div>
     </div>
   </form>
