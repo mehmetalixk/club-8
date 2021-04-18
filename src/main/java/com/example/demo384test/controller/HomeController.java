@@ -1,7 +1,9 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Role;
 import com.example.demo384test.repository.MemberRepository;
+import com.example.demo384test.repository.RoleRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,8 @@ public class HomeController {
 
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private CustomMemberDetailsService memberService;
@@ -57,4 +61,31 @@ public class HomeController {
         modelAndView.setViewName("members");
         return modelAndView;
     }
+
+    @GetMapping("/list_roles")
+    public ModelAndView viewRoleList(Model model) {
+        List<Role> listRoles = roleRepository.findAll();
+        model.addAttribute("listRoles", listRoles);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("roles");
+        return modelAndView;
+    }
+
+    @GetMapping("/addrole")
+    public ModelAndView showAddRoleForm(Model model) {
+        model.addAttribute("role", new Role());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("add_role");
+        return modelAndView;
+    }
+
+    @PostMapping("/process_add_role")
+    public ModelAndView processAddRole(Role role) {
+        roleRepository.save(role);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register_success");
+        return modelAndView;
+    }
+
+
 }
