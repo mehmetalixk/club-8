@@ -32,7 +32,7 @@ public class Member {
     private Date birthDate;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "members_roles",
             joinColumns = @JoinColumn(

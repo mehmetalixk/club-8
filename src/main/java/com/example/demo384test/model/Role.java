@@ -10,13 +10,13 @@ import java.util.Collection;
 public class Role {
     @javax.persistence.Id
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, length = 20)
     private String name;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_permissions",
             joinColumns = @JoinColumn(
@@ -24,9 +24,6 @@ public class Role {
             inverseJoinColumns = @JoinColumn(
                     name = "permission_id", referencedColumnName = "id"))
     private Collection<Permission> permissions;
-
-
-
 
     public Long getId() {
         return id;
@@ -46,5 +43,9 @@ public class Role {
 
     public Collection<Permission> getPermissions() {
         return this.permissions;
+    }
+
+    public void setPermissions(Collection<Permission> permissions) {
+        this.permissions = permissions;
     }
 }

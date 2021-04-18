@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -46,12 +47,15 @@ public class HomeController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
+
+        Role adminRole = roleRepository.findByName("ROLE_USER");
+        member.setRoles(Arrays.asList(adminRole));
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
 
     @GetMapping("/list_members")
-    public ModelAndView viewMemberList(Model model){
+    public ModelAndView viewMemberList(Model model) {
         List<Member> listMembers = memberRepository.findAll();
         model.addAttribute("listMembers", listMembers);
         return new ModelAndView("members");

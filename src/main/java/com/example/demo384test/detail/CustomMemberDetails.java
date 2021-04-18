@@ -2,9 +2,7 @@ package com.example.demo384test.detail;
 
 
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.Permission;
 import com.example.demo384test.model.Role;
-import jdk.jshell.Snippet;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,15 +35,15 @@ public class CustomMemberDetails implements UserDetails {
         this.member = member;
     }
 
-    public CustomMemberDetails createUserPrincipal(Member member) {
+    public static CustomMemberDetails createMemberPrincipal(Member member) {
         if (member != null) {
-            List<GrantedAuthority> roles= member.getRoles().stream().filter(Objects::nonNull)
+            List<GrantedAuthority> roles = member.getRoles().stream().filter(Objects::nonNull)
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toList());
 
             List<GrantedAuthority> permissions = member.getRoles().stream().filter(Objects::nonNull)
                     .map(Role::getPermissions).flatMap(Collection::stream)
-                    .map(permission-> new SimpleGrantedAuthority(permission.getName()))
+                    .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                     .collect(Collectors.toList());
 
             return CustomMemberDetails.builder()
