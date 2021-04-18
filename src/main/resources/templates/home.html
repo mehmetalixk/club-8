@@ -3,8 +3,22 @@
 <head>
     <title>Club-8 Home Page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Home page of Club-8</h1>
+    <div class="container text-center">
+        <div>
+            <h1>Home page of Club-8</h1>
+        </div>
+        <div>
+            <h3><a th:href="@{/list_members}">List of Members</a></h3>
+        </div>
+        <div>
+            <h3><a th:href="@{/register}">Register</a></h3>
+        </div>
+        <div>
+            <h3><a th:href="@{/login}">Login</a></h3>
+        </div>
+    </div>
 </body>
 </html>
