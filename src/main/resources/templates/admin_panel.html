@@ -7,11 +7,19 @@
 <head th:fragment="header">
     <meta charset="UTF-8">
     <title>
-        Club-8
+        Admin Panel
     </title>
 </head>
 <body>
 <div th:replace="fragments/navbar :: header"></div>
+    <div style="margin: 100px;text-align: center">
+        <a th:href="@{/list_members}" type="button"
+           class="btn btn-outline-dark">List Members</a>
+        <a th:href="@{/add_roles}" type="button"
+           class="btn btn-outline-dark">Add Role</a>
+        <a th:href="@{/list_roles}" type="button"
+           class="btn btn-outline-dark">List Roles</a>
+    </div>
 
 </body>
 </html>

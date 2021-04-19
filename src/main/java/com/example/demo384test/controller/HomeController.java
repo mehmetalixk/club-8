@@ -117,4 +117,9 @@ public class HomeController {
         permissionRepository.save(permission);
         return new ModelAndView("register_success");
     }
+
+    @GetMapping("/admin")
+    public ModelAndView adminPanel(Model model){
+        return new ModelAndView("admin_panel");
+    }
 }
