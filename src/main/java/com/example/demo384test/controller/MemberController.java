@@ -35,6 +35,8 @@ public class MemberController {
         return "Saved";
     }
 
+
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Member> getAllUsers() {
         return memberRepository.findAll();

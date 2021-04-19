@@ -13,16 +13,8 @@ public class SubclubController {
     @Autowired
     private SubclubRepository subclubRepository;
 
-    @PostMapping(path="/add")
-    public @ResponseBody
-    String addNewPermission (@RequestParam String name) {
-        Subclub n = new Subclub();
-        n.setTitle(name);
-        subclubRepository.save(n);
-        return "Saved";
-    }
 
-    @GetMapping(path="/")
+    @GetMapping(path="/all")
     public @ResponseBody Iterable<Subclub> getAllClubs() {
         return subclubRepository.findAll();
     }
