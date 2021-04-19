@@ -1,11 +1,9 @@
 package com.example.demo384test.controller;
 
-<<<<<<< HEAD
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-=======
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Permission;
 import com.example.demo384test.model.Role;
@@ -16,7 +14,6 @@ import com.example.demo384test.service.CustomMemberDetailsService;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
->>>>>>> ceae5378ab809082dd56d61cc59a51f73d035dd6
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;

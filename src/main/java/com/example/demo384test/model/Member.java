@@ -32,7 +32,7 @@ public class Member {
     private String gender;
     private Date birthDate;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Subclub> subclubs;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -44,6 +44,8 @@ public class Member {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
+    @OneToMany
+    private Set<Post> posts;
 
     public String getName() {
         return name;

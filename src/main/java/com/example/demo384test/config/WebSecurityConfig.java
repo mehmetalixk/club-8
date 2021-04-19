@@ -49,20 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/list_members").authenticated()
                 .anyRequest().permitAll()
                 .and()
-<<<<<<< HEAD
-                .formLogin()
+                .formLogin().loginPage("/login")
                 .usernameParameter("username")
-                .defaultSuccessUrl("/list_members")
+                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/").permitAll();
-=======
-                    .formLogin().loginPage("/login")
-                    .usernameParameter("username")
-                    .defaultSuccessUrl("/")
-                    .permitAll()
-                .and()
-                    .logout().logoutSuccessUrl("/logout").permitAll();
->>>>>>> ceae5378ab809082dd56d61cc59a51f73d035dd6
+                .logout().logoutSuccessUrl("/logout").permitAll();
     }
 }

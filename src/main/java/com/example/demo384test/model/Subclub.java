@@ -22,6 +22,9 @@ public class Subclub {
     @OneToMany
     private Set<Member> members;
 
+    @OneToMany
+    private Set<Post> posts;
+
     public Long getId() {
         return id;
     }
@@ -37,5 +40,5 @@ public class Subclub {
     public void setTitle(String name) {
         this.title = name;
     }
-    
+
 }

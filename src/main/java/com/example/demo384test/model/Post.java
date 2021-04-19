@@ -13,8 +13,6 @@ public class Post {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 20)
-    private String title;
     @Column(nullable = false)
     private Date date;
     @Column(nullable = false)
@@ -35,14 +33,6 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Date getDate() {
