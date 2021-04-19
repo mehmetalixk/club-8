@@ -47,21 +47,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
 
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-        Member member = new Member();
-        member.setEmailAddress("admin@admin.com");
-        member.setUsername("admin");
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode("admin");
-        member.setPassword(encodedPassword);
-
-        member.setName("admin");
-        member.setSurname("admin");
-        member.setGender("Non-disclosed");
-        member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
-
-        member.setRoles(Arrays.asList(adminRole));
-
-        memberRepository.save(member);
 
 
         alreadySetup = true;

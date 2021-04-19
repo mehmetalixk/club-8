@@ -7,14 +7,18 @@ import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.PermissionRepository;
 import com.example.demo384test.repository.RoleRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +37,20 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView index() {
+        return new ModelAndView("home");
+    }
+
+    @GetMapping("/login")
+    public ModelAndView showLoginForm (Model model) {
+        return new ModelAndView("login");
+    }
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
         return new ModelAndView("home");
     }
 
