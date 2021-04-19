@@ -19,6 +19,9 @@ public class Subclub {
     @JoinColumn(name = "club_id", insertable = false, updatable = false)
     private Club club;
 
+    @Column(nullable = false, length = 20)
+    private String clubTitle;
+
     @OneToMany
     private Set<Member> members;
 
@@ -41,4 +44,35 @@ public class Subclub {
         this.title = name;
     }
 
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public String getClubTitle() {
+        return clubTitle;
+    }
+
+    public void setClubTitle(String clubTitle) {
+        this.clubTitle = clubTitle;
+    }
 }

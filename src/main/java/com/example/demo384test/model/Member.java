@@ -44,7 +44,7 @@ public class Member {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Post> posts;
 
     public String getName() {
