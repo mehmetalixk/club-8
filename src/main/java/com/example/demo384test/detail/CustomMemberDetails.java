@@ -1,11 +1,13 @@
 package com.example.demo384test.detail;
 
 
+import com.example.demo384test.expression.CustomSecurityExpressionRoot;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +25,7 @@ public class CustomMemberDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> roles;
     private Collection<? extends GrantedAuthority> permissions;
+
 
     public CustomMemberDetails(Member member, Collection<? extends GrantedAuthority> roles,
                                Collection<? extends GrantedAuthority> permissions) {
@@ -89,4 +92,13 @@ public class CustomMemberDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean hasPermission(String check) {
+        for (Role role : member.getRoles()) {
+            if (check.equals(role.getName()))
+                return true;
+        }
+        return false;
+    }
+
 }
