@@ -1,18 +1,32 @@
 package com.example.demo384test.controller;
 
+<<<<<<< HEAD
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+=======
+import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Permission;
+import com.example.demo384test.model.Role;
+import com.example.demo384test.repository.MemberRepository;
+import com.example.demo384test.repository.PermissionRepository;
+import com.example.demo384test.repository.RoleRepository;
+import com.example.demo384test.service.CustomMemberDetailsService;
+import org.dom4j.rule.Mode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+>>>>>>> ceae5378ab809082dd56d61cc59a51f73d035dd6
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.example.demo384test.handler.PermissionHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,6 +49,20 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView index() {
+        return new ModelAndView("home");
+    }
+
+    @GetMapping("/login")
+    public ModelAndView showLoginForm (Model model) {
+        return new ModelAndView("login");
+    }
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
         return new ModelAndView("home");
     }
 
