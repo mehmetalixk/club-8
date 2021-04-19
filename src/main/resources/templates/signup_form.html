@@ -7,76 +7,64 @@
           rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
           crossorigin="anonymous"/>
 </head>
+<div th:replace="fragments/navbar :: header"></div>
 <body>
-    <div class="container text-center">
-        <div>
-            <h1>Member Registration of Club-8</h1>
-        </div>
-        <form th:action="@{/process_register}" method="post" th:object="${member}">
-            <div class="m-3">
-                <div class="form-group row">
-                    <label class="col-form-label col-4">E-mail</label>
-                    <div class="col-8">
-                        <input type="email" class="form-control" th:field="*{emailAddress}" required
-                               minlength="5" maxlength="45"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Username</label>
-                    <div class="col-8">
-                        <input type="text" class="form-control" th:field="*{username}" required
-                               minlength="4" maxlength="45"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Password</label>
-                    <div class="col-8">
-                        <input type="password" class="form-control" th:field="*{password}" required
-                               minlength="6" maxlength="64"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">First Name</label>
-                    <div class="col-8">
-                        <input type="text" class="form-control" th:field="*{name}" required
-                               minlength="4" maxlength="20"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Last Name</label>
-                    <div class="col-8">
-                        <input type="text" class="form-control" th:field="*{surname}" required
-                               minlength="4" maxlength="20"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Gender</label>
-                    <div class="col-8">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="option1" name="option1" class="custom-control-input" value="Male" th:field="*{gender}">
-                            <label class="custom-control-label" for="option1">Male</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="option2" name="option2" class="custom-control-input" value="Female" th:field="*{gender}">
-                            <label class="custom-control-label" for="option2">Female</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="option3" name="option3" class="custom-control-input" value="Non-disclosed" th:field="*{gender}">
-                            <label class="custom-control-label" for="option3">Non-disclosed</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Birthday</label>
-                    <div class="col-8">
-                        <input type="date" class="form-control" th:field="*{birthDate}" required/>
-                    </div>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </div>
+<main class="form-signin" style="margin-top: 50px;">
+    <form th:action="@{/process_register}" method="post" th:object="${member}" style="width: 30%;margin: auto">
+        <fieldset>
+            <h1 class="h3 mb-3 fw-normal" style="text-align: center">Register</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="username" placeholder="username" name="username"
+                       th:field="*{username}" required minlength="4" maxlength="45">
+                <label for="username">Username</label>
             </div>
-        </form>
-    </div>
+            <br>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password"
+                       th:field="*{password}" required
+                       minlength="6" maxlength="64"/>
+                <label for="password">Password</label>
+            </div><br>
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" placeholder="email" name="email"
+                       th:field="*{emailAddress}" required minlength="5" maxlength="45"/>
+                <label for="email">E-mail Address</label>
+            </div><br>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="name" placeholder="name" name="name"
+                       th:field="*{name}" required minlength="2" maxlength="20">
+                <label for="name">Name</label>
+            </div><br>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="surname" placeholder="surname" name="surname"
+                       th:field="*{surname}" required minlength="1" maxlength="20">
+                <label for="surname">Surname</label>
+            </div><br>
+            <div class="form-floating">
+                <input type="date" class="form-control" id="birthDate" placeholder="birthDate" name="birthDate"
+                       th:field="*{birthDate}"/>
+                <label for="birthDate">BirthDate</label>
+            </div><br>
+            <div class="form-floating">
+                <select class="form-select" id="gender" th:field="*{gender}">
+                    <option selected value="">I prefer not to say</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                </select>
+                <label for="gender">Gender</label>
+            </div><br>
+            <div class="checkbox mb-3">
+                <label style="text-align: left">
+                    <input type="checkbox" value="remember-me"> I agree to the <a href="google.com"> terms & conditions</a>
+                </label>
+            </div>
+            <div class="form-actions">
+                <button class="w-100 btn btn-lg btn-primary" type="submit" style="width: 10%;">Sign up</button>
+            </div>
+        </fieldset>
+    </form>
+</main>
 </body>
+
 </html>
