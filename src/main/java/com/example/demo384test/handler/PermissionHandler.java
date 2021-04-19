@@ -21,15 +21,16 @@ public class PermissionHandler {
     private PermissionRepository permissionRepository;
 
     public void registerNewUserAccount(Member member) {
+        for(int i= 0;i < 50; i++)
+            System.out.printf("%d: %s\n",i, member.getName());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
 
+        System.out.println(roleRepository.findAll());
+
         Role memberRole = roleRepository.findByName("ROLE_USER");
         member.setRoles(Arrays.asList(memberRole));
-        memberRepository.save(member);
-
-        member.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         memberRepository.save(member);
     }
 
