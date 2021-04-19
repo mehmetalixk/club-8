@@ -3,6 +3,7 @@ package com.example.demo384test.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="subclubs")
@@ -17,6 +18,9 @@ public class Subclub {
     @ManyToOne
     @JoinColumn(name = "club_id", insertable = false, updatable = false)
     private Club club;
+
+    @OneToMany
+    private Set<Member> members;
 
     public Long getId() {
         return id;
@@ -33,4 +37,5 @@ public class Subclub {
     public void setTitle(String name) {
         this.title = name;
     }
+    
 }
