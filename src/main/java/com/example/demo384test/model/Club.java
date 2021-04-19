@@ -15,7 +15,7 @@ public class Club {
     @Column(nullable = false, length = 20)
     private String title;
 
-    @OneToMany(mappedBy="subclubs")
+    @OneToMany
     private Set<Subclub> subclubs;
 
     public Long getId() {
