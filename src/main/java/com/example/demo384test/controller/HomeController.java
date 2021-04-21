@@ -130,7 +130,6 @@ public class HomeController {
         return new ModelAndView("success");
     }
 
-
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
         CustomMemberDetails principal =
@@ -170,7 +169,6 @@ public class HomeController {
         return new ModelAndView("admin_panel");
     }
 
-
     @PostMapping("/process_register")
     public ModelAndView processRegistration(HttpServletRequest request, Member member, Model model) {
         String username = request.getParameter("username");
@@ -197,6 +195,4 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
-
-
 }
