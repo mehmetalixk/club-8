@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 @Controller
-@RequestMapping(path="/demo")
+@RequestMapping(path="/members")
 public class MemberController {
     @Autowired
     private MemberRepository memberRepository;
@@ -33,6 +34,8 @@ public class MemberController {
         memberRepository.save(n);
         return "Saved";
     }
+
+
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Member> getAllUsers() {
