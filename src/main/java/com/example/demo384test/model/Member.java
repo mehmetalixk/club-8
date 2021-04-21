@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -32,9 +33,6 @@ public class Member {
     private String gender;
     private Date birthDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Subclub> subclubs;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "members_roles",
@@ -44,8 +42,15 @@ public class Member {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
+
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Post> posts;
+    @JoinTable(
+            name = "member_posts",
+            joinColumns = @JoinColumn(
+                    name = "member_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "post_id", referencedColumnName = "id"))
+    private Set<Post> posts = new HashSet<>();
 
     public String getName() {
         return name;

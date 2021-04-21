@@ -3,6 +3,7 @@ package com.example.demo384test.controller;
 
 import com.example.demo384test.model.Club;
 import com.example.demo384test.repository.ClubRepository;
+import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.SubclubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ public class ClubController {
     private ClubRepository clubRepository;
     @Autowired
     private SubclubRepository subclubRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @RequestMapping(value="/{title}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model) {

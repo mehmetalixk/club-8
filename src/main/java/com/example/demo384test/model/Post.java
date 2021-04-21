@@ -22,16 +22,8 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "member_id", insertable = false, updatable = false)
-    private Member member;
-
     private String subclubTitle;
-
-    @ManyToOne
-    @JoinColumn(name = "subclub_id", insertable = false, updatable = false)
-    private Subclub subclub;
-
+    private String memberUsername;
 
     public Long getId() {
         return id;
@@ -65,22 +57,6 @@ public class Post {
         this.content = content;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public Subclub getSubclub() {
-        return subclub;
-    }
-
-    public void setSubclub(Subclub subclub) {
-        this.subclub = subclub;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -97,7 +73,11 @@ public class Post {
         this.subclubTitle = subclubTitle;
     }
 
+    public void setMemberUsername(String memberUsername) {
+        this.memberUsername = memberUsername;
+    }
+
     public String getMemberUsername() {
-        return member.getUsername();
+        return this.memberUsername;
     }
 }

@@ -39,7 +39,10 @@ public class HomeController {
     private PermissionHandler permissionHandler = new PermissionHandler();
 
     @GetMapping("/")
-    public ModelAndView index() {
+    public ModelAndView index(Model model) {
+        List<Post> posts = postRepository.findAll();
+        model.addAttribute("posts", posts);
+
         return new ModelAndView("home");
     }
 
@@ -118,9 +121,9 @@ public class HomeController {
     @PostMapping("/process_add_subclub")
     public ModelAndView processAddSubclub(Subclub subclub) {
         Club c = clubRepository.findByTitle(subclub.getClubTitle());
-        subclub.setClub(c);
         c.addSubclubToClub(subclub);
         subclubRepository.save(subclub);
+        clubRepository.save(c);
         return new ModelAndView("success");
     }
 
@@ -132,6 +135,13 @@ public class HomeController {
 
     @GetMapping("/post")
     public ModelAndView post(Model model) {
+        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != null) {
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            if(!isAllowed)
+                return null;
+        }
+
         model.addAttribute("post", new Post());
         model.addAttribute("subclubList", subclubRepository.findAllTitles());
         return new ModelAndView("post");
@@ -140,19 +150,20 @@ public class HomeController {
     @PostMapping("/process_add_post")
     public ModelAndView processAddPost(Post post) {
         Subclub sc = subclubRepository.findByTitle(post.getSubclubTitle());
-        System.out.println(post.getSubclubTitle());
-        post.setSubclub(sc);
         post.setDate(java.time.LocalDate.now());
         post.setTimestamp(java.time.LocalTime.now());
+
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        post.setMember(principal.getMember());
-        principal.addPost(post);
-
-        System.out.println(post.getMemberUsername());
-
+        Member m = principal.getMember();
+        post.setMemberUsername(m.getUsername());
+        m.addPost(post);
         sc.addPostToSubclub(post);
         postRepository.save(post);
+
+        subclubRepository.save(sc);
+        memberRepository.save(m);
         return new ModelAndView("success");
+
     }
 
     @PostMapping("/process_add_role")
@@ -221,5 +232,6 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
+
 
 }
