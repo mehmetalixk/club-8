@@ -4,9 +4,11 @@ import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.handler.PermissionHandler;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
+import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +37,8 @@ public class HomeController {
     private SubclubRepository subclubRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CustomMemberDetailsService customMemberDetailsService;
 
     private PermissionHandler permissionHandler = new PermissionHandler();
 
@@ -65,10 +70,56 @@ public class HomeController {
         return new ModelAndView("signup_form");
     }
 
+    @GetMapping("/list_members")
+    public ModelAndView viewMemberList(Model model) {
+        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != null) {
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            if(!isAllowed)
+                return null;
+        }
+
+        List<Member> listMembers = memberRepository.findAll();
+        model.addAttribute("listMembers", listMembers);
+        return new ModelAndView("members");
+    }
+
+    @GetMapping("/list_roles")
+    public ModelAndView viewRoleList(Model model) {
+        List<Role> listRoles = roleRepository.findAll();
+        model.addAttribute("listRoles", listRoles);
+        return new ModelAndView("roles");
+    }
+
+    @GetMapping("/list_permissions")
+    public ModelAndView viewPermissionList(Model model) {
+        List<Permission> listPermissions = permissionRepository.findAll();
+        model.addAttribute("listPermissions", listPermissions);
+        return new ModelAndView("permissions");
+    }
+
+    @GetMapping("/add_permission")
+    public ModelAndView showAddPermissionForm(Model model) {
+        model.addAttribute("permission", new Permission());
+        return new ModelAndView("add_permission");
+    }
+
+    @GetMapping("/add_club")
+    public ModelAndView showAddClubForm(Model model) {
+        model.addAttribute("club", new Club());
+        return new ModelAndView("create_club");
+    }
+
     @PostMapping("/process_add_club")
     public ModelAndView processAddClub(Club club) {
         clubRepository.save(club);
         return new ModelAndView("success");
+    }
+
+    @GetMapping("/add_subclub")
+    public ModelAndView showAddSubclubForm(Model model) {
+        model.addAttribute("subclub", new Subclub());
+        return new ModelAndView("create_subclub");
     }
 
     @PostMapping("/process_add_subclub")
@@ -78,6 +129,12 @@ public class HomeController {
         subclubRepository.save(subclub);
         clubRepository.save(c);
         return new ModelAndView("success");
+    }
+
+    @GetMapping("/add_role")
+    public ModelAndView showAddRoleForm(Model model) {
+        model.addAttribute("role", new Role());
+        return new ModelAndView("add_role");
     }
 
     @GetMapping("/post")
@@ -125,6 +182,7 @@ public class HomeController {
         return new ModelAndView("success");
     }
 
+
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
         CustomMemberDetails principal =
@@ -158,8 +216,28 @@ public class HomeController {
         return new ModelAndView("admin_panel");
     }
 
+    @PostMapping("/admin_add_role")
+    public ModelAndView adminAddRole(Role role) {
+        roleRepository.save(role);
+        return new ModelAndView("admin_panel");
+    }
+
+
     @PostMapping("/process_register")
-    public ModelAndView processRegistration(Member member) {
+    public ModelAndView processRegistration(HttpServletRequest request, Member member, Model model) {
+        String username = request.getParameter("username");
+        String emailAddress = request.getParameter("emailAddress");
+        String message = "";
+
+        try{
+            message = customMemberDetailsService.checkDuplicate(username, emailAddress);
+        }catch(UsernameNotFoundException ex){
+            model.addAttribute("error", ex.getMessage());
+            return new ModelAndView("signup_form");
+        }
+
+        model.addAttribute("message", message);
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
@@ -171,4 +249,6 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
+
+
 }
