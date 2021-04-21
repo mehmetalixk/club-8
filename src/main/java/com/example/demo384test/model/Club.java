@@ -16,7 +16,13 @@ public class Club {
     @Column(nullable = false, length = 20)
     private String title;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "club_subclubs",
+            joinColumns = @JoinColumn(
+                    name = "club_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "subclub_id", referencedColumnName = "id"))
     private Set<Subclub> subclubs = new HashSet<>();
 
     public Long getId() {

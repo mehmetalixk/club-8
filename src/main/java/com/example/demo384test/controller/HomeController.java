@@ -118,9 +118,9 @@ public class HomeController {
     @PostMapping("/process_add_subclub")
     public ModelAndView processAddSubclub(Subclub subclub) {
         Club c = clubRepository.findByTitle(subclub.getClubTitle());
-        subclub.setClub(c);
         c.addSubclubToClub(subclub);
         subclubRepository.save(subclub);
+        clubRepository.save(c);
         return new ModelAndView("success");
     }
 
@@ -140,18 +140,18 @@ public class HomeController {
     @PostMapping("/process_add_post")
     public ModelAndView processAddPost(Post post) {
         Subclub sc = subclubRepository.findByTitle(post.getSubclubTitle());
-        System.out.println(post.getSubclubTitle());
-        post.setSubclub(sc);
         post.setDate(java.time.LocalDate.now());
         post.setTimestamp(java.time.LocalTime.now());
+
+
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        post.setMember(principal.getMember());
-        principal.addPost(post);
-
-        System.out.println(post.getMemberUsername());
-
+        Member m = principal.getMember();
+        post.setMemberUsername(m.getUsername());
+        m.addPost(post);
         sc.addPostToSubclub(post);
         postRepository.save(post);
+        subclubRepository.save(sc);
+        memberRepository.save(m);
         return new ModelAndView("success");
     }
 
