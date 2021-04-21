@@ -1,7 +1,6 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.detail.CustomMemberDetails;
-import com.example.demo384test.handler.PermissionHandler;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.service.CustomMemberDetailsService;
@@ -18,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 
@@ -39,8 +37,6 @@ public class HomeController {
     private PostRepository postRepository;
     @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
-
-    private PermissionHandler permissionHandler = new PermissionHandler();
 
     @GetMapping("/")
     public ModelAndView index(Model model) {
@@ -89,7 +85,7 @@ public class HomeController {
     public ModelAndView post(Model model) {
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN") || principal.hasPermission("ROLE_USER");
             if(!isAllowed)
                 return null;
         }
@@ -101,18 +97,22 @@ public class HomeController {
 
     @PostMapping("/process_add_post")
     public ModelAndView processAddPost(Post post) {
+        // READ subclub from the subclub repository
         Subclub sc = subclubRepository.findByTitle(post.getSubclubTitle());
         post.setDate(java.time.LocalDate.now());
         post.setTimestamp(java.time.LocalTime.now());
-
+        // Get logged member
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member m = principal.getMember();
+        Member m = memberRepository.findByUsername(principal.getUsername());
         post.setMemberUsername(m.getUsername());
         m.addPost(post);
         sc.addPostToSubclub(post);
-        postRepository.save(post);
 
+        // CREATE a new post in post repository
+        postRepository.save(post);
+        // UPDATE the subclub with new post
         subclubRepository.save(sc);
+        // UPDATE the member with new post
         memberRepository.save(m);
         return new ModelAndView("success");
 
@@ -129,7 +129,6 @@ public class HomeController {
         permissionRepository.save(permission);
         return new ModelAndView("success");
     }
-
 
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
@@ -170,7 +169,6 @@ public class HomeController {
         return new ModelAndView("admin_panel");
     }
 
-
     @PostMapping("/process_register")
     public ModelAndView processRegistration(HttpServletRequest request, Member member, Model model) {
         String username = request.getParameter("username");
@@ -197,6 +195,4 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
-
-
 }

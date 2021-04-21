@@ -13,9 +13,10 @@ public class SubclubController {
     @Autowired
     private SubclubRepository subclubRepository;
 
-
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Subclub> getAllClubs() {
         return subclubRepository.findAll();
     }
+
+
 }
