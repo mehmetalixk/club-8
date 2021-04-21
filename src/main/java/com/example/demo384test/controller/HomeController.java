@@ -85,7 +85,7 @@ public class HomeController {
     public ModelAndView post(Model model) {
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN") || principal.hasPermission("ROLE_USER");
             if(!isAllowed)
                 return null;
         }
@@ -103,7 +103,7 @@ public class HomeController {
         post.setTimestamp(java.time.LocalTime.now());
         // Get logged member
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member m = principal.getMember();
+        Member m = memberRepository.findByUsername(principal.getUsername());
         post.setMemberUsername(m.getUsername());
         m.addPost(post);
         sc.addPostToSubclub(post);
