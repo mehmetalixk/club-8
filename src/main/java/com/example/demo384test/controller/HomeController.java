@@ -106,7 +106,7 @@ public class HomeController {
     @PostMapping("/process_add_club")
     public ModelAndView processAddClub(Club club) {
         clubRepository.save(club);
-        return new ModelAndView("register_success");
+        return new ModelAndView("success");
     }
 
     @GetMapping("/add_subclub")
@@ -121,7 +121,7 @@ public class HomeController {
         subclub.setClub(c);
         c.addSubclubToClub(subclub);
         subclubRepository.save(subclub);
-        return new ModelAndView("register_success");
+        return new ModelAndView("success");
     }
 
     @GetMapping("/add_role")
@@ -152,19 +152,19 @@ public class HomeController {
 
         sc.addPostToSubclub(post);
         postRepository.save(post);
-        return new ModelAndView("register_success");
+        return new ModelAndView("success");
     }
 
     @PostMapping("/process_add_role")
     public ModelAndView processAddRole(Role role) {
         roleRepository.save(role);
-        return new ModelAndView("register_success");
+        return new ModelAndView("success");
     }
 
     @PostMapping("/process_add_permission")
     public ModelAndView processAddPermission(Permission permission) {
         permissionRepository.save(permission);
-        return new ModelAndView("register_success");
+        return new ModelAndView("success");
     }
 
 
