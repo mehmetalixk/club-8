@@ -4,9 +4,11 @@ import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.handler.PermissionHandler;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
+import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,6 +37,8 @@ public class HomeController {
     private SubclubRepository subclubRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private CustomMemberDetailsService customMemberDetailsService;
 
     private PermissionHandler permissionHandler = new PermissionHandler();
 
@@ -125,6 +130,7 @@ public class HomeController {
         return new ModelAndView("success");
     }
 
+
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
         CustomMemberDetails principal =
@@ -158,8 +164,28 @@ public class HomeController {
         return new ModelAndView("admin_panel");
     }
 
+    @PostMapping("/admin_add_role")
+    public ModelAndView adminAddRole(Role role) {
+        roleRepository.save(role);
+        return new ModelAndView("admin_panel");
+    }
+
+
     @PostMapping("/process_register")
-    public ModelAndView processRegistration(Member member) {
+    public ModelAndView processRegistration(HttpServletRequest request, Member member, Model model) {
+        String username = request.getParameter("username");
+        String emailAddress = request.getParameter("emailAddress");
+        String message = "";
+
+        try{
+            message = customMemberDetailsService.checkDuplicate(username, emailAddress);
+        }catch(UsernameNotFoundException ex){
+            model.addAttribute("error", ex.getMessage());
+            return new ModelAndView("signup_form");
+        }
+
+        model.addAttribute("message", message);
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
@@ -171,4 +197,6 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
+
+
 }
