@@ -36,7 +36,7 @@
     </div>
 
 <div id="add_role_id" style="display:none;">
-    <form th:action="@{/admin_add_role}" method="post" th:object="${role}">
+    <form th:action="@{/process_add_role}" method="post" th:object="${role}">
         <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
             <input type="text" class="form-control" id="name" placeholder="name" th:field="*{name}">
             <label for="name">Role name</label><br>
@@ -49,7 +49,6 @@
     <div>
         <h1>List of Members of Club-8</h1>
     </div>
-
     <div>
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -138,7 +137,6 @@
         </div>
     </form>
 </div>
-
 
 <div class="container text-center" style="display: none;" id="list_clubs_id">
     <div>
