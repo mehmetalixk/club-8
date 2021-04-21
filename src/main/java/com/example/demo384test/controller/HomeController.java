@@ -1,17 +1,9 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.detail.CustomMemberDetails;
+import com.example.demo384test.handler.PermissionHandler;
 import com.example.demo384test.model.*;
 import com.example.demo384test.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.example.demo384test.model.Member;
-import com.example.demo384test.model.Permission;
-import com.example.demo384test.model.Role;
-import com.example.demo384test.repository.MemberRepository;
-import com.example.demo384test.repository.PermissionRepository;
-import com.example.demo384test.repository.RoleRepository;
-import com.example.demo384test.service.CustomMemberDetailsService;
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +12,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.example.demo384test.handler.PermissionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -175,6 +166,47 @@ public class HomeController {
         permissionRepository.save(permission);
         return new ModelAndView("register_success");
     }
+
+
+    @GetMapping("/admin")
+    public ModelAndView adminPanel(Model model){
+        CustomMemberDetails principal =
+                (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != null) {
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            if(!isAllowed)
+                return null;
+        }
+
+        List<Member> listMembers = memberRepository.findAll();
+        model.addAttribute("listMembers", listMembers);
+
+        model.addAttribute("role", new Role());
+
+        List<Role> listRoles = roleRepository.findAll();
+        model.addAttribute("listRoles", listRoles);
+
+        model.addAttribute("club", new Club());
+
+        model.addAttribute("subclub", new Subclub());
+
+        model.addAttribute("clubs", clubRepository.findAllTitles());
+
+        List<Club> listClubs = clubRepository.findAll();
+        model.addAttribute("listClubs", listClubs);
+
+        List<Subclub> listSubclubs = subclubRepository.findAll();
+        model.addAttribute("listSubclubs", listSubclubs);
+
+        return new ModelAndView("admin_panel");
+    }
+
+    @PostMapping("/admin_add_role")
+    public ModelAndView adminAddRole(Role role) {
+        roleRepository.save(role);
+        return new ModelAndView("admin_panel");
+    }
+
 
     @PostMapping("/process_register")
     public ModelAndView processRegistration(Member member) {
