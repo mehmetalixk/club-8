@@ -70,56 +70,10 @@ public class HomeController {
         return new ModelAndView("signup_form");
     }
 
-    @GetMapping("/list_members")
-    public ModelAndView viewMemberList(Model model) {
-        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
-            if(!isAllowed)
-                return null;
-        }
-
-        List<Member> listMembers = memberRepository.findAll();
-        model.addAttribute("listMembers", listMembers);
-        return new ModelAndView("members");
-    }
-
-    @GetMapping("/list_roles")
-    public ModelAndView viewRoleList(Model model) {
-        List<Role> listRoles = roleRepository.findAll();
-        model.addAttribute("listRoles", listRoles);
-        return new ModelAndView("roles");
-    }
-
-    @GetMapping("/list_permissions")
-    public ModelAndView viewPermissionList(Model model) {
-        List<Permission> listPermissions = permissionRepository.findAll();
-        model.addAttribute("listPermissions", listPermissions);
-        return new ModelAndView("permissions");
-    }
-
-    @GetMapping("/add_permission")
-    public ModelAndView showAddPermissionForm(Model model) {
-        model.addAttribute("permission", new Permission());
-        return new ModelAndView("add_permission");
-    }
-
-    @GetMapping("/add_club")
-    public ModelAndView showAddClubForm(Model model) {
-        model.addAttribute("club", new Club());
-        return new ModelAndView("create_club");
-    }
-
     @PostMapping("/process_add_club")
     public ModelAndView processAddClub(Club club) {
         clubRepository.save(club);
         return new ModelAndView("success");
-    }
-
-    @GetMapping("/add_subclub")
-    public ModelAndView showAddSubclubForm(Model model) {
-        model.addAttribute("subclub", new Subclub());
-        return new ModelAndView("create_subclub");
     }
 
     @PostMapping("/process_add_subclub")
@@ -129,12 +83,6 @@ public class HomeController {
         subclubRepository.save(subclub);
         clubRepository.save(c);
         return new ModelAndView("success");
-    }
-
-    @GetMapping("/add_role")
-    public ModelAndView showAddRoleForm(Model model) {
-        model.addAttribute("role", new Role());
-        return new ModelAndView("add_role");
     }
 
     @GetMapping("/post")
