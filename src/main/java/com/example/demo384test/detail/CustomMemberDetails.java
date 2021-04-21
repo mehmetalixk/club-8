@@ -3,6 +3,7 @@ package com.example.demo384test.detail;
 
 import com.example.demo384test.expression.CustomSecurityExpressionRoot;
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Post;
 import com.example.demo384test.model.Role;
 import lombok.Builder;
 import lombok.Getter;
@@ -99,6 +100,14 @@ public class CustomMemberDetails implements UserDetails {
                 return true;
         }
         return false;
+    }
+
+    public void addPost(Post p) {
+        member.addPost(p);
+    }
+
+    public void removePost(Post p) {
+        member.removePost(p);
     }
 
 }

@@ -25,6 +25,7 @@ import com.example.demo384test.handler.PermissionHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,6 +42,8 @@ public class HomeController {
     private ClubRepository clubRepository;
     @Autowired
     private SubclubRepository subclubRepository;
+    @Autowired
+    private PostRepository postRepository;
 
     private PermissionHandler permissionHandler = new PermissionHandler();
 
@@ -125,19 +128,7 @@ public class HomeController {
     public ModelAndView processAddSubclub(Subclub subclub) {
         Club c = clubRepository.findByTitle(subclub.getClubTitle());
         subclub.setClub(c);
-
-        for(Club club : clubRepository.findAll()) {
-            for(Subclub sc : club.getSubclubs())
-                System.out.println(sc.getTitle());
-        }
-
         c.addSubclubToClub(subclub);
-
-        for(Club club : clubRepository.findAll()) {
-            for(Subclub sc : club.getSubclubs())
-                System.out.println(sc.getTitle());
-        }
-
         subclubRepository.save(subclub);
         return new ModelAndView("register_success");
     }
@@ -151,7 +142,26 @@ public class HomeController {
     @GetMapping("/post")
     public ModelAndView post(Model model) {
         model.addAttribute("post", new Post());
+        model.addAttribute("subclubList", subclubRepository.findAllTitles());
         return new ModelAndView("post");
+    }
+
+    @PostMapping("/process_add_post")
+    public ModelAndView processAddPost(Post post) {
+        Subclub sc = subclubRepository.findByTitle(post.getSubclubTitle());
+        System.out.println(post.getSubclubTitle());
+        post.setSubclub(sc);
+        post.setDate(java.time.LocalDate.now());
+        post.setTimestamp(java.time.LocalTime.now());
+        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        post.setMember(principal.getMember());
+        principal.addPost(post);
+
+        System.out.println(post.getMemberUsername());
+
+        sc.addPostToSubclub(post);
+        postRepository.save(post);
+        return new ModelAndView("register_success");
     }
 
     @PostMapping("/process_add_role")

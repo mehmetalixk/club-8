@@ -24,6 +24,13 @@ public class ClubController {
         return new ModelAndView("club");
     }
 
+    @RequestMapping(value="/{title}/{subclub}", method = RequestMethod.GET)
+    public ModelAndView getClubPage (@PathVariable String title, Model model, @PathVariable String subclub) {
+        model.addAttribute("club", clubRepository.findByTitle(title));
+        model.addAttribute("subclub", subclubRepository.findByTitle(subclub));
+        return new ModelAndView("subclub");
+    }
+
     @GetMapping(value="/all")
     public @ResponseBody Iterable<Club> getAllClubs() {
         return clubRepository.findAll();

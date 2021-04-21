@@ -3,8 +3,8 @@ package com.example.demo384test.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name="posts")
@@ -14,9 +14,9 @@ public class Post {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
     @Column(nullable = false)
-    private Timestamp timestamp;
+    private LocalTime timestamp;
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
@@ -26,10 +26,11 @@ public class Post {
     @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
+    private String subclubTitle;
+
     @ManyToOne
     @JoinColumn(name = "subclub_id", insertable = false, updatable = false)
     private Subclub subclub;
-
 
 
     public Long getId() {
@@ -40,19 +41,19 @@ public class Post {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Timestamp getTimestamp() {
+    public LocalTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(LocalTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -86,5 +87,17 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubclubTitle() {
+        return subclubTitle;
+    }
+
+    public void setSubclubTitle(String subclubTitle) {
+        this.subclubTitle = subclubTitle;
+    }
+
+    public String getMemberUsername() {
+        return member.getUsername();
     }
 }

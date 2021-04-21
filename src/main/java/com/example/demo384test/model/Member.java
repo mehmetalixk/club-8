@@ -110,4 +110,12 @@ public class Member {
     public Long getId() {
         return id;
     }
+
+    public void addPost(Post p) {
+        this.posts.add(p);
+    }
+
+    public void removePost(Post p) {
+        this.posts.remove(p);
+    }
 }

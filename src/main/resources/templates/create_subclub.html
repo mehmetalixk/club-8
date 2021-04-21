@@ -1,10 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Create Club</title>
+  <title>Create Subclub</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
   <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <title>Create Club</title>
 </head>
 <body>
 <div class="container text-center">
@@ -14,11 +13,12 @@
   <form th:action="@{/process_add_subclub}" method="post" th:object="${subclub}">
     <div class="m-3">
       <div class="form-group row">
-        <label class="col-form-label col-4">Role Name</label>
+        <label class="col-form-label col-4">Subclub Name</label>
         <div class="col-8">
           <input type="text" class="form-control" th:field="*{title}" required
                  minlength="2" maxlength="20"/>
         </div>
+        <label class="col-form-label col-4">Club Name</label>
         <div class="col-8">
           <input type="text" class="form-control" th:field="*{clubTitle}" required
                  minlength="1" maxlength="20"/>

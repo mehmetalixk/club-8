@@ -23,13 +23,15 @@
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
       <tr>
-        <th>Subclub ID</th>
-        <th>Subclub Title</th>
+        <th>Post ID</th>
+        <th>Post Title</th>
+        <th>Post Content</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="subclub: ${subclub.posts}">
+      <tr th:each="post: ${subclub.posts}">
         <td th:text="${post.id}"></td>
+        <td th:text="${post.title}"></td>
         <td th:text="${post.content}"></td>
       </tr>
       </tbody>
