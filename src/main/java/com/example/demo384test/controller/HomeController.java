@@ -39,7 +39,10 @@ public class HomeController {
     private PermissionHandler permissionHandler = new PermissionHandler();
 
     @GetMapping("/")
-    public ModelAndView index() {
+    public ModelAndView index(Model model) {
+        List<Post> posts = postRepository.findAll();
+        model.addAttribute("posts", posts);
+
         return new ModelAndView("home");
     }
 
@@ -152,7 +155,7 @@ public class HomeController {
 
         sc.addPostToSubclub(post);
         postRepository.save(post);
-        return new ModelAndView("register_success");
+        return new ModelAndView("home");
     }
 
     @PostMapping("/process_add_role")
