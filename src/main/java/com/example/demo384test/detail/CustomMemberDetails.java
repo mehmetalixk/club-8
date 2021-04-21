@@ -1,18 +1,15 @@
 package com.example.demo384test.detail;
 
 
-import com.example.demo384test.expression.CustomSecurityExpressionRoot;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Post;
 import com.example.demo384test.model.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
