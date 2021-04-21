@@ -1,3 +1,12 @@
+function addRole() {
+    var x = document.getElementById("role_id");
+    if(x.style.display ==="none"){
+        x.style.display = "block";
+    }else{
+        x.style.display="none";
+    }
+}
+
 
 var grid = new ej.grids.Grid({
     dataSource: data,
