@@ -54,7 +54,7 @@ public class HomeController {
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return new ModelAndView("home");
+        return new ModelAndView("logout_success");
     }
 
     @GetMapping("/register")
