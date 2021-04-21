@@ -13,7 +13,6 @@
 </head>
 <body>
 <header><div th:replace="fragments/navbar :: header"></div></header>
-
 <div class="container" style="margin-left:100px;" >
     <div th:each="post :${posts}">
         <br><br>
@@ -25,7 +24,7 @@
                         /<h6 class="text-muted" th:text="${post.subclubTitle}"></h6><br>
                         <h6 class="text-muted time" style="text-align: right" th:text="${post.date}"></h6>
                         <div class="title h6">
-                            <b >Admin</b>has made this post.
+                            <b th:text="${post.getMemberUsername()}"></b> has made this post.
                         </div>
 
                     </div>

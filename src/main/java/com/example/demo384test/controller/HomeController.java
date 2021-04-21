@@ -135,6 +135,13 @@ public class HomeController {
 
     @GetMapping("/post")
     public ModelAndView post(Model model) {
+        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != null) {
+            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
+            if(!isAllowed)
+                return null;
+        }
+
         model.addAttribute("post", new Post());
         model.addAttribute("subclubList", subclubRepository.findAllTitles());
         return new ModelAndView("post");
@@ -146,20 +153,17 @@ public class HomeController {
         post.setDate(java.time.LocalDate.now());
         post.setTimestamp(java.time.LocalTime.now());
 
-
         CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Member m = principal.getMember();
         post.setMemberUsername(m.getUsername());
         m.addPost(post);
         sc.addPostToSubclub(post);
         postRepository.save(post);
-<<<<<<< HEAD
+
         subclubRepository.save(sc);
         memberRepository.save(m);
         return new ModelAndView("success");
-=======
-        return new ModelAndView("home");
->>>>>>> 3819f6c3c90d20c8b2794a0ff0504c769724a925
+
     }
 
     @PostMapping("/process_add_role")
@@ -228,5 +232,6 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
+
 
 }
