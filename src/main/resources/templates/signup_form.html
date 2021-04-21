@@ -10,6 +10,16 @@
 <div th:replace="fragments/navbar :: header"></div>
 <body>
 <main class="form-signin" style="margin-top: 50px;">
+    <div th:if="${error != null}">
+        <div class="alert alert-danger" role="alert" style="text-align:center">
+            [[${error}]]
+        </div>
+    </div>
+    <div th:if="${message != null}">
+        <div class="alert alert-success" role="alert" style="text-align:center">
+            [[${message}]]
+        </div>
+    </div>
     <form th:action="@{/process_register}" method="post" th:object="${member}" style="width: 30%;margin: auto">
         <fieldset>
             <h1 class="h3 mb-3 fw-normal" style="text-align: center">Register</h1>

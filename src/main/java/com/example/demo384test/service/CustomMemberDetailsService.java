@@ -61,4 +61,20 @@ public class CustomMemberDetailsService implements UserDetailsService {
         return authorities;
     }
 
+    public String checkDuplicate(String username, String emailAddress) throws UsernameNotFoundException {
+        try{
+           String a = memberRepository.findByUsername(username).getUsername();
+            String message = "Username exists!";
+            throw new UsernameNotFoundException("Error occurred: " + message);
+        }catch(NullPointerException ex0){
+            try{
+                String b = memberRepository.findByEmail(emailAddress).getUsername();
+                String message = "Email exists!";
+                throw new UsernameNotFoundException("Error occurred: " + message);
+            }catch(NullPointerException ex1){
+                String message = "Created your account successfully";
+                return message;
+            }
+        }
+    }
 }
