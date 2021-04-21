@@ -16,6 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 
 @DataJpaTest
@@ -43,9 +45,32 @@ public class RoleRepositoryTests {
         role.setPermissions(Arrays.asList(savedPermission));
 
         Role savedRole = roleRepository.save(role);
-        Role existingRole = entityManager.find(Role.class, role.getId());
+        Role existingRole = entityManager.find(Role.class, savedRole.getId());
 
         assertThat(existingRole.getName().equals(role.getName()));
+    }
 
+    @Test
+    public void testCreateRoleWithMultiplePermissions(){
+        Role role = new Role();
+        role.setName("ROLE_ANOTHERTEST");
+
+        Permission permission1 = new Permission();
+        Permission permission2 = new Permission();
+        Permission permission3 = new Permission();
+        permission1.setName("TEST1_PERMISSION");
+        permission2.setName("TEST2_PERMISSION");
+        permission3.setName("TEST3_PERMISSION");
+
+        Permission savedPermission1 = permissionRepository.save(permission1);
+        Permission savedPermission2 = permissionRepository.save(permission2);
+        Permission savedPermission3 = permissionRepository.save(permission3);
+
+        role.setPermissions(Arrays.asList(savedPermission1,savedPermission2, savedPermission3));
+        Role savedRole = roleRepository.save(role);
+        Role existingRole = entityManager.find(Role.class, savedRole.getId());
+
+        assertThat(existingRole.getName().equals(role.getName()));
+        org.hamcrest.MatcherAssert.assertThat(existingRole.getPermissions(), is(equalTo(role.getPermissions())));
     }
 }

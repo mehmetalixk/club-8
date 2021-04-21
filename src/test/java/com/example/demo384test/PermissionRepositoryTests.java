@@ -30,7 +30,7 @@ public class PermissionRepositoryTests {
         permission.setName("TEST_PERMISSION");
 
         Permission savedPermission = permissionRepository.save(permission);
-        Permission existingPermission = entityManager.find(Permission.class, permission.getId());
+        Permission existingPermission = entityManager.find(Permission.class, savedPermission.getId());
 
         assertThat(existingPermission.getName().equals(permission.getName()));
 
