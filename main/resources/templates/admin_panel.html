@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"/>
+
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <title>
+        Admin Panel
+    </title>
+</head>
+<script type="text/javascript" th:src="@{/js/admin.js}"></script>
+
+<body>
+<div th:replace="fragments/navbar :: header"></div>
+    <div style="margin: 100px;text-align: center">
+        <a type="button" onclick="display_admin('list_members_id')"
+           class="btn btn-outline-dark">List Members</a>
+
+        <a type="button" onclick="display_admin('add_role_id')"
+           class="btn btn-outline-dark">Add Role</a>
+
+        <a type="button" onclick="display_admin('list_roles_id')"
+           class="btn btn-outline-dark">List Roles</a>
+
+        <a type="button" onclick="display_admin('add_club_id')"
+           class="btn btn-outline-dark">Add Club</a>
+        <a type="button" onclick="display_admin('list_clubs_id')"
+           class="btn btn-outline-dark">List Clubs</a>
+
+        <a type="button" onclick="display_admin('add_subClub_id')"
+           class="btn btn-outline-dark">Add subClub</a>
+        <a type="button" onclick="display_admin('list_subClubs_id')"
+           class="btn btn-outline-dark">List subClubs</a>
+    </div>
+
+<div id="add_role_id" style="display:none;">
+    <form th:action="@{/admin_add_role}" method="post" th:object="${role}">
+        <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
+            <input type="text" class="form-control" id="name" placeholder="name" th:field="*{name}">
+            <label for="name">Role name</label><br>
+            <button type="submit" class="btn btn-primary">Add Role</button>
+        </div>
+    </form>
+</div>
+
+<div id="list_members_id" style="display:none;">
+    <div>
+        <h1>List of Members of Club-8</h1>
+    </div>
+
+    <div>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>E-Mail</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Birthday</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member: ${listMembers}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.emailAddress}"></td>
+                <td th:text="${member.username}"></td>
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.surname}"></td>
+                <td th:text="${member.gender}"></td>
+                <td th:text="${member.birthDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="list_roles_id" style="display:none;" >
+    <div class="container text-center" style="margin: 100px">
+        <div>
+            <h1>List of Roles</h1>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr >
+                    <th style="width: 5%">Role ID</th>
+                    <th style="width: 20%">Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="role: ${listRoles}">
+                    <td th:text="${role.id}"></td>
+                    <td th:text="${role.name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center" style="display:none;" id="add_club_id">
+    <div>
+        <h1>Add Club</h1>
+    </div>
+    <form th:action="@{/process_add_club}" method="post" th:object="${club}">
+        <div class="m-3">
+            <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
+                <input type="text" class="form-control" id="title" placeholder="name" th:field="*{title}">
+                <label for="name">Club Title</label><br>
+                <button type="submit" class="btn btn-primary">Add Club</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="container text-center" style="display: none;" id="add_subClub_id">
+    <div>
+        <h1>Add SubClub</h1>
+    </div>
+    <form th:action="@{/process_add_subclub}" method="post" th:object="${subclub}">
+        <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
+            <input type="text" class="form-control" id="subtitle" placeholder="name" th:field="*{title}">
+            <label for="name">SubClub Title</label><br>
+            <div class="form-floating">
+                <select class="form-select" id="clubTitle" th:field="*{clubTitle}">
+                    <option th:each="club : ${clubs}" th:value="${club}" th:text="${club}">
+                    </option>
+                </select>
+                <label for="clubTitle">Club Title</label>
+            </div><br>
+            <button type="submit" class="btn btn-primary">Add SubClub</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="container text-center" style="display: none;" id="list_clubs_id">
+    <div>
+        <h1>List Clubs</h1>
+    </div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Clubs</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lclub: ${listClubs}">
+            <td th:text="${lclub.id}"></td>
+            <td th:text="${lclub.title}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="container text-center" style="display: none;" id="list_subClubs_id">
+    <div>
+        <h1>List SubClubs</h1>
+    </div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>SubClub</th>
+            <th>Club</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="subclub: ${listSubclubs}">
+            <td th:text="${subclub.id}"></td>
+            <td th:text="${subclub.title}"></td>
+            <td th:text="${subclub.clubTitle}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

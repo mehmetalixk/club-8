@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Club-8 Registration</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <title>Create Role</title>
+</head>
+<body>
+<div class="container text-center">
+  <div>
+    <h1>Add Role</h1>
+  </div>
+  <form th:action="@{/process_add_role}" method="post" th:object="${role}">
+    <div class="m-3">
+      <div class="form-group row">
+        <label class="col-form-label col-4">Role Name</label>
+        <div class="col-8">
+          <input type="text" class="form-control" th:field="*{name}" required
+                 minlength="2" maxlength="20"/>
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Add Role</button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
