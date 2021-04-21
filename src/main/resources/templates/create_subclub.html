@@ -1,27 +1,31 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Club-8 Registration</title>
+  <title>Create Club</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
   <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <title>Create Role</title>
+  <title>Create Club</title>
 </head>
 <body>
 <div class="container text-center">
   <div>
-    <h1>Add Role</h1>
+    <h1>Add Subclub</h1>
   </div>
-  <form th:action="@{/process_add_role}" method="post" th:object="${role}">
+  <form th:action="@{/process_add_subclub}" method="post" th:object="${subclub}">
     <div class="m-3">
       <div class="form-group row">
         <label class="col-form-label col-4">Role Name</label>
         <div class="col-8">
-          <input type="text" class="form-control" th:field="*{name}" required
+          <input type="text" class="form-control" th:field="*{title}" required
                  minlength="2" maxlength="20"/>
+        </div>
+        <div class="col-8">
+          <input type="text" class="form-control" th:field="*{clubTitle}" required
+                 minlength="1" maxlength="20"/>
         </div>
       </div>
       <div>
-        <button type="submit" class="btn btn-primary">Add Role</button>
+        <button type="submit" class="btn btn-primary">Add Subclub</button>
       </div>
     </div>
   </form>

@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +32,8 @@ public class Member {
     private String gender;
     private Date birthDate;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Subclub> subclubs;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,6 +44,8 @@ public class Member {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Post> posts;
 
     public String getName() {
         return name;

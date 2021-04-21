@@ -22,7 +22,7 @@ public class PermissionController {
         return "Saved";
     }
 
-    @GetMapping(path="/")
+    @GetMapping(path="/all")
     public @ResponseBody Iterable<Permission> getAllPermissions() {
         return permissionRepository.findAll();
     }

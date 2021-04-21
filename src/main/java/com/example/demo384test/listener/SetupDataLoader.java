@@ -12,6 +12,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.demo384test.service.CustomMemberDetailsService;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -45,12 +46,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         List<Permission> adminPermissions = Arrays.asList(readPermission, writePermission);
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
+        createAdminIfNotFound();
 
         Role adminRole = roleRepository.findByName("ROLE_ADMIN");
 
-
         alreadySetup = true;
-
     }
 
     @Transactional
@@ -66,16 +66,40 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     @Transactional
-    Role createRoleIfNotFound(
-            String name, Collection<Permission> privileges) {
-
+    Role createRoleIfNotFound(String name, Collection<Permission> permissions) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
             role = new Role();
             role.setName(name);
-            role.setPermissions(privileges);
+            role.setPermissions(permissions);
             roleRepository.save(role);
         }
         return role;
     }
+
+    @Transactional
+    Member createAdminIfNotFound() {
+        Member member = memberRepository.findByUsername("admin");
+        if(member == null) {
+            Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+            member = new Member();
+            member.setEmailAddress("admin@admin.com");
+            member.setUsername("admin");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode("admin");
+            member.setPassword(encodedPassword);
+
+            member.setName("admin");
+            member.setSurname("admin");
+            member.setGender("Non-disclosed");
+            member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
+
+            member.setRoles(Arrays.asList(adminRole));
+
+            memberRepository.save(member);
+        }
+
+        return member;
+    }
+
 }

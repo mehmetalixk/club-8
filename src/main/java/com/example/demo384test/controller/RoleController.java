@@ -22,7 +22,7 @@ public class RoleController {
         return "Saved";
     }
 
-    @GetMapping(path="/")
+    @GetMapping(path="/all")
     public @ResponseBody Iterable<Role> getAllRoles() {
         return roleRepository.findAll();
     }
