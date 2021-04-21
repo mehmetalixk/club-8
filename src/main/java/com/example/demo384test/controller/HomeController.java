@@ -123,6 +123,21 @@ public class HomeController {
 
     @PostMapping("/process_add_subclub")
     public ModelAndView processAddSubclub(Subclub subclub) {
+        Club c = clubRepository.findByTitle(subclub.getClubTitle());
+        subclub.setClub(c);
+
+        for(Club club : clubRepository.findAll()) {
+            for(Subclub sc : club.getSubclubs())
+                System.out.println(sc.getTitle());
+        }
+
+        c.addSubclubToClub(subclub);
+
+        for(Club club : clubRepository.findAll()) {
+            for(Subclub sc : club.getSubclubs())
+                System.out.println(sc.getTitle());
+        }
+
         subclubRepository.save(subclub);
         return new ModelAndView("register_success");
     }
@@ -130,7 +145,13 @@ public class HomeController {
     @GetMapping("/add_role")
     public ModelAndView showAddRoleForm(Model model) {
         model.addAttribute("role", new Role());
-        return new ModelAndView();
+        return new ModelAndView("add_role");
+    }
+
+    @GetMapping("/post")
+    public ModelAndView post(Model model) {
+        model.addAttribute("post", new Post());
+        return new ModelAndView("post");
     }
 
     @PostMapping("/process_add_role")
@@ -158,4 +179,5 @@ public class HomeController {
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }
+
 }

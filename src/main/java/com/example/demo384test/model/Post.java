@@ -19,13 +19,18 @@ public class Post {
     private Timestamp timestamp;
     @Column(nullable = false)
     private String content;
-
+    @Column(nullable = false)
+    private String title;
 
     @OneToOne
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "subclub_id", insertable = false, updatable = false)
     private Subclub subclub;
+
+
 
     public Long getId() {
         return id;
@@ -73,5 +78,13 @@ public class Post {
 
     public void setSubclub(Subclub subclub) {
         this.subclub = subclub;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -3,6 +3,7 @@ package com.example.demo384test.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,14 +20,13 @@ public class Subclub {
     @JoinColumn(name = "club_id", insertable = false, updatable = false)
     private Club club;
 
-    @Column(nullable = false, length = 20)
     private String clubTitle;
 
     @OneToMany
-    private Set<Member> members;
+    private Set<Post> posts = new HashSet<>();
 
     @OneToMany
-    private Set<Post> posts;
+    private Set<Member> members;
 
     public Long getId() {
         return id;
@@ -75,4 +75,13 @@ public class Subclub {
     public void setClubTitle(String clubTitle) {
         this.clubTitle = clubTitle;
     }
+
+    public void addPostToSubclub(Post p) {
+        posts.add(p);
+    }
+
+    public void removePostFromSubclub(Post p) {
+        posts.remove(p);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.demo384test.model;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ public class Club {
     private String title;
 
     @OneToMany
-    private Set<Subclub> subclubs;
+    private Set<Subclub> subclubs = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -32,5 +33,17 @@ public class Club {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void addSubclubToClub(Subclub sc) {
+        subclubs.add(sc);
+    }
+
+    public void removeSubclubFromClub(Subclub sc) {
+        subclubs.remove(sc);
+    }
+
+    public Set<Subclub> getSubclubs() {
+        return subclubs;
     }
 }
