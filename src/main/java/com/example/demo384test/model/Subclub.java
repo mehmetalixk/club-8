@@ -16,17 +16,18 @@ public class Subclub {
     @Column(nullable = false, length = 20)
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "club_id", insertable = false, updatable = false)
-    private Club club;
 
     private String clubTitle;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "subclub_posts",
+            joinColumns = @JoinColumn(
+                    name = "subclub_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "post_id", referencedColumnName = "id"))
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany
-    private Set<Member> members;
 
     public Long getId() {
         return id;
@@ -44,21 +45,6 @@ public class Subclub {
         this.title = name;
     }
 
-    public Club getClub() {
-        return club;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
-    }
-
-    public Set<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(Set<Member> members) {
-        this.members = members;
-    }
 
     public Set<Post> getPosts() {
         return posts;
@@ -83,5 +69,6 @@ public class Subclub {
     public void removePostFromSubclub(Post p) {
         posts.remove(p);
     }
+
 
 }

@@ -1,39 +1,46 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <title>Post</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"/>
+
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <title>
+        Admin Panel
+    </title>
 </head>
+
+<div th:replace="fragments/navbar :: header"></div>
 <body>
-<div class="container text-center">
+<div class="container">
     <div>
-        <h1>Post</h1>
+        <br><h2 style="text-align: center">Create Post</h2><br>
     </div>
     <form th:action="@{/process_add_post}" method="post" th:object="${post}">
-        <div class="m-3">
-            <div class="form-group row">
-                <label class="col-form-label col-4">Role Name</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" th:field="*{title}" required
-                           minlength="2" maxlength="128"/>
+            <div class="row">
+                <div class="col">
+                <label for="title">Title</label>
+                <input type="text" id="title" class="form-control" th:field="*{title}" required
+                       minlength="2" maxlength="128"/>
                 </div>
-            </div>
-            <div class="form-group row">
+                <div class="col">
+                    <label for="subClub">SubClub</label>
+                    <select class="form-select" id="subClub" style="width: 40%;" th:field="*{subclubTitle}">
+                        <option th:each="club : ${subclubList}" th:value="${club}" th:text="${club}">
+                        </option>
+                    </select>
+                </div>
+                </div>
+                <div class="row">
                     <label for="postArea">Content</label>
-                    <textarea class="form-control" id="postArea" rows="3" th:field="*{content}" required></textarea>
-            </div>
-            <div class="form-floating">
-                <select class="form-select" id="subclub" th:field="*{subclubTitle}">
-                    <option th:each="club : ${subclubList}" th:value="${club}" th:text="${club}">
-                    </option>
-                </select>
-                <label for="subclub">Subclub</label>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Add Club</button>
-            </div>
-        </div>
+                    <textarea class="form-control" id="postArea" rows="8" cols="24" style="width: 70%"
+                              th:field="*{content}" required></textarea>
+                </div><br>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary"
+                                          style="alignment: right;width: 10%">Create Post</button>
+                </div>
     </form>
 </div>
 </body>
