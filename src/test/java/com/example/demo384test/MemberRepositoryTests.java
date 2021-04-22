@@ -54,6 +54,9 @@ public class MemberRepositoryTests {
         Member existingMember = entityManager.find(Member.class, savedMember.getId());
 
         assertThat(existingMember.getEmailAddress(), equalTo(member.getEmailAddress()));
+        assertThat(existingMember.getUsername(), equalTo(member.getUsername()));
+        assertThat(existingMember.getName(), equalTo(member.getName()));
+        assertThat(existingMember.getSurname(), equalTo(member.getSurname()));
     }
 
     @Test
