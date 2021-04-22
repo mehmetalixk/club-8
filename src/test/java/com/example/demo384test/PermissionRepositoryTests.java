@@ -11,7 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -25,14 +26,14 @@ public class PermissionRepositoryTests {
     private PermissionRepository permissionRepository;
 
     @Test
-    public void testCreatePermission(){
+    public void testCreatePermission() {
         Permission permission = new Permission();
         permission.setName("TEST_PERMISSION");
 
         Permission savedPermission = permissionRepository.save(permission);
         Permission existingPermission = entityManager.find(Permission.class, savedPermission.getId());
 
-        assertThat(existingPermission.getName().equals(permission.getName()));
+        assertThat(existingPermission.getName(), equalTo(permission.getName()));
 
     }
 }

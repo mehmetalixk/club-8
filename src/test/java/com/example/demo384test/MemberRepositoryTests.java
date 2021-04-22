@@ -19,9 +19,9 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 
 @DataJpaTest
@@ -53,11 +53,11 @@ public class MemberRepositoryTests {
         Member savedMember = memberRepository.save(member);
         Member existingMember = entityManager.find(Member.class, savedMember.getId());
 
-        assertThat(existingMember.getEmailAddress().equals(member.getEmailAddress()));
+        assertThat(existingMember.getEmailAddress(), equalTo(member.getEmailAddress()));
     }
 
     @Test
-    public void testRoleAssignMember(){
+    public void testRoleAssignMember() {
         Member member = new Member();
         member.setName("test");
         member.setSurname("test");
@@ -84,6 +84,6 @@ public class MemberRepositoryTests {
 
         Member savedMember = memberRepository.save(member);
         Member existingMember = entityManager.find(Member.class, savedMember.getId());
-        org.hamcrest.MatcherAssert.assertThat(existingMember.getRoles(), is(equalTo(member.getRoles())));
+        assertThat(existingMember.getRoles(), is(equalTo(member.getRoles())));
     }
 }

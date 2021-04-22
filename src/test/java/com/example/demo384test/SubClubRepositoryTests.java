@@ -13,7 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -34,7 +35,7 @@ public class SubClubRepositoryTests {
         Subclub savedSubclub = subclubRepository.save(subclub);
         Subclub existingSubclub = entityManager.find(Subclub.class, savedSubclub.getId());
 
-        assertThat(existingSubclub.getTitle().equals(subclub.getTitle()));
+        assertThat(existingSubclub.getTitle(), equalTo(subclub.getTitle()));
     }
 
     @Test
@@ -53,7 +54,7 @@ public class SubClubRepositoryTests {
         Subclub savedSubclub = subclubRepository.save(subclub);
         Subclub existingSubclub = entityManager.find(Subclub.class, savedSubclub.getId());
 
-        assertThat(existingSubclub.getTitle().equals(subclub.getTitle()));
-        assertThat(existingSubclub.getClubTitle().equals(subclub.getClubTitle()));
+        assertThat(existingSubclub.getTitle(), equalTo(subclub.getTitle()));
+        assertThat(existingSubclub.getClubTitle(), equalTo(subclub.getClubTitle()));
     }
 }

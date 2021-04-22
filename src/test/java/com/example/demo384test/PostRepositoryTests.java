@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -109,5 +110,45 @@ public class PostRepositoryTests {
 
         assertThat(existingPost.getTitle().equals(post.getTitle()));
         assertThat(existingPost.getSubclubTitle().equals(savedSubclub.getTitle()));
+    }
+
+    @Test
+    public void testCreatePostWithMemberAndSubClub() {
+        Member member = new Member();
+        member.setName("test");
+        member.setSurname("test");
+        member.setUsername("test");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode("test");
+        member.setPassword(encodedPassword);
+        member.setEmailAddress("test");
+        member.setGender("test");
+        member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
+
+        Member savedMember = memberRepository.save(member);
+
+        Subclub subclub = new Subclub();
+        subclub.setTitle("TEST SUBCLUB");
+
+        Subclub savedSubclub = subclubRepository.save(subclub);
+
+        Post post = new Post();
+        post.setContent("TEST CONTENT");
+        post.setTitle("TEST TITLE");
+        post.setDate(LocalDate.now());
+        post.setTimestamp(LocalTime.now());
+        post.setMemberUsername(savedMember.getUsername());
+        post.setSubclubTitle(savedSubclub.getTitle());
+
+        Post savedPost = postRepository.save(post);
+        Post existingPost = entityManager.find(Post.class, savedPost.getId());
+
+        System.out.println(existingPost.getTitle());
+        System.out.println(post.getTitle());
+
+
+        org.hamcrest.MatcherAssert.assertThat(existingPost.getTitle(), equalTo(post.getTitle()));
+        org.hamcrest.MatcherAssert.assertThat(existingPost.getMemberUsername(), equalTo(savedMember.getUsername()));
+        org.hamcrest.MatcherAssert.assertThat(existingPost.getSubclubTitle(), equalTo(savedSubclub.getTitle()));
     }
 }
