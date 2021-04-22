@@ -28,8 +28,6 @@ public class HomeController {
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
-    private PermissionRepository permissionRepository;
-    @Autowired
     private ClubRepository clubRepository;
     @Autowired
     private SubclubRepository subclubRepository;
@@ -66,70 +64,6 @@ public class HomeController {
         return new ModelAndView("signup_form");
     }
 
-    @PostMapping("/process_add_club")
-    public ModelAndView processAddClub(Club club) {
-        clubRepository.save(club);
-        return new ModelAndView("success");
-    }
-
-    @PostMapping("/process_add_subclub")
-    public ModelAndView processAddSubclub(Subclub subclub) {
-        Club c = clubRepository.findByTitle(subclub.getClubTitle());
-        c.addSubclubToClub(subclub);
-        subclubRepository.save(subclub);
-        clubRepository.save(c);
-        return new ModelAndView("success");
-    }
-
-    @GetMapping("/post")
-    public ModelAndView post(Model model) {
-        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN") || principal.hasPermission("ROLE_USER");
-            if(!isAllowed)
-                return null;
-        }
-
-        model.addAttribute("post", new Post());
-        model.addAttribute("subclubList", subclubRepository.findAllTitles());
-        return new ModelAndView("post");
-    }
-
-    @PostMapping("/process_add_post")
-    public ModelAndView processAddPost(Post post) {
-        // READ subclub from the subclub repository
-        Subclub sc = subclubRepository.findByTitle(post.getSubclubTitle());
-        post.setDate(java.time.LocalDate.now());
-        post.setTimestamp(java.time.LocalTime.now());
-        // Get logged member
-        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member m = memberRepository.findByUsername(principal.getUsername());
-        post.setMemberUsername(m.getUsername());
-        m.addPost(post);
-        sc.addPostToSubclub(post);
-
-        // CREATE a new post in post repository
-        postRepository.save(post);
-        // UPDATE the subclub with new post
-        subclubRepository.save(sc);
-        // UPDATE the member with new post
-        memberRepository.save(m);
-        return new ModelAndView("success");
-
-    }
-
-    @PostMapping("/process_add_role")
-    public ModelAndView processAddRole(Role role) {
-        roleRepository.save(role);
-        return new ModelAndView("success");
-    }
-
-    @PostMapping("/process_add_permission")
-    public ModelAndView processAddPermission(Permission permission) {
-        permissionRepository.save(permission);
-        return new ModelAndView("success");
-    }
-
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
         CustomMemberDetails principal =
@@ -160,12 +94,6 @@ public class HomeController {
         List<Subclub> listSubclubs = subclubRepository.findAll();
         model.addAttribute("listSubclubs", listSubclubs);
 
-        return new ModelAndView("admin_panel");
-    }
-
-    @PostMapping("/admin_add_role")
-    public ModelAndView adminAddRole(Role role) {
-        roleRepository.save(role);
         return new ModelAndView("admin_panel");
     }
 

@@ -6,14 +6,14 @@ import com.example.demo384test.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(path="/roles")
 public class RoleController {
     @Autowired
     private RoleRepository roleRepository;
 
-    @PostMapping(path="/add")
+    @PostMapping(path="/roles/add")
     public @ResponseBody
     String addNewRole (@RequestParam String name) {
         Role n = new Role();
@@ -22,8 +22,14 @@ public class RoleController {
         return "Saved";
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="/roles/all")
     public @ResponseBody Iterable<Role> getAllRoles() {
         return roleRepository.findAll();
+    }
+
+    @PostMapping("/process_add_role")
+    public ModelAndView processAddRole(Role role) {
+        roleRepository.save(role);
+        return new ModelAndView("success");
     }
 }

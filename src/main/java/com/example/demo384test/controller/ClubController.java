@@ -11,20 +11,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(path="/clubs")
 public class ClubController {
     @Autowired
     private ClubRepository clubRepository;
     @Autowired
     private SubclubRepository subclubRepository;
 
-    @RequestMapping(value="/{title}", method = RequestMethod.GET)
+    @RequestMapping(value="/clubs/{title}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model) {
         model.addAttribute("club", clubRepository.findByTitle(title));
         return new ModelAndView("club");
     }
 
-    @RequestMapping(value="/{title}/{subclub}", method = RequestMethod.GET)
+    @RequestMapping(value="/clubs/{title}/{subclub}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model, @PathVariable String subclub) {
         model.addAttribute("club", clubRepository.findByTitle(title));
         model.addAttribute("subclub", subclubRepository.findByTitle(subclub));
@@ -32,8 +31,14 @@ public class ClubController {
         
     }
 
-    @GetMapping(value="/all")
+    @GetMapping(value="/clubs/all")
     public @ResponseBody Iterable<Club> getAllClubs() {
         return clubRepository.findAll();
+    }
+
+    @PostMapping("/process_add_club")
+    public ModelAndView processAddClub(Club club) {
+        clubRepository.save(club);
+        return new ModelAndView("success");
     }
 }
