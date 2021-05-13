@@ -99,7 +99,7 @@ public class CustomMemberDetails implements UserDetails {
         }
         return false;
     }
-
+    /*
     public void addPost(Post p) {
         member.addPost(p);
     }
@@ -107,5 +107,5 @@ public class CustomMemberDetails implements UserDetails {
     public void removePost(Post p) {
         member.removePost(p);
     }
-
+    */
 }

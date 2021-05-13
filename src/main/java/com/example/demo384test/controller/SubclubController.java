@@ -5,6 +5,7 @@ import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.request.SubclubCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,12 @@ public class SubclubController {
     }
 
     @PostMapping("/process_add_subclub")
-    public ModelAndView processAddSubclub(Subclub subclub) {
-        Club c = clubRepository.findByTitle(subclub.getClubTitle());
-        c.addSubclubToClub(subclub);
-        subclubRepository.save(subclub);
+    public ModelAndView processAddSubclub(SubclubCreationRequest scr) {
+        Club c = clubRepository.findByTitle(scr.getClubTitle());
+        Subclub sc = new Subclub();
+        sc.setTitle(scr.getTitle());
+        sc.setClub(c);
+        subclubRepository.save(sc);
         clubRepository.save(c);
         return new ModelAndView("success");
     }

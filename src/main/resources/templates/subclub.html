@@ -15,7 +15,7 @@
 <div class="container">
   <!-- TITLE -->
   <div class="jumbotron align-content-center" style="text-align: center;">
-    <h1 th:text="${subclub.title}"></h1>
+    <h1 th:text="${subclub}"></h1>
   </div>
 
   <!-- Subclubs -->
@@ -30,11 +30,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="post: ${subclub.posts}">
+      <tr th:each="post: ${posts}">
         <td th:text="${post.id}"></td>
         <td th:text="${post.title}"></td>
         <td th:text="${post.content}"></td>
-        <td th:text="${post.getMemberUsername()}"></td>
+        <td th:text="${post.getMember().getUsername()}"></td>
       </tr>
       </tbody>
     </table>

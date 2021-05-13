@@ -1,7 +1,7 @@
 package com.example.demo384test.model;
-
+import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.model.Club.Subclub;
 import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,8 +22,13 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    private String subclubTitle;
-    private String memberUsername;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Member.class)
+    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Subclub.class)
+    @JoinColumn(name = "subclub_id", referencedColumnName = "id", nullable=false)
+    private Subclub subclub;
 
     public Long getId() {
         return id;
@@ -65,19 +70,20 @@ public class Post {
         this.title = title;
     }
 
-    public String getSubclubTitle() {
-        return subclubTitle;
+    public Member getMember() {
+        return member;
     }
 
-    public void setSubclubTitle(String subclubTitle) {
-        this.subclubTitle = subclubTitle;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public void setMemberUsername(String memberUsername) {
-        this.memberUsername = memberUsername;
+    public Subclub getSubclub() {
+        return subclub;
     }
 
-    public String getMemberUsername() {
-        return this.memberUsername;
+    public void setSubclub(Subclub subclub) {
+        this.subclub = subclub;
     }
+
 }

@@ -17,7 +17,7 @@
     <div>
         <br><h2 style="text-align: center">Create Post</h2><br>
     </div>
-    <form th:action="@{/process_add_post}" method="post" th:object="${post}">
+    <form th:action="@{/process_add_post}" method="post" th:object="${pcr}">
             <div class="row">
                 <div class="col">
                 <label for="title">Title</label>
@@ -27,8 +27,13 @@
                 <div class="col">
                     <label for="subClub">SubClub</label>
                     <select class="form-select" id="subClub" style="width: 40%;" th:field="*{subclubTitle}">
-                        <option th:each="club : ${subclubList}" th:value="${club}" th:text="${club}">
-                        </option>
+                        <option th:each="subclub : ${subclubList}" th:value="${subclub}" th:text="${subclub}"></option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="subClub">SubClub</label>
+                    <select class="form-select" id="club" style="width: 40%;" th:field="*{clubTitle}">
+                        <option th:each="club : ${clubList}" th:value="${club}" th:text="${club}"></option>
                     </select>
                 </div>
                 </div>
