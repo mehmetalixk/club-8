@@ -1,8 +1,8 @@
 package com.example.demo384test;
 
 
-import com.example.demo384test.model.Permission;
-import com.example.demo384test.model.Role;
+import com.example.demo384test.model.Security.Permission;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.PermissionRepository;
 import com.example.demo384test.repository.RoleRepository;
 import org.junit.jupiter.api.Test;

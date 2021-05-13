@@ -1,7 +1,7 @@
 package com.example.demo384test;
 
 
-import com.example.demo384test.model.Permission;
+import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.repository.PermissionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

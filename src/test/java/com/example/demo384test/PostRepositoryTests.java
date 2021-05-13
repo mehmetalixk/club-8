@@ -1,8 +1,8 @@
 package com.example.demo384test;
 
+import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Post;
-import com.example.demo384test.model.Subclub;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.PostRepository;
