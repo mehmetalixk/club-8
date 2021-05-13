@@ -1,4 +1,4 @@
-package com.example.demo384test.model;
+package com.example.demo384test.model.Security;
 
 import org.springframework.data.annotation.Id;
 

@@ -1,6 +1,6 @@
 package com.example.demo384test.repository;
 
-import com.example.demo384test.model.Permission;
+import com.example.demo384test.model.Security.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

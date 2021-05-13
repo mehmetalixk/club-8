@@ -1,7 +1,7 @@
 package com.example.demo384test.controller;
 
 
-import com.example.demo384test.model.Club;
+import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.SubclubRepository;
 import org.springframework.beans.factory.annotation.Autowired;

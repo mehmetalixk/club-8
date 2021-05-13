@@ -1,7 +1,7 @@
 package com.example.demo384test.controller;
 
 
-import com.example.demo384test.model.Role;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

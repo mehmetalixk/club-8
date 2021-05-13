@@ -2,6 +2,9 @@ package com.example.demo384test.controller;
 
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.*;
+import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

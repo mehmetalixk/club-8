@@ -1,5 +1,6 @@
 package com.example.demo384test.model;
 
+import com.example.demo384test.model.Security.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

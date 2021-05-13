@@ -2,8 +2,8 @@ package com.example.demo384test.service;
 
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.Permission;
-import com.example.demo384test.model.Role;
+import com.example.demo384test.model.Security.Permission;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
