@@ -7,10 +7,11 @@
 package com.example.demo384test.listener;
 
 import com.example.demo384test.model.Club.Club;
-import com.example.demo384test.model.Club.Comment;
+import com.example.demo384test.model.post.Comment;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.Post;
+import com.example.demo384test.model.post.Like;
+import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.*;
@@ -49,6 +50,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Override
     @Transactional
@@ -99,11 +103,31 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Comment c = createComment(admin, "This is a comment", post);
 
+        Like l = createLike(admin, post);
+
         alreadySetup = true;
     }
 
     /*
-     * Create a comment if not exists on the given post
+     * Add a like on the given post
+     * This method will be deleted while publishing the source code
+     * */
+    @Transactional
+    Like createLike(Member member, Post post) {
+        // check if member is already liked the post
+        Like like = likeRepository.findByPostTitleAndMember(post.getTitle(), member.getUsername());
+        if (like == null) {
+            like = new Like();
+            like.setMember(member);
+            like.setPost(post);
+            likeRepository.save(like);
+        }
+
+        return like;
+    }
+
+    /*
+     * Create a comment on the given post
      * This method will be deleted while publishing the source code
      * */
     @Transactional
