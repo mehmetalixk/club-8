@@ -1,5 +1,4 @@
 package com.example.demo384test.model;
-import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import org.springframework.data.annotation.Id;
 import javax.persistence.*;
