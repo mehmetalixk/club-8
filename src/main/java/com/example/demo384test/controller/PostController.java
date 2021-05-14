@@ -2,7 +2,6 @@ package com.example.demo384test.controller;
 
 
 import com.example.demo384test.detail.CustomMemberDetails;
-import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Post;
 import com.example.demo384test.model.Club.Subclub;
@@ -65,15 +64,11 @@ public class PostController {
         post.setMember(m);
 
         // Get subclub
-        Subclub sc = subclubRepository.findByTitle(pcr.getSubclubTitle());
+        Subclub sc = subclubRepository.findByClubTitle(pcr.getSubclubTitle(), pcr.getClubTitle());
         post.setSubclub(sc);
 
         // CREATE a new post in post repository
         postRepository.save(post);
-        // UPDATE the subclub with new post
-        subclubRepository.save(sc);
-        // UPDATE the member with new post
-        memberRepository.save(m);
 
         return new ModelAndView("success");
     }

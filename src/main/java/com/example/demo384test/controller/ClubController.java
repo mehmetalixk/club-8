@@ -31,7 +31,7 @@ public class ClubController {
     public ModelAndView getClubPage (@PathVariable String title, Model model, @PathVariable String subclub) {
         model.addAttribute("club", clubRepository.findByTitle(title));
         model.addAttribute("subclub", subclubRepository.findByClubTitle(subclub, title).getTitle());
-        model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub));
+        model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub, title));
         return new ModelAndView("subclub");
     }
 
