@@ -21,12 +21,11 @@
             <div class="panel panel-white post panel-shadow">
                 <div class="post-heading" >
                     <div class="pull-left meta">
-                        /<h6 class="text-muted" th:text="${post.subclubTitle}"></h6><br>
+                        /<h6 class="text-muted" th:text="${post.getSubclub().getTitle()}"></h6><br>
                         <h6 class="text-muted time" style="text-align: right" th:text="${post.date}"></h6>
                         <div class="title h6">
-                            <b th:text="${post.getMemberUsername()}"></b> has made this post.
+                            <b th:text="${post.getMember().getUsername()}"></b> has made this post.
                         </div>
-
                     </div>
                 </div>
                 <br><br>

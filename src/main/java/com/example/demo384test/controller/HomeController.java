@@ -5,7 +5,9 @@ import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Role;
+import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
+import com.example.demo384test.request.SubclubCreationRequest;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -78,24 +80,20 @@ public class HomeController {
         }
 
         List<Member> listMembers = memberRepository.findAll();
-        model.addAttribute("listMembers", listMembers);
-
-        model.addAttribute("role", new Role());
-
+        List<Subclub> listSubclubs = subclubRepository.findAll();
         List<Role> listRoles = roleRepository.findAll();
-        model.addAttribute("listRoles", listRoles);
-
-        model.addAttribute("club", new Club());
-
-        model.addAttribute("subclub", new Subclub());
-
-        model.addAttribute("clubs", clubRepository.findAllTitles());
-
         List<Club> listClubs = clubRepository.findAll();
+
+        model.addAttribute("listMembers", listMembers);
+        model.addAttribute("listRoles", listRoles);
+        model.addAttribute("listSubclubs", listSubclubs);
         model.addAttribute("listClubs", listClubs);
 
-        List<Subclub> listSubclubs = subclubRepository.findAll();
-        model.addAttribute("listSubclubs", listSubclubs);
+        model.addAttribute("role", new Role());
+        model.addAttribute("club", new Club());
+        model.addAttribute("scr", new SubclubCreationRequest());
+
+        model.addAttribute("clubs", clubRepository.findAllTitles());
 
         return new ModelAndView("admin_panel");
     }

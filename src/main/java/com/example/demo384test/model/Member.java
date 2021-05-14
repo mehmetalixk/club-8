@@ -5,12 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Data
 @NoArgsConstructor
@@ -42,16 +40,6 @@ public class Member {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
-
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "member_posts",
-            joinColumns = @JoinColumn(
-                    name = "member_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "post_id", referencedColumnName = "id"))
-    private Set<Post> posts = new HashSet<>();
 
     public String getName() {
         return name;
@@ -117,27 +105,11 @@ public class Member {
         return id;
     }
 
-    public void addPost(Post p) {
-        this.posts.add(p);
-    }
-
-    public void removePost(Post p) {
-        this.posts.remove(p);
-    }
-
     public Collection<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
-    }
-
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
     }
 }

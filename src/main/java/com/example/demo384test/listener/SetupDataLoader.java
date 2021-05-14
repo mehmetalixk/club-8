@@ -1,11 +1,20 @@
+/*
+*  Class to test models while implementation process
+*  Also initial club-sub club-member-role-permission
+*  definitions are made in here.
+* */
+
 package com.example.demo384test.listener;
 
+import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.model.post.Comment;
+import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.post.Like;
+import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
-import com.example.demo384test.repository.MemberRepository;
-import com.example.demo384test.repository.PermissionRepository;
-import com.example.demo384test.repository.RoleRepository;
+import com.example.demo384test.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -14,10 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -33,6 +39,21 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private ClubRepository clubRepository;
+
+    @Autowired
+    private SubclubRepository subclubRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -45,13 +66,108 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         List<Permission> adminPermissions = Arrays.asList(readPermission, writePermission);
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
-        createAdminIfNotFound();
 
-        Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+        createClubIfNotFound("books");
+        createClubIfNotFound("movies");
+        createClubIfNotFound("sports");
+        createClubIfNotFound("games");
+
+        Subclub horror_books = createSubclubIfNotFound("horror", "books");
+        createSubclubIfNotFound("drama", "books");
+        createSubclubIfNotFound("sci-fi", "books");
+        createSubclubIfNotFound("fantastic", "books");
+        createSubclubIfNotFound("engineering", "books");
+
+        createSubclubIfNotFound("horror", "movies");
+        createSubclubIfNotFound("sci-fi", "movies");
+        createSubclubIfNotFound("drama", "movies");
+        createSubclubIfNotFound("fantastic", "movies");
+        createSubclubIfNotFound("documentary", "movies");
+
+        createSubclubIfNotFound("football", "sports");
+        createSubclubIfNotFound("basketball", "sports");
+        createSubclubIfNotFound("tennis", "sports");
+        createSubclubIfNotFound("badminton", "sports");
+        createSubclubIfNotFound("volleyball", "sports");
+
+        createSubclubIfNotFound("rpg", "games");
+        createSubclubIfNotFound("fps", "games");
+        createSubclubIfNotFound("horror", "games");
+        createSubclubIfNotFound("sci-fi", "games");
+
+        Member admin = createAdminIfNotFound();
+
+        horror_books.addMemberToSubclub(admin);
+
+        Post post = createPostIfNotExists(admin, "Initial post", "Initial post from SetupDataLoader", horror_books);
+
+        Comment c = createComment(admin, "This is a comment", post);
+
+        Like l = createLike(admin, post);
 
         alreadySetup = true;
     }
 
+    /*
+     * Add a like on the given post
+     * This method will be deleted while publishing the source code
+     * */
+    @Transactional
+    Like createLike(Member member, Post post) {
+        // check if member is already liked the post
+        Like like = likeRepository.findByPostTitleAndMember(post.getTitle(), member.getUsername());
+        if (like == null) {
+            like = new Like();
+            like.setMember(member);
+            like.setPost(post);
+            likeRepository.save(like);
+        }
+
+        return like;
+    }
+
+    /*
+     * Create a comment on the given post
+     * This method will be deleted while publishing the source code
+     * */
+    @Transactional
+    Comment createComment(Member member, String content, Post post) {
+        Comment comment = new Comment();
+        comment.setDate(java.time.LocalDate.now());
+        comment.setTimestamp(java.time.LocalTime.now());
+        comment.setContent(content);
+        comment.setMember(member);
+        comment.setPost(post);
+        commentRepository.save(comment);
+        return comment;
+    }
+
+
+    /*
+    * Create a post if not exists on the given subclub
+    * This method will be deleted while publishing the source code
+    * */
+    @Transactional
+    Post createPostIfNotExists(Member member, String title, String content, Subclub subclub) {
+        Post post = postRepository.findBySubclubTitleAndTitle(subclub.getTitle(), title);
+
+        // If the post does not exists create it
+        if(post == null) {
+            post = new Post();
+            post.setDate(java.time.LocalDate.now());
+            post.setTimestamp(java.time.LocalTime.now());
+            post.setContent(content);
+            post.setTitle(title);
+            post.setSubclub(subclub);
+            post.setMember(member);
+            postRepository.save(post);
+        }
+        return post;
+    }
+
+    /*
+     * Create initial permissions while initializing the project for the very first time
+     * */
     @Transactional
     Permission createPermissionIfNotFound(String name) {
 
@@ -64,25 +180,33 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return permission;
     }
 
+    /*
+     * Create initial roles while initializing the project for the very first time
+     * */
     @Transactional
     Role createRoleIfNotFound(String name, Collection<Permission> permissions) {
         Role role = roleRepository.findByName(name);
+
         if (role == null) {
             role = new Role();
             role.setName(name);
             role.setPermissions(permissions);
             roleRepository.save(role);
         }
+
         return role;
     }
-
+    /*
+    * Create an admin account while initializing the project for the very first time
+    * */
     @Transactional
     Member createAdminIfNotFound() {
         Member member = memberRepository.findByUsername("admin");
+
         if(member == null) {
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
             member = new Member();
-            member.setEmailAddress("admin@admin.com");
+            member.setEmailAddress("admin@club8.com");
             member.setUsername("admin");
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode("admin");
@@ -101,4 +225,46 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return member;
     }
 
+    /*
+     * Create initial clubs while initializing the project for the very first time
+     * */
+    @Transactional
+    Club createClubIfNotFound(String title) {
+        Club club = clubRepository.findByTitle(title);
+
+        // create club if not exists in the repository
+        if (club == null) {
+            club = new Club();
+            club.setTitle(title);
+
+            clubRepository.save(club);
+        }
+
+        return club;
+    }
+
+
+    /*
+     * Create initial sub clubs while initializing the project for the very first time
+     * */
+    @Transactional
+    Subclub createSubclubIfNotFound(String title, String clubTitle) {
+        Club club = clubRepository.findByTitle(clubTitle);
+        // club does not exist
+        if(club == null)
+            return null;
+
+        Subclub subclub = subclubRepository.findByClubTitle(title, clubTitle);
+
+        // create subclub if not exists
+        if (subclub == null) {
+            System.out.println("SUBCLUB NOT FOUND");
+            subclub = new Subclub();
+            subclub.setTitle(title);
+            subclub.setClub(club);
+            subclubRepository.save(subclub);
+        }
+
+        return subclub;
+    }
 }
