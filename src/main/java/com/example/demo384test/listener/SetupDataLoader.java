@@ -1,8 +1,16 @@
+/*
+*  Class to test models while implementation process
+*  Also initial club-sub club-member-role-permission
+*  definitions are made in here.
+* */
+
 package com.example.demo384test.listener;
 
 import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.model.Club.Comment;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Post;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.*;
@@ -14,10 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -38,6 +43,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private SubclubRepository subclubRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Override
     @Transactional
@@ -81,12 +92,58 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createSubclubIfNotFound("sci-fi", "games");
 
         Member admin = createAdminIfNotFound();
+
         horror_books.addMemberToSubclub(admin);
 
+        Post post = createPostIfNotExists(admin, "Initial post", "Initial post from SetupDataLoader", horror_books);
+
+        Comment c = createComment(admin, "This is a comment", post);
 
         alreadySetup = true;
     }
 
+    /*
+     * Create a comment if not exists on the given post
+     * This method will be deleted while publishing the source code
+     * */
+    @Transactional
+    Comment createComment(Member member, String content, Post post) {
+        Comment comment = new Comment();
+        comment.setDate(java.time.LocalDate.now());
+        comment.setTimestamp(java.time.LocalTime.now());
+        comment.setContent(content);
+        comment.setMember(member);
+        comment.setPost(post);
+        commentRepository.save(comment);
+        return comment;
+    }
+
+
+    /*
+    * Create a post if not exists on the given subclub
+    * This method will be deleted while publishing the source code
+    * */
+    @Transactional
+    Post createPostIfNotExists(Member member, String title, String content, Subclub subclub) {
+        Post post = postRepository.findBySubclubTitleAndTitle(subclub.getTitle(), title);
+
+        // If the post does not exists create it
+        if(post == null) {
+            post = new Post();
+            post.setDate(java.time.LocalDate.now());
+            post.setTimestamp(java.time.LocalTime.now());
+            post.setContent(content);
+            post.setTitle(title);
+            post.setSubclub(subclub);
+            post.setMember(member);
+            postRepository.save(post);
+        }
+        return post;
+    }
+
+    /*
+     * Create initial permissions while initializing the project for the very first time
+     * */
     @Transactional
     Permission createPermissionIfNotFound(String name) {
 
@@ -99,6 +156,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return permission;
     }
 
+    /*
+     * Create initial roles while initializing the project for the very first time
+     * */
     @Transactional
     Role createRoleIfNotFound(String name, Collection<Permission> permissions) {
         Role role = roleRepository.findByName(name);
@@ -112,7 +172,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         return role;
     }
-
+    /*
+    * Create an admin account while initializing the project for the very first time
+    * */
     @Transactional
     Member createAdminIfNotFound() {
         Member member = memberRepository.findByUsername("admin");
@@ -139,6 +201,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return member;
     }
 
+    /*
+     * Create initial clubs while initializing the project for the very first time
+     * */
     @Transactional
     Club createClubIfNotFound(String title) {
         Club club = clubRepository.findByTitle(title);
@@ -154,6 +219,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return club;
     }
 
+
+    /*
+     * Create initial sub clubs while initializing the project for the very first time
+     * */
     @Transactional
     Subclub createSubclubIfNotFound(String title, String clubTitle) {
         Club club = clubRepository.findByTitle(clubTitle);
@@ -162,17 +231,16 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return null;
 
         Subclub subclub = subclubRepository.findByClubTitle(title, clubTitle);
+
         // create subclub if not exists
         if (subclub == null) {
+            System.out.println("SUBCLUB NOT FOUND");
             subclub = new Subclub();
             subclub.setTitle(title);
             subclub.setClub(club);
-
-            clubRepository.save(club);
             subclubRepository.save(subclub);
         }
 
         return subclub;
-
     }
 }
