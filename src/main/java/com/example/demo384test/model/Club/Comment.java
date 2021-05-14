@@ -26,7 +26,7 @@ public class Comment {
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Subclub.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Post.class)
     @JoinColumn(name = "post_id", referencedColumnName = "id", nullable=false)
     private Post post;
 
