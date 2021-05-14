@@ -17,3 +17,39 @@ function display_admin(id) {
         x.style.display="none";
     }
 }
+
+function fill(x) {
+    x.classList.toggle("fas");
+}
+
+function empty() {
+    document.getElementById("share_ico").classList.remove("fas");
+    document.getElementById("share_ico").classList.add("far");
+}
+
+function popup() {
+    var popup = document.getElementById("clipboard");
+    popup.classList.remove("hide");
+    popup.classList.add("show");
+}
+
+function popdown() {
+    var popdown = document.getElementById("clipboard");
+    popdown.classList.remove("show");
+    popdown.classList.add("hide");
+    empty();
+}
+
+function clip(x) {
+    var dummy = document.createElement('input'),
+        text = x;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+    popup();
+    setTimeout(popdown, 1000);
+}
+
