@@ -33,7 +33,6 @@ public class ClubController {
         model.addAttribute("subclub", subclubRepository.findByClubTitle(subclub, title).getTitle());
         model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub));
         return new ModelAndView("subclub");
-        
     }
 
     @GetMapping(value="/clubs/all")

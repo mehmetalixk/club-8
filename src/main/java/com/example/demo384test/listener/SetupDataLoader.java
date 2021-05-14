@@ -1,11 +1,11 @@
 package com.example.demo384test.listener;
 
+import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
-import com.example.demo384test.repository.MemberRepository;
-import com.example.demo384test.repository.PermissionRepository;
-import com.example.demo384test.repository.RoleRepository;
+import com.example.demo384test.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -33,6 +33,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private ClubRepository clubRepository;
+
+    @Autowired
+    private SubclubRepository subclubRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -45,9 +51,38 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         List<Permission> adminPermissions = Arrays.asList(readPermission, writePermission);
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
-        createAdminIfNotFound();
 
-        Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+        createClubIfNotFound("books");
+        createClubIfNotFound("movies");
+        createClubIfNotFound("sports");
+        createClubIfNotFound("games");
+
+        Subclub horror_books = createSubclubIfNotFound("horror", "books");
+        createSubclubIfNotFound("drama", "books");
+        createSubclubIfNotFound("sci-fi", "books");
+        createSubclubIfNotFound("fantastic", "books");
+        createSubclubIfNotFound("engineering", "books");
+
+        createSubclubIfNotFound("horror", "movies");
+        createSubclubIfNotFound("sci-fi", "movies");
+        createSubclubIfNotFound("drama", "movies");
+        createSubclubIfNotFound("fantastic", "movies");
+        createSubclubIfNotFound("documentary", "movies");
+
+        createSubclubIfNotFound("football", "sports");
+        createSubclubIfNotFound("basketball", "sports");
+        createSubclubIfNotFound("tennis", "sports");
+        createSubclubIfNotFound("badminton", "sports");
+        createSubclubIfNotFound("volleyball", "sports");
+
+        createSubclubIfNotFound("rpg", "games");
+        createSubclubIfNotFound("fps", "games");
+        createSubclubIfNotFound("horror", "games");
+        createSubclubIfNotFound("sci-fi", "games");
+
+        Member admin = createAdminIfNotFound();
+        horror_books.addMemberToSubclub(admin);
+
 
         alreadySetup = true;
     }
@@ -67,22 +102,25 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Transactional
     Role createRoleIfNotFound(String name, Collection<Permission> permissions) {
         Role role = roleRepository.findByName(name);
+
         if (role == null) {
             role = new Role();
             role.setName(name);
             role.setPermissions(permissions);
             roleRepository.save(role);
         }
+
         return role;
     }
 
     @Transactional
     Member createAdminIfNotFound() {
         Member member = memberRepository.findByUsername("admin");
+
         if(member == null) {
             Role adminRole = roleRepository.findByName("ROLE_ADMIN");
             member = new Member();
-            member.setEmailAddress("admin@admin.com");
+            member.setEmailAddress("admin@club8.com");
             member.setUsername("admin");
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String encodedPassword = encoder.encode("admin");
@@ -101,4 +139,40 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return member;
     }
 
+    @Transactional
+    Club createClubIfNotFound(String title) {
+        Club club = clubRepository.findByTitle(title);
+
+        // create club if not exists in the repository
+        if (club == null) {
+            club = new Club();
+            club.setTitle(title);
+
+            clubRepository.save(club);
+        }
+
+        return club;
+    }
+
+    @Transactional
+    Subclub createSubclubIfNotFound(String title, String clubTitle) {
+        Club club = clubRepository.findByTitle(clubTitle);
+        // club does not exist
+        if(club == null)
+            return null;
+
+        Subclub subclub = subclubRepository.findByClubTitle(title, clubTitle);
+        // create subclub if not exists
+        if (subclub == null) {
+            subclub = new Subclub();
+            subclub.setTitle(title);
+            subclub.setClub(club);
+
+            clubRepository.save(club);
+            subclubRepository.save(subclub);
+        }
+
+        return subclub;
+
+    }
 }

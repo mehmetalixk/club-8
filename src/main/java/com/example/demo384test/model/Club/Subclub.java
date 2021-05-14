@@ -1,7 +1,10 @@
 package com.example.demo384test.model.Club;
 
+import com.example.demo384test.model.Member;
 import org.springframework.data.annotation.Id;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -16,6 +19,11 @@ public class Subclub {
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Club.class)
     @JoinColumn(name = "club_id", referencedColumnName = "id", nullable=false)
     private Club club;
+
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Member.class)
+    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
+    private Set<Member> members = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -39,5 +47,21 @@ public class Subclub {
 
     public void setClub(Club club) {
         this.club = club;
+    }
+
+    public Set<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
+    }
+
+    public void addMemberToSubclub(Member member) {
+        this.members.add(member);
+    }
+
+    public void removeMemberFromSubclub(Member member) {
+        this.members.remove(member);
     }
 }
