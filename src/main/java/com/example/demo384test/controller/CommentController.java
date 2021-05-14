@@ -1,6 +1,6 @@
 package com.example.demo384test.controller;
 
-import com.example.demo384test.model.Club.Comment;
+import com.example.demo384test.model.post.Comment;
 import com.example.demo384test.repository.CommentRepository;
 import com.example.demo384test.request.CommentCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;

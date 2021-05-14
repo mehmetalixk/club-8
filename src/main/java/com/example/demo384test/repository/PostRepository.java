@@ -1,6 +1,6 @@
 package com.example.demo384test.repository;
 
-import com.example.demo384test.model.Post;
+import com.example.demo384test.model.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

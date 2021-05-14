@@ -1,13 +1,15 @@
-package com.example.demo384test.model;
-import com.example.demo384test.model.Club.Subclub;
+package com.example.demo384test.model.post;
+
+import com.example.demo384test.model.Member;
 import org.springframework.data.annotation.Id;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name="posts")
-public class Post {
+@Table(name="comments")
+public class Comment {
     @javax.persistence.Id
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -18,16 +20,14 @@ public class Post {
     private LocalTime timestamp;
     @Column(nullable = false)
     private String content;
-    @Column(nullable = false)
-    private String title;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Member.class)
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Subclub.class)
-    @JoinColumn(name = "subclub_id", referencedColumnName = "id", nullable=false)
-    private Subclub subclub;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Post.class)
+    @JoinColumn(name = "post_id", referencedColumnName = "id", nullable=false)
+    private Post post;
 
     public Long getId() {
         return id;
@@ -61,14 +61,6 @@ public class Post {
         this.content = content;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public Member getMember() {
         return member;
     }
@@ -77,12 +69,13 @@ public class Post {
         this.member = member;
     }
 
-    public Subclub getSubclub() {
-        return subclub;
+    public Post getPost() {
+        return post;
     }
 
-    public void setSubclub(Subclub subclub) {
-        this.subclub = subclub;
+    public void setPost(Post post) {
+        this.post = post;
     }
+
 
 }

@@ -5,6 +5,7 @@ import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Role;
+import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.SubclubCreationRequest;
 import com.example.demo384test.service.CustomMemberDetailsService;
