@@ -36,26 +36,6 @@ public class CustomMemberDetails implements UserDetails {
         this.member = member;
     }
 
-    public static CustomMemberDetails createMemberPrincipal(Member member) {
-        if (member != null) {
-            List<GrantedAuthority> roles = member.getRoles().stream().filter(Objects::nonNull)
-                    .map(role -> new SimpleGrantedAuthority(role.getName()))
-                    .collect(Collectors.toList());
-
-            List<GrantedAuthority> permissions = member.getRoles().stream().filter(Objects::nonNull)
-                    .map(Role::getPermissions).flatMap(Collection::stream)
-                    .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                    .collect(Collectors.toList());
-
-            return CustomMemberDetails.builder()
-                    .member(member)
-                    .roles(roles)
-                    .permissions(permissions)
-                    .build();
-        }
-        return null;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

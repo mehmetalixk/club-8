@@ -39,20 +39,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user").password(passwordEncoder().encode("user")).roles("USER")
+                .and()
+                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/list_members").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/register/**").anonymous()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login")
-                .usernameParameter("username")
-                .defaultSuccessUrl("/")
-                .permitAll()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true).permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/logout").permitAll();
     }

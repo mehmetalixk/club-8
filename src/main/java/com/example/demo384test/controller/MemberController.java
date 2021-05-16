@@ -5,6 +5,7 @@ import com.example.demo384test.model.Member;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ public class MemberController {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    @Qualifier("userDetailsService")
     private CustomMemberDetailsService memberService;
     @PostMapping(path="/add")
     public @ResponseBody

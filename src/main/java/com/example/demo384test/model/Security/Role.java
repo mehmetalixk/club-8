@@ -1,6 +1,6 @@
 package com.example.demo384test.model.Security;
 
-import org.springframework.data.annotation.Id;
+import com.example.demo384test.model.Member;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -8,13 +8,14 @@ import java.util.Collection;
 @Entity
 @Table(name = "roles")
 public class Role {
-    @javax.persistence.Id
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 20)
-    private String name;
 
+    private String name;
+    @ManyToMany(mappedBy = "roles")
+    private Collection<Member> members;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -42,7 +43,7 @@ public class Role {
     }
 
     public Collection<Permission> getPermissions() {
-        return this.permissions;
+        return permissions;
     }
 
     public void setPermissions(Collection<Permission> permissions) {
