@@ -10,6 +10,7 @@ import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.PostRepository;
 import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.request.ClubEditionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +78,37 @@ public class ClubController {
         subclubRepository.deleteAll(scs);
         /*Delete the club*/
         clubRepository.delete(c);
+        return "redirect:/admin";
+    }
+
+    @RequestMapping(value="/clubs/{clubID}/edit", method = RequestMethod.GET)
+    public ModelAndView getEditClub(@PathVariable String clubID, Model model) {
+        Long id = Long.parseLong(clubID);
+        Club club = clubRepository.findByID(id);
+
+        if(club == null) {
+            return new ModelAndView("error");
+        }
+
+        ClubEditionRequest cer = new ClubEditionRequest();
+        cer.setId(clubID);
+        model.addAttribute("club", club);
+        model.addAttribute("cer", cer);
+        return new ModelAndView("edit_club");
+    }
+
+    @PostMapping("/process_edit_club")
+    public String processEditClub(ClubEditionRequest cer) {
+        Club club = clubRepository.findByID(Long.parseLong(cer.getId()));
+
+        /* If same club name already exists throw an error*/
+        if(clubRepository.findByTitle(cer.getTitle()) != null)
+            return "redirect:/error";
+
+        club.setTitle(cer.getTitle());
+
+        clubRepository.save(club);
+
         return "redirect:/admin";
     }
 }
