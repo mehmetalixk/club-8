@@ -7,6 +7,7 @@ import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
+import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.SubclubCreationRequest;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class HomeController {
     public ModelAndView index(Model model) {
         List<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
-
         return new ModelAndView("home");
     }
 

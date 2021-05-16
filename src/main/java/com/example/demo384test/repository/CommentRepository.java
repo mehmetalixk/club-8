@@ -23,4 +23,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comments c JOIN posts p ON c.post_id = p.id JOIN members m ON c.member_id = m.id WHERE p.title = ?1 AND m.username = ?2", nativeQuery = true)
     ArrayList<Comment> findAllByPostTitleAndMember(String postTitle, String memberUsername);
 
+    // get all comments of a post using post id
+    @Query(value = "SELECT * FROM comments c JOIN posts p ON c.post_id = p.id WHERE p.id = ?1", nativeQuery = true)
+    ArrayList<Comment> findByPostID(Long postID);
+
 }

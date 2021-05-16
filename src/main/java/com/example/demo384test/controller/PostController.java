@@ -5,10 +5,8 @@ import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Club.Subclub;
-import com.example.demo384test.repository.ClubRepository;
-import com.example.demo384test.repository.MemberRepository;
-import com.example.demo384test.repository.PostRepository;
-import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.repository.*;
+import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.PostCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +25,9 @@ public class PostController {
     private MemberRepository memberRepository;
     @Autowired
     private ClubRepository clubRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+
 
     @GetMapping(path="/posts/all")
     public @ResponseBody Iterable<Post> getAllPosts() {
@@ -48,6 +49,24 @@ public class PostController {
         model.addAttribute("clubList", clubRepository.findAllTitles());
         return new ModelAndView("post");
     }
+
+    @GetMapping("/posts/{id}")
+    public ModelAndView getPostPage(@PathVariable String id, Model model) {
+        Long idLong = Long.parseLong(id);
+        Post p = postRepository.findByid(idLong);
+
+        if(p == null) {
+            return new ModelAndView("error");
+        }
+        CommentCreationRequest ccr = new CommentCreationRequest();
+        ccr.setId(id);
+
+        model.addAttribute("ccr",  ccr);
+        model.addAttribute("comments", commentRepository.findByPostID(idLong));
+        model.addAttribute("post", p);
+        return new ModelAndView("post_page");
+    }
+
 
     @PostMapping("/process_add_post")
     public ModelAndView processAddPost(PostCreationRequest pcr) {
