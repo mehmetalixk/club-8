@@ -37,7 +37,7 @@
                        class="btn btn-outline-light">Login</a>
                     <a sec:authorize="!isAuthenticated()" th:href="@{/register}" type="button"
                        class="btn btn-outline-warning">Register</a>
-                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin_panel.html}" type="button"
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" type="button"
                     class="btn btn-outline-light">Admin Panel</a>
                     <a sec:authorize="isAuthenticated()" th:href="@{/logout}" type="button"
                        class="btn btn-outline-light">Logout</a>

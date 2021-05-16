@@ -40,7 +40,15 @@ public class CustomMemberDetailsService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new CustomMemberDetails(member);
+
+        boolean enabled = true;
+        boolean accountNonExpired = true;
+        boolean credentialsNonExpired = true;
+        boolean accountNonLocked = true;
+
+        return new org.springframework.security.core.userdetails.User(
+                member.getUsername(), member.getPassword(), enabled, accountNonExpired,
+                credentialsNonExpired, accountNonLocked, getAuthorities(member.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(

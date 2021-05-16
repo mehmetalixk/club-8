@@ -21,4 +21,6 @@ public interface SubclubRepository extends JpaRepository<Subclub, Long> {
     @Query(value = "SELECT * FROM subclubs sc LEFT JOIN clubs c ON sc.club_id = c.id WHERE sc.title = ?1 AND c.title =?2", nativeQuery = true)
     Subclub findByClubTitle(String title, String clubTitle);
 
+    @Query(value = "SELECT * FROM subclubs WHERE id = ?1", nativeQuery = true)
+    Subclub findByID(Long id);
 }
