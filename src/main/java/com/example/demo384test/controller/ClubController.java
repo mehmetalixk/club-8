@@ -1,10 +1,13 @@
 package com.example.demo384test.controller;
 
 
+import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.ClubRepository;
+import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.PostRepository;
 import com.example.demo384test.repository.SubclubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class ClubController {
     private SubclubRepository subclubRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @RequestMapping(value="/clubs/{title}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model) {
@@ -36,7 +41,17 @@ public class ClubController {
         model.addAttribute("club", clubRepository.findByTitle(title));
         model.addAttribute("subclub", subclubRepository.findByClubTitle(subclub, title).getTitle());
         model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub, title));
-        return new ModelAndView("subclub");
+
+        String username = Util.getCurrentUsername();
+        Member currentUser = memberRepository.findByUsername(username);
+        Subclub currentSubclub = subclubRepository.findByClubTitle(subclub, title);
+        boolean isMember = currentSubclub.getMembers().contains(currentUser);
+
+        if(isMember)
+            return new ModelAndView("subclub");
+        else
+            return new ModelAndView("error");
+
     }
 
     @GetMapping(value="/clubs/all")
