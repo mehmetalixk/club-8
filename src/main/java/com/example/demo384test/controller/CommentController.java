@@ -1,5 +1,6 @@
 package com.example.demo384test.controller;
 
+import com.example.demo384test.config.Util;
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Comment;
@@ -10,6 +11,7 @@ import com.example.demo384test.repository.PostRepository;
 import com.example.demo384test.request.CommentCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ public class CommentController {
     @Autowired
     private PostRepository postRepository;
 
+
     @GetMapping(path="/comments/all")
     public @ResponseBody Iterable<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -37,8 +40,8 @@ public class CommentController {
         comment.setContent(ccr.getContent());
 
         // Get logged member
-        CustomMemberDetails principal = (CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member m = memberRepository.findByUsername(principal.getUsername());
+        String currentUsername = Util.getCurrentUsername();
+        Member m = memberRepository.findByUsername(currentUsername);
         comment.setMember(m);
 
         Post p = postRepository.findByid(Long.parseLong(ccr.getId()));
@@ -47,4 +50,6 @@ public class CommentController {
 
         return "redirect:/posts/" + ccr.getId();
     }
+
+
 }

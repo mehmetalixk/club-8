@@ -71,13 +71,6 @@ public class HomeController {
 
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model){
-        CustomMemberDetails principal =
-                (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
-            if(!isAllowed)
-                return null;
-        }
 
         List<Member> listMembers = memberRepository.findAll();
         List<Subclub> listSubclubs = subclubRepository.findAll();
@@ -117,10 +110,7 @@ public class HomeController {
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
 
-        System.out.println(roleRepository.findAll());
-
-        Role memberRole = roleRepository.findByName("ROLE_USER");
-        member.setRoles(Arrays.asList(memberRole));
+        member.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }

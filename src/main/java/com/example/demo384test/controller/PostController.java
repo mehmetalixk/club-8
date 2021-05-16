@@ -1,8 +1,10 @@
 package com.example.demo384test.controller;
 
 
+import com.example.demo384test.config.Util;
 import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.repository.*;
@@ -10,6 +12,7 @@ import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.PostCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,14 +39,6 @@ public class PostController {
 
     @GetMapping("/post")
     public ModelAndView post(Model model) {
-        // check permissions
-        CustomMemberDetails principal = (CustomMemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN") || principal.hasPermission("ROLE_USER");
-            if(!isAllowed)
-                return null;
-        }
-
         model.addAttribute("pcr", new PostCreationRequest());
         model.addAttribute("subclubList", subclubRepository.findAllTitles());
         model.addAttribute("clubList", clubRepository.findAllTitles());
@@ -78,17 +73,36 @@ public class PostController {
         post.setTitle(pcr.getTitle());
 
         // Get logged member
-        CustomMemberDetails principal = (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member m = memberRepository.findByUsername(principal.getUsername());
-        post.setMember(m);
+        String currentUsername = Util.getCurrentUsername();
+        Member m = memberRepository.findByUsername(currentUsername);
 
         // Get subclub
         Subclub sc = subclubRepository.findByClubTitle(pcr.getSubclubTitle(), pcr.getClubTitle());
-        post.setSubclub(sc);
 
-        // CREATE a new post in post repository
-        postRepository.save(post);
+        boolean isMember = checkRole(sc, m);
 
-        return new ModelAndView("success");
+        if(isMember){
+            post.setMember(m);
+            post.setSubclub(sc);
+
+            // CREATE a new post in post repository
+            postRepository.save(post);
+            return new ModelAndView("success");
+        }else{
+            return new ModelAndView("error");
+        }
+    }
+
+    public boolean checkRole(Subclub sc, Member m){
+        try {
+            for (Role role : m.getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    return true;
+                }
+            }
+        }catch (NullPointerException e){
+            return sc.getMembers().contains(m);
+        }
+        return sc.getMembers().contains(m);
     }
 }

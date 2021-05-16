@@ -13,11 +13,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+
+@Service("userDetailsService")
+@Transactional
 public class CustomMemberDetailsService implements UserDetailsService {
 
     @Autowired
@@ -31,26 +36,30 @@ public class CustomMemberDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);
         Member member = memberRepository.findByUsername(username);
-        System.out.println(member);
         if (member == null) {
             throw new UsernameNotFoundException("User not found");
         }
         return new CustomMemberDetails(member);
     }
 
-    private List<String> getPrivileges(Collection<Role> roles) {
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Collection<Role> roles) {
 
-        List<String> privileges = new ArrayList<>();
+        return getGrantedAuthorities(getPermissions(roles));
+    }
+
+    private List<String> getPermissions(Collection<Role> roles) {
+
+        List<String> permissions = new ArrayList<>();
         List<Permission> collection = new ArrayList<>();
         for (Role role : roles) {
             collection.addAll(role.getPermissions());
         }
         for (Permission item : collection) {
-            privileges.add(item.getName());
+            permissions.add(item.getName());
         }
-        return privileges;
+        return permissions;
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
