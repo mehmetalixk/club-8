@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../static/css/bootstrap.css"/>
+<script type="text/javascript" src="../static/js/admin.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
+<style>
+		h4, a {
+		color: black!important;
+	}
+	body {
+		
+    background: #212529;
+    background: -webkit-linear-gradient(to right, #212529, #323E4E);
+    background: linear-gradient(to right, #212529, #323E4E);
+    min-height: 100vh;
+}
+	li {
+		margin-top: 20px;
+	}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="username"></title>
+</head>
+<body>
+<header><div th:replace="fragments/navbar :: header"></div></header>
+
+	
+	<div class="container">
+<div class="row flex-lg-nowrap" style="padding: 5%;">
+
+
+  <div class="col ">
+    <div class="row">
+      <div class="col mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="e-profile">
+              <div class="row">
+                <div class="col-12 col-sm-auto mb-3">
+                  <div class="mx-auto" style="width: 140px;">
+                    <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+                      <img src="../static/icons/avatar.png" alt="..." style="width: 100%;"/>
+                    </div>
+                  </div>
+                </div>
+				  
+                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                  <div class="text-center text-sm-left mb-2 mb-sm-0">
+                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">Username</h4>
+                    <a href="profile" class="mb-0">@johnny.s</a>
+                    <div class="mt-2">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fa fa-fw fa-camera"></i>
+                        <span>Change Photo</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="text-center text-sm-right">
+                    <span class="badge badge-secondary">ROLE</span>
+                    <div class="text-muted"><small>Joined 09 Dec 2017</small></div>
+                  </div>
+                </div>
+              </div>
+              <ul class="nav nav-tabs">
+                <li class="nav-item"><a href="" class="active nav-link">Edit Profile</a></li>
+              </ul>
+              <div class="tab-content pt-3">
+                <div class="tab-pane active">
+                  <form class="form" novalidate="">
+                    <div class="row">
+                      <div class="col">
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Name</label>
+                              <input class="form-control" type="text" name="name" placeholder="Name" th:value="Name">
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Surname</label>
+                              <input class="form-control" type="text" name="Surname" placeholder="Surname" th:value="Surname">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Email</label>
+                              <input class="form-control" type="text" placeholder="user@example.com" th:value="Name">
+                            </div>
+                          </div>
+							<div class="col col-lg-4">
+                            <div class="form-group">
+                              <label>Birth Date</label>
+                              <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                            </div>
+                          </div>
+                        
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-sm-6 mb-3">
+                        <div class="mb-2"><b>Change Password</b></div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Current Password</label>
+                              <input class="form-control" type="password" placeholder="••••••">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>New Password</label>
+                              <input class="form-control" type="password" placeholder="••••••">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                              <input class="form-control" type="password" placeholder="••••••"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                        <div class="mb-2"><b>Subclubs</b></div>
+                        <div class="row">
+                          <div class="col">
+                            
+                            <div class="custom-controls-stacked px-2">
+                              <ul style="list-style: decimal">
+								  <li><a href="subclub"><img src="../static/icons/club.png" alt="avatar" style="border-radius: 50%!important;width: 32px;">Subclub1</a>
+									  <i href="delete" class="btn fas fa-trash text-black-50"></i></li>
+								  <li><a href="subclub"><img src="icons/club.png" alt="avatar" style="border-radius: 50%!important;width: 32px;">Subclub2</a>
+								  <i href="delete" class="btn fas fa-trash text-black-50"></i></li>
+								  <li><a href="subclub"><img src="icons/club.png" alt="avatar" style="border-radius: 50%!important;width: 32px;">Subclub3</a>
+								  <i href="delete" class="btn fas fa-trash text-black-50"></i></li>
+								  
+								</ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col d-flex justify-content-end">
+                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                      </div>
+                    </div></div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+
+  </div>
+</div>
+</div>
+	
+</body>
+</html>
