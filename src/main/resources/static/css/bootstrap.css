@@ -10941,6 +10941,18 @@ p {
   top: 0;
 }
 
+
+.members {
+  margin-top: 350px;
+  display: inline;
+  position: fixed;
+  border: 1px solid #2F3336;
+  padding: 1%;
+  width: 300px;
+  top: 0;
+}
+
+
 .events {
   display: inline;
   position: fixed;
@@ -11117,6 +11129,3 @@ div.alert-success{
   }
 }
 
-label {
-
-}
