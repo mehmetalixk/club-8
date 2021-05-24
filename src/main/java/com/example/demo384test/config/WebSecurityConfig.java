@@ -1,5 +1,6 @@
 package com.example.demo384test.config;
 
+import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -18,6 +20,9 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Bean
     public CustomMemberDetailsService customMemberDetailsService() {
@@ -40,16 +45,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        /*
-        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("SELECT username,password,'true' FROM members WHERE username = ?")
-        .authoritiesByUsernameQuery("SELECT m.username, r.role FROM roles JOIN members m ON r.member_id = m.id WHERE username = ?");
-        */
-
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("user")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
-
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("SELECT username, password, enabled FROM members WHERE username = ?")
+                .authoritiesByUsernameQuery("SELECT members.username, roles.name " +
+                        "FROM members_roles " +
+                        "INNER JOIN roles ON members_roles.role_id = roles.id " +
+                        "INNER JOIN members ON members_roles.member_id = members.id " +
+                        "WHERE members.id = (SELECT id FROM members WHERE username = ?)")
+                .rolePrefix("ROLE_");
     }
 
     @Override
