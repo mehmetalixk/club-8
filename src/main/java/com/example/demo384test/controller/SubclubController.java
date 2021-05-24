@@ -6,14 +6,19 @@ import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.PostRepository;
 import com.example.demo384test.repository.SubclubRepository;
-import com.example.demo384test.request.ClubEditionRequest;
 import com.example.demo384test.request.SubclubCreationRequest;
 import com.example.demo384test.request.SubclubEditionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 public class SubclubController {
@@ -24,18 +29,35 @@ public class SubclubController {
     @Autowired
     private PostRepository postRepository;
 
-
     @GetMapping(path="/subclubs/all")
     public @ResponseBody Iterable<Subclub> getAllClubs() {
         return subclubRepository.findAll();
     }
 
     @PostMapping("/process_add_subclub")
-    public String processAddSubclub(SubclubCreationRequest scr) {
+    public String processAddSubclub(SubclubCreationRequest scr) throws IOException {
         Club c = clubRepository.findByTitle(scr.getClubTitle());
         Subclub sc = new Subclub();
         sc.setTitle(scr.getTitle());
         sc.setClub(c);
+
+        // get sub club image
+        String folder = "src/main/resources/static/photos/subclubs/";
+        byte[] arr = scr.getSubclubImage().getBytes();
+
+        // Get file extension
+        String extension = "";
+        int i = scr.getSubclubImage().getOriginalFilename().lastIndexOf('.');
+        if (i > 0) extension = scr.getSubclubImage().getOriginalFilename().substring(i+1);
+
+        // set subclub photo path
+        sc.setPhotoPath(folder + scr.getClubTitle() + "_" + scr.getTitle() + "." + extension);
+
+        // Add sub club image to the path
+        Path path = Paths.get(sc.getPhotoPath());
+        Files.write(path, arr);
+
+
         subclubRepository.save(sc);
         clubRepository.save(c);
         return "redirect:/admin";
@@ -84,6 +106,12 @@ public class SubclubController {
         sc.setTitle(scer.getTitle());
 
         subclubRepository.save(sc);
+
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/uploadSubclubImage")
+    public String uploadSubclubImage(@RequestParam("subclubImageFile") MultipartFile mf) throws IOException {
 
         return "redirect:/admin";
     }

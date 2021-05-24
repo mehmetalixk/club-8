@@ -40,10 +40,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        /*
+        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("SELECT username,password,'true' FROM members WHERE username = ?")
+        .authoritiesByUsernameQuery("SELECT m.username, r.role FROM roles JOIN members m ON r.member_id = m.id WHERE username = ?");
+        */
+
         auth.inMemoryAuthentication()
                 .withUser("user").password(passwordEncoder().encode("user")).roles("USER")
                 .and()
                 .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
+
     }
 
     @Override
