@@ -14,7 +14,6 @@ import java.util.Collection;
 @EntityScan
 @Entity(name = "members")
 public class Member {
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +29,8 @@ public class Member {
     private String emailAddress;
     private String gender;
     private Date birthDate;
+    @Column(length = 64)
+    private String photoPath;
     private boolean enabled;
     private boolean tokenExpired;
 
@@ -112,5 +113,13 @@ public class Member {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }

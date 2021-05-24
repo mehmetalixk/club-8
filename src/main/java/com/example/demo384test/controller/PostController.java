@@ -18,6 +18,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Controller
 public class PostController {
     @Autowired
@@ -64,7 +69,7 @@ public class PostController {
 
 
     @PostMapping("/process_add_post")
-    public ModelAndView processAddPost(PostCreationRequest pcr) {
+    public ModelAndView processAddPost(PostCreationRequest pcr) throws IOException {
         // create new post object
         Post post = new Post();
         post.setDate(java.time.LocalDate.now());
@@ -85,8 +90,31 @@ public class PostController {
             post.setMember(m);
             post.setSubclub(sc);
 
+            System.out.println(pcr.getPostImage());
+
+            if(pcr.getPostImage() != null) {
+                // get sub club image
+                String folder = "src/main/resources/static/photos/posts/";
+                String relative = "/photos/posts/";
+                byte[] arr = pcr.getPostImage().getBytes();
+
+                // Get file extension
+                String extension = "";
+                int i = pcr.getPostImage().getOriginalFilename().lastIndexOf('.');
+                if (i > 0) extension = pcr.getPostImage().getOriginalFilename().substring(i+1);
+
+                // set post photo path
+                post.setPhotoPath(relative + pcr.getClubTitle() + "_" + pcr.getSubclubTitle() + "_" + pcr.getTitle() + "." + extension);
+
+                // Add post image to the path
+                Path path = Paths.get(folder + pcr.getClubTitle() + "_" + pcr.getSubclubTitle() + "_" + pcr.getTitle() + "." + extension);
+                Files.write(path, arr);
+            }else {
+                post.setPhotoPath("/icons/img.png");
+            }
             // CREATE a new post in post repository
             postRepository.save(post);
+
             return new ModelAndView("success");
         }else{
             return new ModelAndView("error");

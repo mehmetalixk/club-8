@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-      rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-      crossorigin="anonymous"/>
-<script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/bootstrap.css"/>
+<script type="text/javascript" src="/js/admin.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
 <head th:fragment="header">
     <meta charset="UTF-8">
     <title>
@@ -13,47 +17,98 @@
 </head>
 <body>
 <header><div th:replace="fragments/navbar :: header"></div></header>
-<div class="container" style="margin-left:100px;" >
-    <div th:each="post :${posts}">
-        <br><br>
-        <div class="container" style="border-style: groove;margin: auto;width: 60%;border-radius: 10px">
-        <div class="col-sm-8">
-            <div class="panel panel-white post panel-shadow">
-                <div class="post-heading" >
-                    <div class="pull-left meta">
-                        /<h6 class="text-muted" th:text="${post.getSubclub().getTitle()}"></h6><br>
-                        <h6 class="text-muted time" style="text-align: right" th:text="${post.date}"></h6>
-                        <div class="title h6">
-                            <b th:text="${post.getMember().getUsername()}"></b> has made this post.
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-8">
+            <div th:each="post :${posts}" style="float: left;">
+                <br>
+                <div class="col-9" onclick="location.href='/posts/all';" style="float: left; margin-left: 15%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%">
+
+                    <div class="post-heading" style="margin: 10px 10px -10px">
+                        <div style="display: inline;">
+                            <a style="text-decoration: none" th:href="@{'/clubs/' + ${post.getSubclub().getClub().getTitle()}}"><h6 style="float: left;color:#657786" th:text="'/' + ${post.getSubclub().
+    						getClub().getTitle()}"></h6></a>
+                            <a style="text-decoration: none" th:href="@{'/clubs/' + ${post.getSubclub().getClub().getTitle()} + '/' +
+								 ${post.getSubclub().getTitle()}}"><h6 style="float: left;color:#657786" th:text="'/' +
+								 ${post.getSubclub().getTitle()}"></h6></a>
+                            <h6 style="float: right!important;color:#657786" th:text="${post.getDate()}"></h6>
+                            <p><br /></p>
+                            <a href="#userpage" style="text-decoration: none" >
+                                <img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 48px">
+                                <b style="color: #F5F8FA; vertical-align: 40%;margin-left: 1%;" th:text="${post.getMember().getUsername()}"></b></a>
                         </div>
                     </div>
-                </div>
-                <br><br>
-                <div class="post-description">
-                    <p th:text="${post.getContent()}"></p>
 
-                </div>
-                <div class="post-footer" style="margin-top: 100px">
-                    <div class="input-group">
-                        <input  class="form-control" placeholder="Add a comment" type="text" >
-                        <span class="input-group-addon">
-                        <a href="#" class="btn btn-default stat-item"style="margin-left: 10px">
-                            <i class="fas fa-location-arrow fa-lg"></i></a>
-                    </span>
-                        <div class="stats">
-                            <a href="#" class="btn btn-default stat-item">
-                                <i class="fas fa-thumbs-up fa-2x"></i></a>
-                            <a href="#" class="btn btn-default stat-item">
-                                <i class="fas fa-share fa-2x"></i></a>
-                        </div><br>
+                    <div class="post-description">
+                        <p style="color: rgb(217, 217, 217);padding-left: 11%;max-width: 97%" th:text="${post.getContent()}"></p>
+                        <img th:src="@{${post.getPhotoPath()}}" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
+
                     </div>
+                    <div class="post-footer" style="margin-top: 3%">
+                        <div class="input-group" style="display: inline-block;padding-left: 15%;">
+
+                            <a href="like_post" onClick="fill(this)" class="far fa-heart fa-2x" style="float: left;font-size: 150%"></a>
+                            <a style="float:left;font-size:medium;padding-left: 2%;padding-top: 0.2%;color: #657786;text-decoration: none" >32</a>
+                            <a href="/post" onClick="fill(this)" class="far fa-comment fa-2x" style="float: left;padding-left: 30%;font-size: 150%"></a>
+                            <a href="/post" style="float:left;font-size:medium;padding-left: 2%;padding-top: 0.2%;color: #657786;text-decoration: none">31</a>
+                            <i onClick="fill(this); clip('#postlink');" id="share_ico" class="far fa-share-square fa-2x popup" style="float: left;padding-left: 30%;font-size: 150%">
+                                <span class="popuptext fade" id="clipboard">Copied to Clipboard</span></i>
+                        </div>
+                    </div>
+                    <p style="line-height: 0.05"><br></p>
                 </div>
             </div>
-        </div><br><br>
+        </div>
+        <div class="col-4 col-md-4 " style="">
+            <div class="row d-none d-md-block d-lg-block">
+                <nav class="subclubs">
+                    <h3 style="color:#F5F8FA;text-align: center">SubClubs</h3><hr/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
+                        <img src="icons/club.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
+                        <b style="color: #F5F8FA;margin-left: 10%;">SubClub1</b></a><hr style="color:#AAB8C2"/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
+                        <img src="icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
+                        <b style="color: #F5F8FA;margin-left: 10%;">SubClub2</b></a><hr style="color:#AAB8C2"/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
+                        <img src="icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
+                        <b style="color: #F5F8FA;margin-left: 10%;">SubClub3</b></a><hr style="color:#AAB8C2" />
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="button" style="border-radius: 50px">View All</button></div>
+                </nav></div>
+            <div class="row d-none d-md-block d-lg-block" style="">
+                <nav class="events">
+                    <h3 style="color:#F5F8FA;text-align: center;opacity: 1!important;">Events</h3><hr/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
+                        <img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+                        <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub1</b>
+                        <p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
+                    </i></p>
+                        <i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
+                    </div>
+                        <p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
+                        <img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+                        <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub2</b>
+                        <p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
+                    </i></p>
+                        <i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
+                    </div>
+                        <p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
+                    <a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
+                        <img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+                        <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub3</b>
+                        <p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
+                    </i></p>
+                        <i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
+                    </div>
+                        <p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="button" style="border-radius: 50px">View All</button></div>
+                </nav>
+            </div>
         </div>
     </div>
 </div>
-
 
 </body>
 </html>

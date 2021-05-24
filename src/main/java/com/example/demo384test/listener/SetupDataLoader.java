@@ -160,6 +160,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             post.setTitle(title);
             post.setSubclub(subclub);
             post.setMember(member);
+            post.setPhotoPath("/icons/img.png");
             postRepository.save(post);
         }
         return post;

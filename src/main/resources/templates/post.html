@@ -17,7 +17,7 @@
     <div>
         <br><h2 style="text-align: center">Create Post</h2><br>
     </div>
-    <form th:action="@{/process_add_post}" method="post" th:object="${pcr}">
+    <form th:action="@{/process_add_post}" method="post" th:object="${pcr}" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
                 <label for="title">Title</label>
@@ -42,6 +42,7 @@
                     <textarea class="form-control" id="postArea" rows="8" cols="24" style="width: 70%"
                               th:field="*{content}" required></textarea>
                 </div><br>
+                <input type="file" name="subclubImageFile" th:field="*{postImage}">
                 <div class="row">
                     <button type="submit" class="btn btn-primary"
                                           style="alignment: right;width: 10%">Create Post</button>
