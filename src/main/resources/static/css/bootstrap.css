@@ -11129,3 +11129,7 @@ div.alert-success{
   }
 }
 
+.card:hover {
+  opacity: 0.7;
+}
+
