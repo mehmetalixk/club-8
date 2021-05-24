@@ -53,3 +53,19 @@ function clip(x) {
     setTimeout(popdown, 1000);
 }
 
+$(document).ready(function() {
+    $("#btnfetch").click(function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            spinner(this);
+            setTimeout(() => form.submit(), 1000);
+        });
+    });
+});
+
+function spinner(x){
+    $(x).html(
+        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+    );
+}
