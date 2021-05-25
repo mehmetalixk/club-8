@@ -2,17 +2,13 @@ package com.example.demo384test.controller;
 
 
 import com.example.demo384test.config.Util;
-import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.PostCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,16 +46,16 @@ public class PostController {
         return new ModelAndView("post");
     }
 
-    @GetMapping("/posts/{id}")
-    public ModelAndView getPostPage(@PathVariable String id, Model model) {
-        Long idLong = Long.parseLong(id);
+    @GetMapping("/posts/{postID}")
+    public ModelAndView getPostPage(@PathVariable String postID, Model model) {
+        Long idLong = Long.parseLong(postID);
         Post p = postRepository.findByid(idLong);
 
-        if(p == null) {
+        if(p == null)
             return new ModelAndView("error");
-        }
+
         CommentCreationRequest ccr = new CommentCreationRequest();
-        ccr.setId(id);
+        ccr.setId(postID);
 
         model.addAttribute("ccr",  ccr);
         model.addAttribute("comments", commentRepository.findByPostID(idLong));
@@ -84,7 +80,7 @@ public class PostController {
         // Get subclub
         Subclub sc = subclubRepository.findByClubTitle(pcr.getSubclubTitle(), pcr.getClubTitle());
 
-        boolean isMember = checkRole(sc, m);
+        boolean isMember = Util.checkRole(sc, m);
 
         if(isMember){
             post.setMember(m);
@@ -121,16 +117,5 @@ public class PostController {
         }
     }
 
-    public boolean checkRole(Subclub sc, Member m){
-        try {
-            for (Role role : m.getRoles()) {
-                if (role.getName().equals("ROLE_ADMIN")) {
-                    return true;
-                }
-            }
-        }catch (NullPointerException e){
-            return sc.getMembers().contains(m);
-        }
-        return sc.getMembers().contains(m);
-    }
+
 }

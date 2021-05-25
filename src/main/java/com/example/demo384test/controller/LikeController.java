@@ -26,7 +26,7 @@ public class LikeController {
     @PostMapping("/process_add_like")
     public ModelAndView processAddLike(LikeCreationRequest lcr) {
         /*
-         * Create comments here
+         * Create likes here
          * */
         return new ModelAndView("success");
     }

@@ -1,6 +1,6 @@
 package com.example.demo384test.controller;
 
-import com.example.demo384test.detail.CustomMemberDetails;
+import com.example.demo384test.config.Util;
 import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
@@ -29,7 +29,6 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -43,6 +42,9 @@ public class HomeController {
     @Autowired
     private PostRepository postRepository;
     @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
 
     @GetMapping("/")
@@ -50,6 +52,9 @@ public class HomeController {
         List<Post> posts = postRepository.findAll();
         Collections.reverse(posts);
         model.addAttribute("posts", posts);
+        String username = Util.getCurrentUsername();
+        model.addAttribute("subclubs", subclubRepository.findByMembers_username(username));
+        model.addAttribute("events", eventRepository.findBySubclub_members_username(username));
         return new ModelAndView("home");
     }
 
@@ -75,7 +80,6 @@ public class HomeController {
 
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model) {
-
         List<Member> listMembers = memberRepository.findAll();
         List<Subclub> listSubclubs = subclubRepository.findAll();
         List<Role> listRoles = roleRepository.findAll();
@@ -120,6 +124,6 @@ public class HomeController {
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-        return new ModelAndView("register_success");
+        return new ModelAndView("home");
     }
 }
