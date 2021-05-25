@@ -3,8 +3,10 @@ package com.example.demo384test.repository;
 import com.example.demo384test.model.Club.Subclub;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface SubclubRepository extends JpaRepository<Subclub, Long> {
@@ -23,4 +25,6 @@ public interface SubclubRepository extends JpaRepository<Subclub, Long> {
 
     @Query(value = "SELECT * FROM subclubs WHERE id = ?1", nativeQuery = true)
     Subclub findByID(Long id);
+
+    List<Subclub> findByTitleLike(String title);
 }
