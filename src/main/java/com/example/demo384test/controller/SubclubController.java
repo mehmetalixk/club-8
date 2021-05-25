@@ -3,7 +3,9 @@ package com.example.demo384test.controller;
 
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.repository.ClubRepository;
+import com.example.demo384test.repository.PermissionRepository;
 import com.example.demo384test.repository.PostRepository;
 import com.example.demo384test.repository.SubclubRepository;
 import com.example.demo384test.request.SubclubCreationRequest;
@@ -28,6 +30,8 @@ public class SubclubController {
     private ClubRepository clubRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     @GetMapping(path="/subclubs/all")
     public @ResponseBody Iterable<Subclub> getAllClubs() {
@@ -59,6 +63,13 @@ public class SubclubController {
 
 
         subclubRepository.save(sc);
+
+        // Here, we create subclub related permissions as the subclub is created
+        Permission subClubReadPermission = new Permission("READ_PERMISSION_" + sc.getClub().getTitle() + "_" + sc.getTitle());
+        Permission subClubWritePermission = new Permission("WRITE_PERMISSION_" + sc.getClub().getTitle() + "_" + sc.getTitle());
+        permissionRepository.save(subClubReadPermission);
+        permissionRepository.save(subClubWritePermission);
+
         clubRepository.save(c);
         return "redirect:/admin";
     }

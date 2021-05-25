@@ -112,6 +112,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Like l = createLike(admin, post);
 
+        // Here create a user with test clubs assigned
+        createUserWithClubsIfNotFound();
+
         Event event = new Event();
         event.setContent("We will meet");
         event.setMember(admin);
@@ -301,6 +304,61 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return member;
     }
 
+    @Transactional
+    Member createUserWithClubsIfNotFound(){
+        Member member = memberRepository.findByUsername("Haydar");
+
+        if(member == null) {
+
+            member = new Member();
+            member.setEmailAddress("haydar@haydar.com");
+            member.setUsername("haydar");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode("haydar");
+            member.setPassword(encodedPassword);
+            member.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+            member.setName("Haydar");
+            member.setSurname("Haydar");
+            member.setGender("Male");
+            member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
+
+            member.setEnabled(true);
+
+            Member haydar = memberRepository.save(member);
+            memberRepository.flush();
+
+            // Clubs to add
+
+            Permission permission1 = permissionRepository.findByName("READ_PERMISSION_books_fantastic");
+            Permission permission2 = permissionRepository.findByName("READ_PERMISSION_movies_horror");
+            Permission permission3 = permissionRepository.findByName("READ_PERMISSION_games_horror");
+            Permission permission4 = permissionRepository.findByName("READ_PERMISSION_games_sci-fi");
+
+            Role specificRole = new Role();
+            specificRole.setName(member.getUsername()+"_ROLE");
+            List<Permission> customPermissions = new ArrayList<>();
+            customPermissions.add(permission1);
+            customPermissions.add(permission2);
+            customPermissions.add(permission3);
+            customPermissions.add(permission4);
+            specificRole.setPermissions(customPermissions);
+            roleRepository.save(specificRole);
+            roleRepository.flush();
+
+            Role customRole = roleRepository.findByName(member.getUsername()+"_ROLE");
+
+            Member savedMember = memberRepository.findByUsername("haydar");
+
+            List<Role> customRoleList = new ArrayList();
+            customRoleList.add(customRole);
+            savedMember.setRoles(customRoleList);
+            memberRepository.save(savedMember);
+            memberRepository.flush();
+        }
+
+        return member;
+    }
+
     /*
      * Create initial clubs while initializing the project for the very first time
      * */
@@ -339,6 +397,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             subclub.setTitle(title);
             subclub.setClub(club);
             subclubRepository.save(subclub);
+
+            Permission subClubReadPermission = new Permission("READ_PERMISSION_" + clubTitle + "_" + title);
+            Permission subClubWritePermission = new Permission("WRITE_PERMISSION_" + clubTitle + "_" + title);
+            permissionRepository.save(subClubReadPermission);
+            permissionRepository.save(subClubWritePermission);
+            permissionRepository.flush();
         }
 
         return subclub;
