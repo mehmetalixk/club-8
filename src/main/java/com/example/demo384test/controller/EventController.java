@@ -1,8 +1,6 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.config.Util;
-import com.example.demo384test.model.Club.Subclub;
-import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Event;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.EventRepository;
