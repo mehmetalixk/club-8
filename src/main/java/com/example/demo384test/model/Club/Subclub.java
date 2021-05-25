@@ -25,7 +25,6 @@ public class Subclub {
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
     private Set<Member> members = new HashSet<>();
 
-
     public Long getId() {
         return id;
     }
