@@ -51,8 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "FROM members_roles " +
                         "INNER JOIN roles ON members_roles.role_id = roles.id " +
                         "INNER JOIN members ON members_roles.member_id = members.id " +
-                        "WHERE members.id = (SELECT id FROM members WHERE username = ?)")
-                .rolePrefix("ROLE_");
+                        "WHERE members.id = (SELECT id FROM members WHERE username = ?)");
     }
 
     @Override
