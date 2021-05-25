@@ -65,7 +65,7 @@
 		</div></div>
     <div th:each="post :${posts}" style="float: left;">
         <br>
-        <div class="col-9" onclick="location.href='/posts/all';" style="float: left; margin-left: 15%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%">
+        <div class="col-11" onclick="location.href='/posts/all';" style="float: left; margin-left: 5%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%">
             
                 <div class="post-heading" style="margin: 10px 10px -10px">
                         <div style="display: inline;">
@@ -82,9 +82,9 @@
 					</div>
                 </div>
               
-                <div class="post-description" style="overflow-wrap: break-word;">
-                    <p style="margin-top: 10px;color: rgb(217, 217, 217);margin-left: 50px;max-width: 97%" th:text="${post.getContent()}">Contentsdkjbfshjfbdsjhfdhsjfdshjfdhjsvfdhjsvfjhssdkhjfvdsjkfvsdkhjfvdsf</p>
-					<img src="../static/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
+                <div class="post-description el" style="overflow-wrap: break-word;">
+                    <p style="margin-top: 10px;color: rgb(217, 217, 217);margin-left: 60px;max-width: 97%;margin-right: 20px;text-align: left;" th:text="${post.getContent()}">Contentsdkjbfshjfbdsjhfdhsjfdshjfdhjsvfdhjsvfjhssdkhjfvdsjkfvsdkhjfvdsf</p>
+					<img src="../static/icons/img.jpg" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%;margin-right: 20px"/>
 
                 </div>
                 <div class="post-footer" style="margin-top: 3%">
