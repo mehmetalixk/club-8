@@ -29,8 +29,10 @@
 	
 <div class="row" style="height: 100px;background-color: #323E4E;text-align: center">
 	<h2 style="margin: auto;">
-	<img src="../static/icons/club.png" style="width: 90px;height: 60px;border-radius: 500%;margin: auto;"/>&nbsp;&nbsp;
-	SubClub1</h2>
+	<img src="../static/icons/club.png" style="float:  ;width: 90px;height: 60px;border-radius: 500%;margin: auto;"/>&nbsp;&nbsp;
+	SubClub1
+	<button th:sec="!admin" class="btn btn-outline-warning" type="button" style="margin-left: 100px;width: auto;border-radius: 50px">Join</button>
+	<button th:sec="admin" class="btn btn-warning" type="button" style="margin-left: 100px;width: auto;border-radius: 50px">Create an Event</button></h2>
 	</div>
 <div class="container">
 	<div class="col-12 col-md-3 " style="float: left">
@@ -80,8 +82,8 @@
 					</div>
                 </div>
               
-                <div class="post-description">
-                    <p style="color: rgb(217, 217, 217);padding-left: 11%;max-width: 97%" th:text="${post.getContent()}">Content</p>
+                <div class="post-description" style="overflow-wrap: break-word;">
+                    <p style="margin-top: 10px;color: rgb(217, 217, 217);margin-left: 50px;max-width: 97%" th:text="${post.getContent()}">Contentsdkjbfshjfbdsjhfdhsjfdshjfdhjsvfdhjsvfjhssdkhjfvdsjkfvsdkhjfvdsf</p>
 					<img src="../static/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
 
                 </div>
@@ -98,6 +100,9 @@
                 </div>
             <p style="line-height: 0.05"><br></p>
         </div>
+		
+		
+		
     </div>
 	</div>
 			<div class="col-4 col-md-4 " style="">
@@ -131,6 +136,7 @@
 				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
 			<div class="d-grid gap-2">
   			<button class="btn btn-primary" type="button" style="border-radius: 50px">View All</button></div>
+		
 		</nav>
 			</div>
 		</div>

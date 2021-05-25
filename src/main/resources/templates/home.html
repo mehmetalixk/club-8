@@ -5,8 +5,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/css/bootstrap.css"/>
-<script type="text/javascript" src="/js/admin.js"></script>
+<link rel="stylesheet" href="../static/css/bootstrap.css"/>
+<script type="text/javascript" src="../static/js/admin.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 <script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
 <head th:fragment="header">
@@ -20,7 +20,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-12 col-md-8">
-    <div th:each="post :${posts}" style="float: left;">
+    <div th:each="post :${posts}" style="">
         <br>
         <div class="col-9" onclick="location.href='/posts/all';" style="float: left; margin-left: 15%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%">
             
@@ -30,18 +30,18 @@
     						getClub().getTitle()}"></h6></a>
 								<a style="text-decoration: none" th:href="@{'/clubs/' + ${post.getSubclub().getClub().getTitle()} + '/' +
 								 ${post.getSubclub().getTitle()}}"><h6 style="float: left;color:#657786" th:text="'/' +
-								 ${post.getSubclub().getTitle()}"></h6></a>
-    						<h6 style="float: right!important;color:#657786" th:text="${post.getDate()}"></h6>
+								 ${post.getSubclub().getTitle()}">subclub</h6></a>
+    						<h6 style="float: right!important;color:#657786" th:text="${post.getDate()}">01/02</h6>
 							<p><br /></p>
 						<a href="#userpage" style="text-decoration: none" >
-							<img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 48px">
-                            <b style="color: #F5F8FA; vertical-align: 40%;margin-left: 1%;" th:text="${post.getMember().getUsername()}"></b></a>
+							<img src="../static/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 48px">
+                            <b style="color: #F5F8FA; vertical-align: 40%;margin-left: 1%;" th:text="${post.getMember().getUsername()}">User</b></a>
 					</div>
                 </div>
               
-                <div class="post-description">
-                    <p style="color: rgb(217, 217, 217);padding-left: 11%;max-width: 97%" th:text="${post.getContent()}"></p>
-					<img src="/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
+                <div class="post-description" style="overflow-wrap: break-word;">
+                    <p style="margin-top: 10px;color: rgb(217, 217, 217);margin-left: 50px;max-width: 97%" th:text="${post.getContent()}">Contentsdkjbfshjfbdsjhfdhsjfdshjfdhjsvfdhjsvfjhssdkhjfvdsjkfvsdkhjfvdsf</p>
+					<img src="/static/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
 
                 </div>
                 <div class="post-footer" style="margin-top: 3%">
