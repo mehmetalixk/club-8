@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../static/css/bootstrap.css"/>
+<script type="text/javascript" src="../static/js/admin.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
+	<style>
+	label {
+		color:white;
+		}</style>
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <title>
+        Club-8
+    </title>
+</head>
+<body>
+<header><div th:replace="fragments/navbar :: header"></div></header>
+	<div class="row">
+	<div th:each="post :${posts}" style="">
+        <br>
+        <div class="col-9" style="float: left; margin-left: 15%;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%;">
+            
+                <div class="post-heading" style="margin: 10px 10px -10px;">
+                        <div style="display: inline;">
+							<p style="overflow-wrap: break-word;text-decoration: none"><b style="text-decoration: none">1.Questiondjfnskjfdskjfdskjbjshdfbhjsdbfhjksdabfhjkabjhkfabshjkfasdbfdlasjbfajshkfbdsajbfdkasjhdbfhkjafbadksjhfbdakjsbfkhsjdaasdfbakdjshfbkajsdbfhkjsabfkjasbfkhjadsbfkhjdabhkjdfbashkjfbhakjfkajdsbfdhjkasbk</b></p>
+					</div>
+                </div>
+                <div class="post-footer" style="margin-top: 3%">
+                    <div class="input-group" style="display: inline-block;padding-left: 15%;">
+						<div class="form-group" style="margin-top: 20px;">
+							<div th:each="{option}">
+								<div class="form-check form-check-inline" style="margin-right: 20px">
+								  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+								  <label class="form-check-label" for="inlineRadio1">Option 1</label>
+								</div>
+						</div>
+                    </div>
+                </div>
+            <p style="line-height: 0.05"><br></p>
+        </div>
+    </div>
+	</div>
+	</div>
+	<div class="row" style="margin-top: 50px;">
+		<a href="homepage" class="btn btn-outline-warning" style="width: 10%;margin-right: 50px;margin-left: 40%">Back to Homepage</a>
+        <button class="btn btn-lg btn-primary" id="btnfetch" type="submit" style="width: 20%;">Submit</button>
+	</div>
+</body>
+</html>

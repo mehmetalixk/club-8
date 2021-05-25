@@ -11188,3 +11188,8 @@ div.alert-success{
   to {
     height: 350px;}
 }
+
+.form-check-label:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
