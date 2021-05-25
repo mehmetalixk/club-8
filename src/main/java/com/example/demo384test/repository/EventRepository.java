@@ -18,4 +18,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Collection<Event> findBySubclub_members_username(String username);
 
+    @Query(value = "SELECT * FROM events WHERE id =?1", nativeQuery = true)
+    Event findByID(Long id);
 }

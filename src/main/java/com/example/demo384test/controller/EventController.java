@@ -1,6 +1,8 @@
 package com.example.demo384test.controller;
 
 import com.example.demo384test.config.Util;
+import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Event;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.EventRepository;
@@ -10,8 +12,7 @@ import com.example.demo384test.request.EventCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -25,6 +26,20 @@ public class EventController {
     private EventRepository eventRepository;
     @Autowired
     private MemberRepository memberRepository;
+
+    @RequestMapping(value="/events/{eventID}", method = RequestMethod.GET)
+    public ModelAndView getClubPage (@PathVariable String eventID, Model model) {
+        Long id = Long.parseLong(eventID);
+
+        Event event = eventRepository.findByID(id);
+
+        if(event == null)
+            return new ModelAndView("error");
+
+        model.addAttribute("event", event);
+        return new ModelAndView("show_event");
+    }
+
 
     @GetMapping("/create/event")
     public ModelAndView createEvent(Model model) {
