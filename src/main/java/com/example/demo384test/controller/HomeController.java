@@ -4,6 +4,7 @@ import com.example.demo384test.detail.CustomMemberDetails;
 import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
@@ -33,6 +34,8 @@ public class HomeController {
     private MemberRepository memberRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PermissionRepository permissionRepository;
     @Autowired
     private ClubRepository clubRepository;
     @Autowired
@@ -77,9 +80,11 @@ public class HomeController {
         List<Subclub> listSubclubs = subclubRepository.findAll();
         List<Role> listRoles = roleRepository.findAll();
         List<Club> listClubs = clubRepository.findAll();
+        List<Permission> listPermissions = permissionRepository.findAll();
 
         model.addAttribute("listMembers", listMembers);
         model.addAttribute("listRoles", listRoles);
+        model.addAttribute("listPermission", listPermissions);
         model.addAttribute("listSubclubs", listSubclubs);
         model.addAttribute("listClubs", listClubs);
 
