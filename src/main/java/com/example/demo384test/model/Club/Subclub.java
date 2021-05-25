@@ -15,6 +15,7 @@ public class Subclub {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String title;
+    private String photoPath;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Club.class)
     @JoinColumn(name = "club_id", referencedColumnName = "id", nullable=false)
@@ -63,5 +64,13 @@ public class Subclub {
 
     public void removeMemberFromSubclub(Member member) {
         this.members.remove(member);
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoName) {
+        this.photoPath = photoName;
     }
 }

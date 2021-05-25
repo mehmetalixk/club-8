@@ -1,11 +1,14 @@
 package com.example.demo384test.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class PostCreationRequest {
 
     private String clubTitle;
     private String subclubTitle;
     private String title;
     private String content;
+    private MultipartFile postImage;
 
     public String getClubTitle() {
         return clubTitle;
@@ -37,5 +40,13 @@ public class PostCreationRequest {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public MultipartFile getPostImage() {
+        return postImage;
+    }
+
+    public void setPostImage(MultipartFile postImage) {
+        this.postImage = postImage;
     }
 }

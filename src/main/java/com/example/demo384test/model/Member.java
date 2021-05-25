@@ -4,7 +4,6 @@ import com.example.demo384test.model.Security.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
@@ -15,7 +14,6 @@ import java.util.Collection;
 @EntityScan
 @Entity(name = "members")
 public class Member {
-    @javax.persistence.Id
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +29,10 @@ public class Member {
     private String emailAddress;
     private String gender;
     private Date birthDate;
+    @Column(length = 64)
+    private String photoPath;
+    private boolean enabled;
+    private boolean tokenExpired;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -111,5 +113,13 @@ public class Member {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }

@@ -1,21 +1,29 @@
 package com.example.demo384test.model.Security;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "permissions")
 public class Permission {
 
-    @javax.persistence.Id
-    @org.springframework.data.annotation.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     // Ex: READ,WRITE,UPDATE
     private String name;
+
+    @ManyToMany(mappedBy = "permissions")
+    private Collection<Role> roles;
+
+    public Permission(String name) {
+        this.name = name;
+    }
+
+    public Permission() {
+
+    }
 
     public Long getId() {
         return id;

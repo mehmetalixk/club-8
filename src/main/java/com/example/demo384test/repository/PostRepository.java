@@ -17,5 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "Select * from posts p left join subclubs sc on p.subclub_id = sc.id where sc.title =?1 AND p.title = ?2", nativeQuery = true)
     Post findBySubclubTitleAndTitle(String subclubTitle, String title);
 
+    @Query(value = "SELECT * FROM posts WHERE ID = ?1", nativeQuery = true)
+    Post findByid(Long id);
+
 
 }

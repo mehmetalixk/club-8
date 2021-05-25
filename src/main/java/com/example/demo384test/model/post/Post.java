@@ -21,6 +21,8 @@ public class Post {
     private String content;
     @Column(nullable = false)
     private String title;
+    @Column
+    private String photoPath;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = Member.class)
     @JoinColumn(name = "member_id", referencedColumnName = "id", nullable=false)
@@ -86,4 +88,11 @@ public class Post {
         this.subclub = subclub;
     }
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
 }

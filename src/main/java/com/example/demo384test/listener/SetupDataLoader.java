@@ -67,6 +67,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
 
+        Member admin = createAdminIfNotFound();
+
         createClubIfNotFound("books");
         createClubIfNotFound("movies");
         createClubIfNotFound("sports");
@@ -94,8 +96,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createSubclubIfNotFound("fps", "games");
         createSubclubIfNotFound("horror", "games");
         createSubclubIfNotFound("sci-fi", "games");
-
-        Member admin = createAdminIfNotFound();
 
         horror_books.addMemberToSubclub(admin);
 
@@ -160,6 +160,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             post.setTitle(title);
             post.setSubclub(subclub);
             post.setMember(member);
+            post.setPhotoPath("/icons/img.png");
             postRepository.save(post);
         }
         return post;
@@ -173,8 +174,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Permission permission = permissionRepository.findByName(name);
         if (permission == null) {
-            permission = new Permission();
-            permission.setName(name);
+            permission = new Permission(name);
             permissionRepository.save(permission);
         }
         return permission;
@@ -218,6 +218,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
 
             member.setRoles(Arrays.asList(adminRole));
+
+            member.setEnabled(true);
 
             memberRepository.save(member);
         }

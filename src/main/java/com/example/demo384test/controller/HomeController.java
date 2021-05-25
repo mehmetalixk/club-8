@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -44,20 +45,20 @@ public class HomeController {
     @GetMapping("/")
     public ModelAndView index(Model model) {
         List<Post> posts = postRepository.findAll();
+        Collections.reverse(posts);
         model.addAttribute("posts", posts);
-
         return new ModelAndView("home");
     }
 
     @GetMapping("/login")
-    public ModelAndView showLoginForm (Model model) {
+    public ModelAndView showLoginForm(Model model) {
         return new ModelAndView("login");
     }
 
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return new ModelAndView("logout_success");
@@ -70,14 +71,7 @@ public class HomeController {
     }
 
     @GetMapping("/admin")
-    public ModelAndView adminPanel(Model model){
-        CustomMemberDetails principal =
-                (CustomMemberDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal != null) {
-            boolean isAllowed = principal.hasPermission("ROLE_ADMIN");
-            if(!isAllowed)
-                return null;
-        }
+    public ModelAndView adminPanel(Model model) {
 
         List<Member> listMembers = memberRepository.findAll();
         List<Subclub> listSubclubs = subclubRepository.findAll();
@@ -104,9 +98,9 @@ public class HomeController {
         String emailAddress = request.getParameter("emailAddress");
         String message = "";
 
-        try{
+        try {
             message = customMemberDetailsService.checkDuplicate(username, emailAddress);
-        }catch(UsernameNotFoundException ex){
+        } catch (UsernameNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
             return new ModelAndView("signup_form");
         }
@@ -117,10 +111,9 @@ public class HomeController {
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
 
-        System.out.println(roleRepository.findAll());
-
-        Role memberRole = roleRepository.findByName("ROLE_USER");
-        member.setRoles(Arrays.asList(memberRole));
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        member.setRoles(Arrays.asList(userRole));
+        member.setEnabled(true);
         memberRepository.save(member);
         return new ModelAndView("register_success");
     }

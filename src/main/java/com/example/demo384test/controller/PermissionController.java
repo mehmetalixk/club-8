@@ -16,8 +16,7 @@ public class PermissionController {
     @PostMapping(path="/permissions/add")
     public @ResponseBody
     String addNewPermission (@RequestParam String name) {
-        Permission n = new Permission();
-        n.setName(name);
+        Permission n = new Permission(name);
         permissionRepository.save(n);
         return "Saved";
     }
