@@ -24,6 +24,9 @@
         <a type="button" onclick="display_admin('list_roles_id')"
            class="btn btn-outline-dark">List Roles</a>
 
+        <a type="button" onclick="display_admin('list_permissions_id')"
+           class="btn btn-outline-dark">List Permissions</a>
+
         <a type="button" onclick="display_admin('add_club_id')"
            class="btn btn-outline-dark">Add Club</a>
         <a type="button" onclick="display_admin('list_clubs_id')"
@@ -96,6 +99,31 @@
                 <tr th:each="role: ${listRoles}">
                     <td th:text="${role.id}"></td>
                     <td th:text="${role.name}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="list_permissions_id" style="display:none;" >
+    <div class="container text-center" style="margin: 100px">
+        <div>
+            <h1>List of Permissions</h1>
+        </div>
+
+        <div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr >
+                    <th style="width: 5%">Permission ID</th>
+                    <th style="width: 20%">Permission</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="permission: ${listPermission}">
+                    <td th:text="${permission.id}"></td>
+                    <td th:text="${permission.name}"></td>
                 </tr>
                 </tbody>
             </table>
