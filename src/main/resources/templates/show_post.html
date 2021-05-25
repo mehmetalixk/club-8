@@ -30,9 +30,9 @@
 <body>
 <header><div th:replace="fragments/navbar :: header"></div></header>
 
-	<div class="container fader" style="padding: 5%">
+	<div class="container fader" style="padding: 5%;">
 		<div class="row">
-	<div class="col-9" onclick="location.href='/posts/all';" style="float: left; margin-left: 15%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%;background-color: #16161D">
+	<div class="col-9" onclick="location.href='/posts/all';" style="float: left; margin-left: 15%; cursor: pointer;border: solid ;border-width: 1px;border-color: #2F3336;padding-top: 1%;padding-left: 1%;padding-right: 1%;background-color: #16161D;">
                 <div class="post-heading" style="margin: 10px 10px -10px">
                         <div style="display: inline;">
     						<a style="text-decoration: none" th:href="@{'/clubs/' + ${post.getSubclub().getClub().getTitle()}}"><h6 style="float: left;color:#657786" th:text="'/' + ${post.getSubclub().
@@ -43,17 +43,17 @@
     						<h6 style="float: right!important;color:#657786" th:text="${post.getDate()}">01/02</h6>
 							<p><br /></p>
 						<a href="#userpage" style="text-decoration: none" >
-							<img src="../static/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 48px">
-                            <b style="color: #F5F8FA; vertical-align: 40%;margin-left: 1%;" th:text="${post.getMember().getUsername()}">User</b></a>
+							<img src="../static/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 64px">
+                            <b style="color: #F5F8FA; vertical-align: 20%;margin-left: 2%;font-size: 20pt" th:text="${post.getMember().getUsername()}">User</b></a>
 					</div>
                 </div>
               
-                <div class="post-description">
-                    <p style="color: rgb(217, 217, 217);padding-top: 30px;padding-left: 11%;max-width: 97%" th:text="${post.getContent()}">Content</p>
-					<img src="../static/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%"/>
-
-                </div>
-                <div class="post-footer" style="margin-top: 3%">
+                <div class="post-description" style="overflow-wrap: break-word;z-index: 1">
+					
+                    <p style="color: rgb(217, 217, 217);padding-top: 30px;padding-left: 11%;margin-right: 75px;margin-bottom: 30px" th:text="${post.getContent()}">Contentasdjhfbdhsajufbshjabfsjkfdbajfbasdjfdklabfjasjgbdfhjgbdbudsadasdasdasdassdşçlfmdsklfndsjkfnjdksajkdabgjkldbgdjhksdkjfbjhsdnfvbdjhagbhjdabghjdbgkjhdasdjfbadhjsfbvhdjsabvhjasgvbhjkagvbhjkadgdbvjkadfdsamkcoufsbdfjhsdbfjhdsfbjdshbfjhdsbfjhdsbfdbshsohfsdjkfbsdhjkfbsdhjkfbdhsjfbjhdsbfjhdsbfhjdsbfhjdsdsjfbdskjhfbdhsjkfbdsjkfbhdsjkfbsjkdd</p>
+					<div class="el">
+					<img class="" src="../static/icons/img.jpg" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
+					<div class="post-footer" style="margin-top: 3%;">
                     <div class="input-group" style="display: inline-block;padding-left: 15%;">
                         	
                             <a href="like_post" onClick="fill(this)" class="far fa-heart fa-2x" style="float: left;font-size: 150%"></a> 
@@ -64,6 +64,8 @@
 								<span class="popuptext fade" id="clipboard">Copied to Clipboard</span></i>
                     </div>
                 </div>
+                </div>
+                
             <p style="line-height: 0.05"><br></p>
         
 		</div></div>
