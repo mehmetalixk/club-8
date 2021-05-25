@@ -16,5 +16,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "Select * from events e left join subclubs sc on e.subclub_id = sc.id left join clubs c on sc.club_id = c.id where sc.title =?1 and c.title = ?2", nativeQuery = true)
     Collection<Event> findAllBySubclubTitle(String subclubTitle, String clubTitle);
 
+    Collection<Event> findBySubclub_members_username(String username);
 
 }

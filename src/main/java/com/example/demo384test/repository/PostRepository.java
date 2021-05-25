@@ -4,6 +4,7 @@ import com.example.demo384test.model.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -20,5 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT * FROM posts WHERE ID = ?1", nativeQuery = true)
     Post findByid(Long id);
 
+
+    ArrayList<Post> findByMember_username(String username);
 
 }
