@@ -81,7 +81,7 @@ public class HomeController {
     @GetMapping("/register")
     public ModelAndView showSignUpForm(Model model) {
         model.addAttribute("member", new Member());
-        return new ModelAndView("signup_form");
+        return new ModelAndView("register");
     }
 
     @GetMapping("/admin")
@@ -117,7 +117,7 @@ public class HomeController {
             message = customMemberDetailsService.checkDuplicate(username, emailAddress);
         } catch (UsernameNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
-            return new ModelAndView("signup_form");
+            return new ModelAndView("register");
         }
 
         model.addAttribute("message", message);
