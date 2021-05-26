@@ -9,6 +9,7 @@ import com.example.demo384test.repository.*;
 import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.PostCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +38,11 @@ public class PostController {
         return postRepository.findAll();
     }
 
-    @GetMapping("/post")
-    public ModelAndView post(Model model) {
+    @GetMapping("/post/{title}/{subclub}")
+    public ModelAndView post(@PathVariable String title, @PathVariable String subclub, Model model) {
+        model.addAttribute("club", title);
+        model.addAttribute("subclub", subclub);
         model.addAttribute("pcr", new PostCreationRequest());
-        model.addAttribute("subclubList", subclubRepository.findAllTitles());
-        model.addAttribute("clubList", clubRepository.findAllTitles());
         return new ModelAndView("post");
     }
 
@@ -73,7 +74,7 @@ public class PostController {
 
 
     @PostMapping("/process_add_post")
-    public ModelAndView processAddPost(PostCreationRequest pcr) throws IOException {
+    public String processAddPost(PostCreationRequest pcr) throws IOException {
         // create new post object
         Post post = new Post();
         post.setDate(java.time.LocalDate.now());
@@ -120,9 +121,9 @@ public class PostController {
             // CREATE a new post in post repository
             postRepository.save(post);
 
-            return new ModelAndView("success");
+            return "redirect:/clubs/" + pcr.getClubTitle() + "/" + pcr.getSubclubTitle();
         }else{
-            return new ModelAndView("error");
+            return "redirect:/error";
         }
     }
 }

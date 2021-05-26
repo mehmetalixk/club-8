@@ -8,6 +8,7 @@ public class EventCreationRequest {
     private String clubTitle;
     private String subclubTitle;
     private String content;
+    private String dateTime;
     private LocalDate date;
     private LocalTime time;
     private String location;
@@ -51,6 +52,13 @@ public class EventCreationRequest {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getLocation() {
