@@ -1,7 +1,9 @@
 function display_admin(id) {
     let x;
     const ids = ['list_members_id', 'add_role_id', 'list_roles_id', 'add_club_id', 'list_clubs_id', 'add_subClub_id',
-        'list_subClubs_id', 'add_poll_id'];
+        'list_subClubs_id', 'add_poll_id','list_polls_id','list_questions_id','add_question_id','edit_question_id',
+        'edit_subClub_id','edit_club_id','edit_poll_id','list_infos_id','list_reports_id', 'list_subrequest_id',
+        'list_warnings_id','list_errors_id',];
 
     for(let i=0; i<ids.length; i++){
         if(ids[i]===id){
