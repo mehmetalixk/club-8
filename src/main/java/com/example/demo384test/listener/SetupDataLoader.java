@@ -6,6 +6,8 @@
 
 package com.example.demo384test.listener;
 
+import com.example.demo384test.Logger.LogController;
+import com.example.demo384test.Logger.LogRepository;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.post.*;
 import com.example.demo384test.model.Club.Subclub;
@@ -61,6 +63,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private LogRepository logRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -68,9 +73,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
 
+        LogController lc = new LogController(logRepository);
+
         Permission readPermission = createPermissionIfNotFound("READ_PERMISSION");
         Permission writePermission = createPermissionIfNotFound("WRITE_PERMISSION");
+
         List<Permission> adminPermissions = Arrays.asList(readPermission, writePermission);
+
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
 
@@ -248,11 +257,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
      * */
     @Transactional
     Permission createPermissionIfNotFound(String name) {
-
         Permission permission = permissionRepository.findByName(name);
+
         if (permission == null) {
             permission = new Permission(name);
             permissionRepository.save(permission);
+            LogController.createLog("INFO",  permission.getName() + " created and added to the permission repository");
         }
         return permission;
     }
@@ -269,6 +279,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             role.setName(name);
             role.setPermissions(permissions);
             roleRepository.save(role);
+            LogController.createLog("INFO",  role.getName() + " created and added to the role repository");
         }
 
         return role;
@@ -299,6 +310,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             member.setEnabled(true);
 
             memberRepository.save(member);
+            LogController.createLog("INFO",  member.getName() + " created and added to the member repository");
         }
 
         return member;
@@ -372,6 +384,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             club.setTitle(title);
 
             clubRepository.save(club);
+            LogController.createLog("INFO",  club.getTitle() + " created and added to the club repository");
         }
 
         return club;
@@ -385,8 +398,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     Subclub createSubclubIfNotFound(String title, String clubTitle) {
         Club club = clubRepository.findByTitle(clubTitle);
         // club does not exist
-        if(club == null)
+        if(club == null) {
+            LogController.createLog("WARN", clubTitle + " not found in club repository. Sub club " + title + " could not created.");
             return null;
+        }
+
 
         Subclub subclub = subclubRepository.findByClubTitle(title, clubTitle);
 
@@ -397,11 +413,17 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             subclub.setTitle(title);
             subclub.setClub(club);
             subclubRepository.save(subclub);
+            LogController.createLog("INFO",  subclub.getTitle() + " created and added to the sub club repository");
 
             Permission subClubReadPermission = new Permission("READ_PERMISSION_" + clubTitle + "_" + title);
             Permission subClubWritePermission = new Permission("WRITE_PERMISSION_" + clubTitle + "_" + title);
+
             permissionRepository.save(subClubReadPermission);
+            LogController.createLog("INFO",  subClubReadPermission.getName() + " created and added to the permission repository");
+
             permissionRepository.save(subClubWritePermission);
+            LogController.createLog("INFO",  subClubWritePermission.getName() + " created and added to the permission repository");
+
             permissionRepository.flush();
         }
 
