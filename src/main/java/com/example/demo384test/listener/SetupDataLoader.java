@@ -119,8 +119,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Comment c = createComment(admin, "This is a comment", post);
 
-        Like l = createLike(admin, post);
-
         // Here create a user with test clubs assigned
         createUserWithClubsIfNotFound();
 

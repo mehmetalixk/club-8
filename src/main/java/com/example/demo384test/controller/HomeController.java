@@ -92,13 +92,13 @@ public class HomeController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping(value = "/logout")
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/";
+        return new ModelAndView("login");
     }
 
     @GetMapping("/register")
