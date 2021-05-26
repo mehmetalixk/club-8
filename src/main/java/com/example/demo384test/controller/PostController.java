@@ -54,13 +54,22 @@ public class PostController {
         if(p == null)
             return new ModelAndView("error");
 
-        CommentCreationRequest ccr = new CommentCreationRequest();
-        ccr.setId(postID);
+        String username = Util.getCurrentUsername();
+        Member currentUser = memberRepository.findByUsername(username);
+        if(Util.checkReadPermission(currentUser, p.getSubclub().getClub().getTitle(),p.getSubclub().getTitle())
+                || Util.isAdmin(currentUser)){
+            if(Util.checkReadPermission(currentUser, p.getSubclub().getClub().getTitle(), p.getSubclub().getTitle())
+                    || Util.isAdmin(currentUser)){
+                CommentCreationRequest ccr = new CommentCreationRequest();
+                ccr.setId(postID);
 
-        model.addAttribute("ccr",  ccr);
-        model.addAttribute("comments", commentRepository.findByPostID(idLong));
-        model.addAttribute("post", p);
-        return new ModelAndView("post_page");
+            model.addAttribute("ccr",  ccr);
+            model.addAttribute("comments", commentRepository.findByPostID(idLong));
+            model.addAttribute("post", p);
+            return new ModelAndView("post_page");
+            }
+        }
+        return new ModelAndView("error");
     }
 
 
