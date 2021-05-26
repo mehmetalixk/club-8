@@ -1,6 +1,8 @@
 package com.example.demo384test.controller;
 
 
+import com.example.demo384test.Logger.LogController;
+import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Permission;
@@ -45,22 +47,25 @@ public class SubclubController {
         sc.setTitle(scr.getTitle());
         sc.setClub(c);
 
-        // get sub club image
-        String folder = "src/main/resources/static/photos/subclubs/";
-        byte[] arr = scr.getSubclubImage().getBytes();
+        if(scr.getSubclubImage() != null) {
+            // get sub club image
+            String folder = "src/main/resources/static/photos/subclubs/";
+            byte[] arr = scr.getSubclubImage().getBytes();
 
-        // Get file extension
-        String extension = "";
-        int i = scr.getSubclubImage().getOriginalFilename().lastIndexOf('.');
-        if (i > 0) extension = scr.getSubclubImage().getOriginalFilename().substring(i+1);
+            // Get file extension
+            String extension = "";
+            int i = scr.getSubclubImage().getOriginalFilename().lastIndexOf('.');
+            if (i > 0) extension = scr.getSubclubImage().getOriginalFilename().substring(i+1);
 
-        // set subclub photo path
-        sc.setPhotoPath(folder + scr.getClubTitle() + "_" + scr.getTitle() + "." + extension);
+            // set subclub photo path
+            sc.setPhotoPath(folder + scr.getClubTitle() + "_" + scr.getTitle() + "." + extension);
 
-        // Add sub club image to the path
-        Path path = Paths.get(sc.getPhotoPath());
-        Files.write(path, arr);
-
+            // Add sub club image to the path
+            Path path = Paths.get(sc.getPhotoPath());
+            Files.write(path, arr);
+        }else {
+            sc.setPhotoPath("src/main/resources/static/icons/club.png");
+        }
 
         subclubRepository.save(sc);
 
@@ -125,6 +130,18 @@ public class SubclubController {
     public String uploadSubclubImage(@RequestParam("subclubImageFile") MultipartFile mf) throws IOException {
 
         return "redirect:/admin";
+    }
+
+    @RequestMapping(path= "/subclubs/create/{clubTitle}_{subclubTitle}")
+    public String processSubclubRequest(@PathVariable String clubTitle, @PathVariable String subclubTitle) throws IOException {
+
+        SubclubCreationRequest scr = new SubclubCreationRequest();
+        scr.setTitle(subclubTitle);
+        scr.setClubTitle(clubTitle);
+
+        LogController.createLog("INFO", String.format("Sub Club creation request with club %s with subclub %s has accepted by %s", clubTitle, subclubTitle, Util.getCurrentUsername()));
+        return processAddSubclub(scr);
+
     }
 
 }

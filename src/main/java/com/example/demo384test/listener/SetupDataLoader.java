@@ -73,7 +73,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
 
-        LogController lc = new LogController(logRepository);
+        LogController lc = new LogController(logRepository, clubRepository, subclubRepository, memberRepository);
 
         Permission readPermission = createPermissionIfNotFound("READ_PERMISSION");
         Permission writePermission = createPermissionIfNotFound("WRITE_PERMISSION");
