@@ -4,11 +4,14 @@ import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Event;
+import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.EventRepository;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.request.CommentCreationRequest;
 import com.example.demo384test.request.EventCreationRequest;
+import com.example.demo384test.request.HomePostRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Controller
 public class EventController {
@@ -30,17 +34,18 @@ public class EventController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @RequestMapping(value="/events/{eventID}", method = RequestMethod.GET)
-    public ModelAndView getClubPage (@PathVariable String eventID, Model model) {
-        Long id = Long.parseLong(eventID);
+    @GetMapping("/events/{eventID}")
+    public ModelAndView getEventPage(@PathVariable String eventID, Model model) {
+        Long idLong = Long.parseLong(eventID);
+        Event e = eventRepository.findByID(idLong);
 
-        Event event = eventRepository.findByID(id);
-
-        if(event == null)
+        if(e == null)
             return new ModelAndView("error");
 
-        model.addAttribute("event", event);
-        return new ModelAndView("show_event");
+        EventCreationRequest ecr = new EventCreationRequest();
+        ecr.setEvent(e);
+        model.addAttribute("ecr",  ecr);
+        return new ModelAndView("event_page");
     }
 
 
@@ -79,4 +84,15 @@ public class EventController {
         }
     }
 
+    @GetMapping("/viewAllEvents")
+    public ModelAndView viewAllEvents(Model model){
+        String currentUsername = Util.getCurrentUsername();
+        Member m = memberRepository.findByUsername(currentUsername);
+
+        List<Event> events = eventRepository.findBySubclub_members_username(currentUsername);
+        List<Event> allEvents = eventRepository.findAll();
+        model.addAttribute("events", events);
+        model.addAttribute("allEvents", allEvents);
+        return new ModelAndView("show_event");
+    }
 }

@@ -6,6 +6,7 @@ import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
+import com.example.demo384test.model.post.Event;
 import com.example.demo384test.model.post.Poll;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
@@ -80,7 +81,9 @@ public class HomeController {
 
         model.addAttribute("hprs", hprs);
         model.addAttribute("subclubs", subclubs);
-        model.addAttribute("events", eventRepository.findBySubclub_members_username(username));
+        List<Event> events = eventRepository.findBySubclub_members_username(username);
+        List<Event> lastThreeEvents = events.subList(Math.max(events.size() - 3, 0), events.size());
+        model.addAttribute("events", lastThreeEvents);
         return new ModelAndView("home");
     }
 

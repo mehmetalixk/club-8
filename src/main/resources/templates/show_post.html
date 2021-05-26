@@ -43,7 +43,7 @@
     						<h6 style="float: right!important;color:#657786" th:text="${hpr.getPost().getDate()}">01/02</h6>
 							<p><br /></p>
 						<a href="#userpage" style="text-decoration: none" >
-							<img src="../static/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 64px">
+							<img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 64px">
                             <b style="color: #F5F8FA; vertical-align: 20%;margin-left: 2%;font-size: 20pt" th:text="${hpr.getPost().getMember().getUsername()}">User</b></a>
 					</div>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="post-description" style="overflow-wrap: break-word;z-index: 1">
                     <p style="color: rgb(217, 217, 217);padding-top: 30px;padding-left: 11%;margin-right: 75px;margin-bottom: 30px" th:text="${hpr.getPost().getContent()}"></p>
 					<div class="el">
-					<img class="" src="../static/icons/img.jpg" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
+					<img class="" th:src="@{icons/img.jpg}" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
 					<div class="post-footer" style="margin-top: 3%;">
                     <div class="input-group" style="display: inline-block;padding-left: 15%;">
                         	

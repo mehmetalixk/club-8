@@ -1,5 +1,7 @@
 package com.example.demo384test.request;
 
+import com.example.demo384test.model.post.Event;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -12,6 +14,7 @@ public class EventCreationRequest {
     private LocalDate date;
     private LocalTime time;
     private String location;
+    private Event event;
 
 
     public String getClubTitle() {
@@ -67,5 +70,13 @@ public class EventCreationRequest {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

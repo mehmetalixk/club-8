@@ -124,14 +124,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         // Here create a user with test clubs assigned
         createUserWithClubsIfNotFound();
 
-        Event event = new Event();
-        event.setContent("We will meet");
-        event.setMember(admin);
-        event.setDate(java.time.LocalDate.now());
-        event.setSubclub(horror_books);
-        event.setLocation("Zoom");
-        eventRepository.save(event);
-
         Question q1 = new Question();
         Question q2 = new Question();
         Question q3 = new Question();
@@ -422,6 +414,16 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             subclub.setClub(club);
             subclubRepository.save(subclub);
             LogController.createLog("INFO",  subclub.getTitle() + " created and added to the sub club repository");
+
+            Event event = new Event();
+            event.setContent("We will meet");
+            Member admin = memberRepository.findByUsername("admin");
+            event.setMember(admin);
+            event.setDate(java.time.LocalDate.now());
+            Subclub sc = subclubRepository.findByClubTitle(title, clubTitle);
+            event.setSubclub(sc);
+            event.setLocation("Zoom");
+            eventRepository.save(event);
 
             Permission subClubReadPermission = new Permission("READ_PERMISSION_" + clubTitle + "_" + title);
             Permission subClubWritePermission = new Permission("WRITE_PERMISSION_" + clubTitle + "_" + title);
