@@ -1,10 +1,14 @@
 package com.example.demo384test.controller;
 
+import ch.qos.logback.classic.spi.LoggerComparator;
+import com.example.demo384test.Logger.LogController;
+import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Comment;
 import com.example.demo384test.model.post.Like;
 import com.example.demo384test.model.post.Post;
+import com.example.demo384test.model.post.Question;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.MemberProfileUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,14 +86,38 @@ public class MemberController {
     @PostMapping("/members/edit/process")
     public String processUpdateProfile(MemberProfileUpdateRequest mpur) {
         Member member = memberRepository.findByID(Long.parseLong(mpur.getId()));
-
         member.setBirthDate(mpur.getBirthDate());
         member.setPassword(mpur.getPassword());
         member.setName(mpur.getName());
         member.setSurname(mpur.getSurname());
+        memberRepository.save(member);
+        return String.format("redirect:/members/%s", mpur.getId());
+    }
+
+
+    @RequestMapping("/members/ban/{memberID}")
+    public String banMember(@PathVariable String memberID) {
+        Long id = Long.parseLong(memberID);
+        Member member = memberRepository.findByID(id);
+
+        if(member == null) {
+            LogController.createLog("WARN", "Member not found!");
+            return "redirect:/admin";
+        } else if (member.getUsername().equals("admin")) {
+            LogController.createLog("WARN", "You cannot ban an admin!");
+            return "redirect:/admin";
+        }
+        if(!member.isBanned()) {
+            member.setBanned(true);
+            LogController.createLog("INFO", String.format("Member %s has banned by %s\n", member.getUsername(), Util.getCurrentUsername()));
+        }else {
+            member.setBanned(false);
+            LogController.createLog("INFO", String.format("Member %s has unbanned by %s\n", member.getUsername(), Util.getCurrentUsername()));
+        }
 
         memberRepository.save(member);
 
-        return String.format("redirect:/members/%s", mpur.getId());
+        return "redirect:/admin";
     }
+
 }

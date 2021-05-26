@@ -31,6 +31,9 @@ public class Member {
     private Date birthDate;
     @Column(length = 64)
     private String photoPath;
+    @Column
+    private boolean isBanned;
+
     private boolean enabled;
     private boolean tokenExpired;
 
@@ -121,5 +124,13 @@ public class Member {
 
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 }
