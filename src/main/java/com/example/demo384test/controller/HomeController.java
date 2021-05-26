@@ -1,17 +1,20 @@
 package com.example.demo384test.controller;
 
+import com.example.demo384test.Logger.LogRepository;
+import com.example.demo384test.Logger.Logger;
 import com.example.demo384test.config.Util;
 import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
-import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Event;
 import com.example.demo384test.model.post.Poll;
 import com.example.demo384test.model.post.Post;
+import com.example.demo384test.model.post.Question;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.HomePostRequest;
 import com.example.demo384test.request.SubclubCreationRequest;
+import com.example.demo384test.request.SubclubEditionRequest;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,6 +55,10 @@ public class HomeController {
     private LikeRepository likeRepository;
     @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
+    @Autowired
+    private LogRepository logRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @GetMapping("/")
     public ModelAndView index(Model model) {
@@ -113,17 +120,41 @@ public class HomeController {
         List<Subclub> listSubclubs = subclubRepository.findAll();
         List<Role> listRoles = roleRepository.findAll();
         List<Club> listClubs = clubRepository.findAll();
-        List<Permission> listPermissions = permissionRepository.findAll();
+        List<Poll> listPolls = pollRepository.findAll();
+        List<Question> listQuestions = questionRepository.findAll();
+
+        List<Logger> warnings = logRepository.findByLevel("WARN");
+        Collections.reverse(warnings);
+        List<Logger> infos = logRepository.findByLevel("INFO");
+        Collections.reverse(infos);
+        List<Logger> errors = logRepository.findByLevel("ERR");
+        Collections.reverse(errors);
+        List<Logger> requests = logRepository.findByLevel("REQ");
+        Collections.reverse(requests);
+        List<Logger> reports = logRepository.findByLevel("REP");
+        Collections.reverse(reports);
+
 
         model.addAttribute("listMembers", listMembers);
         model.addAttribute("listRoles", listRoles);
-        model.addAttribute("listPermission", listPermissions);
         model.addAttribute("listSubclubs", listSubclubs);
         model.addAttribute("listClubs", listClubs);
+        model.addAttribute("listPolls", listPolls);
+        model.addAttribute("listQuestions", listQuestions);
+
+        model.addAttribute("listWarnings", warnings);
+        model.addAttribute("listInfos", infos);
+        model.addAttribute("listErrors", errors);
+        model.addAttribute("requests", requests);
+        model.addAttribute("reports", reports);
 
         model.addAttribute("role", new Role());
         model.addAttribute("club", new Club());
+        model.addAttribute("poll", new Poll());
+        model.addAttribute("question", new Question());
+
         model.addAttribute("scr", new SubclubCreationRequest());
+        model.addAttribute("scer", new SubclubEditionRequest());
 
         model.addAttribute("clubs", clubRepository.findAllTitles());
 
@@ -148,12 +179,11 @@ public class HomeController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
-
+        member.setBanned(false);
         Role userRole = roleRepository.findByName("ROLE_USER");
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-
 
 
         // get initial poll

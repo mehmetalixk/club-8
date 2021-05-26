@@ -27,5 +27,7 @@ public interface SubclubRepository extends JpaRepository<Subclub, Long> {
     Subclub findByID(Long id);
 
     Collection<Subclub> findByMembers_username(String username);
+
+
 }
 
