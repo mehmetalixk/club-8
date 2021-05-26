@@ -33,7 +33,6 @@ public class PostController {
     @Autowired
     private CommentRepository commentRepository;
 
-
     @GetMapping(path="/posts/all")
     public @ResponseBody Iterable<Post> getAllPosts() {
         return postRepository.findAll();
@@ -127,6 +126,4 @@ public class PostController {
             return "redirect:/error";
         }
     }
-
-
 }

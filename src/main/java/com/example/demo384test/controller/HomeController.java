@@ -6,6 +6,7 @@ import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
+import com.example.demo384test.model.post.Poll;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.SubclubCreationRequest;
@@ -22,9 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -43,17 +42,27 @@ public class HomeController {
     private PostRepository postRepository;
     @Autowired
     private EventRepository eventRepository;
-
+    @Autowired
+    private PollRepository pollRepository;
     @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
 
     @GetMapping("/")
     public ModelAndView index(Model model) {
-        List<Post> posts = postRepository.findAll();
-        Collections.reverse(posts);
-        model.addAttribute("posts", posts);
         String username = Util.getCurrentUsername();
-        model.addAttribute("subclubs", subclubRepository.findByMembers_username(username));
+        Collection<Subclub> subclubs = subclubRepository.findByMembers_username(username);
+
+        List<Post> posts = postRepository.findAll();
+        List<Post> posts_user = new ArrayList<>();
+        for(Post p : posts) {
+            if(subclubs.contains(p.getSubclub()))
+                posts_user.add(p);
+        }
+        Collections.sort(posts_user, Comparator.comparing(Post::getDate).thenComparing(Post::getTimestamp).reversed());
+
+        Collections.reverse(posts);
+        model.addAttribute("posts", posts_user);
+        model.addAttribute("subclubs", subclubs);
         model.addAttribute("events", eventRepository.findBySubclub_members_username(username));
         return new ModelAndView("home");
     }
@@ -75,7 +84,7 @@ public class HomeController {
     @GetMapping("/register")
     public ModelAndView showSignUpForm(Model model) {
         model.addAttribute("member", new Member());
-        return new ModelAndView("signup_form");
+        return new ModelAndView("register");
     }
 
     @GetMapping("/admin")
@@ -111,7 +120,7 @@ public class HomeController {
             message = customMemberDetailsService.checkDuplicate(username, emailAddress);
         } catch (UsernameNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
-            return new ModelAndView("signup_form");
+            return new ModelAndView("register");
         }
 
         model.addAttribute("message", message);
@@ -124,6 +133,14 @@ public class HomeController {
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-        return new ModelAndView("home");
+
+
+
+        // get initial poll
+        Poll initialPoll = pollRepository.findByID(1L);
+        model.addAttribute("poll", initialPoll);
+        model.addAttribute("questions", initialPoll.getQuestions());
+        // redirect to poll
+        return new ModelAndView("poll");
     }
 }

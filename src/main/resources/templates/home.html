@@ -38,7 +38,6 @@
                             <b style="color: #F5F8FA; vertical-align: 40%;margin-left: 1%;" th:text="${post.getMember().getUsername()}">User</b></a>
 					</div>
                 </div>
-              
                 <div class="post-description el" style="overflow-wrap: break-word;">
                     <p style="margin-top: 10px;color: rgb(217, 217, 217);margin-left: 70px;max-width: 97%;margin-right: 20px;text-align: left;" th:text="${post.getContent()}"></p>
 					<img src="../static/icons/img.png" alt="ContentImg" style="object-fit: cover; margin-left: 45px;border-radius: 10px;max-width: 87%;"/>
@@ -60,55 +59,35 @@
     </div>
 	</div>
 	<div class="col-4 col-md-4 " style="">
-			<div class="row d-none d-md-block d-lg-block">
+			<div th:each="subclub : ${subclubs}" class="row d-none d-md-block d-lg-block">
 		<nav class="subclubs">
 			<h3 style="color:#F5F8FA;text-align: center">SubClubs</h3><hr/>
-			<a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
+			<a th:href="@{'/clubs/' + ${subclub.getClub().getTitle()} + '/' + ${subclub.getTitle()}}" style="text-decoration: none;display: block;width: 100%">
 			<img src="icons/club.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
-                            <b style="color: #F5F8FA;margin-left: 10%;">SubClub1</b></a><hr style="color:#AAB8C2"/>
-			<a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
-			<img src="icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
-                            <b style="color: #F5F8FA;margin-left: 10%;">SubClub2</b></a><hr style="color:#AAB8C2"/>
-			<a href="#subclub1" style="text-decoration: none;display: block;width: 100%">
-			<img src="icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 32px;margin-left: 15%">
-                            <b style="color: #F5F8FA;margin-left: 10%;">SubClub3</b></a><hr style="color:#AAB8C2" />
+                            <b style="color: #F5F8FA;margin-left: 10%;" th:text="${subclub.getTitle()}"></b></a><hr style="color:#AAB8C2"/>
 			<div class="d-grid gap-2">
   			<button class="btn btn-primary" type="button" style="border-radius: 50px">View All</button></div>
 		</nav></div>
-		<div class="row d-none d-md-block d-lg-block" style="">
+		<div th:each="event : ${events}" class="row d-none d-md-block d-lg-block" style="">
 		<nav class="events">
 			<h3 style="color:#F5F8FA;text-align: center;opacity: 1!important;">Events</h3><hr/>
-			<a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
+			<a th:href="@{'/clubs/' + ${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}}" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
 			<img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
-                            <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub1</b>
-				<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
+                            <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getTitle()}"></b>
+				<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
 				</i></p>
-				<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
+				<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i th:text="${event.getLocation()}"> </i></p>
 				</div>
-				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
-						<a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
-			<img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
-                            <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub2</b>
-				<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
-				</i></p>
-				<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
-				</div>
-				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
-						<a href="#subclub1" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
-			<img src="/icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
-                            <b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;">SubClub3</b>
-				<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i>01.01.2011
-				</i></p>
-				<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i>Zoom </i></p>
-				</div>
-				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%">We will meet to test this site.</p></a><hr style="color:#AAB8C2"/>
+				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%" th:text="${event.getContent()}"></p></a><hr style="color:#AAB8C2"/>
+						<a th:href="@{'/clubs/' + ${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}}" style="text-decoration: none;display: block;width: 100%"><div style="display: inline;">
 			<div class="d-grid gap-2">
   			<button class="btn btn-primary" type="button" style="border-radius: 50px">View All</button></div>
+						</div>
 		</nav>
 			</div>
 		</div>
 	</div>
-	</div>
 
+	</div>
 </body>
 </html>
