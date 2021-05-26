@@ -5,14 +5,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../static/css/bootstrap.css"/>
-<script type="text/javascript" src="../static/js/admin.js"></script>
+<link<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<script type="text/javascript" th:src="@{/js/admin.js}"></script>
 <!------ Include the above in your HEAD tag ---------->
 <script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
 
 <style>
 	body {
-		
+
     background: #212529;
     background: -webkit-linear-gradient(to top, #212529, #323E4E);
     background: linear-gradient(to top, #212529, #323E4E);
@@ -40,7 +40,7 @@
 								<a style="text-decoration: none" th:href="@{'/clubs/' + ${post.getSubclub().getClub().getTitle()} + '/' +
 								 ${post.getSubclub().getTitle()}}"><h6 style="float: left;color:#657786" th:text="'/' +
 								 ${post.getSubclub().getTitle()}">subclub</h6></a>
-    						
+
 							<h6 style="float: right!important;color:#657786;margin-left: 10px;" th:text="${post.getDate()}"><i class="fas fa-map-marker-alt" style="margin-right: 10px"></i>Zoom</h6>
 							<h6 style="float: right!important;color:#657786" th:text="${post.getDate()}"><i class="fas fa-calendar-alt" style="margin-right: 10px"></i>01/02</h6>
 							<p><br /></p>
@@ -49,15 +49,15 @@
                             <b style="color: #F5F8FA; vertical-align: 20%;margin-left: 2%;font-size: 20pt" th:text="${post.getMember().getUsername()}">User</b></a>
 					</div>
                 </div>
-              
+
                 <div class="post-description" style="overflow-wrap: break-word;z-index: 1">
                     <p style="color: rgb(217, 217, 217);padding-top: 30px;padding-left: 11%;margin-right: 75px;margin-bottom: 30px" th:text="${post.getContent()}">Contentasdjhfbdhsajufbshjabfsjkfdbajfbasdjfdklabfjasjgbdfhjgbdbudsadasdasdasdassdşçlfmdsklfndsjkfnjdksajkdabgjkldbgdjhksdkjfbjhsdnfvbdjhagbhjdabghjdbgkjhdasdjfbadhjsfbvhdjsabvhjasgvbhjkagvbhjkadgdbvjkadfdsamkcoufsbdfjhsdbfjhdsfbjdshbfjhdsbfjhdsbfdbshsohfsdjkfbsdhjkfbsdhjkfbdhsjfbjhdsbfjhdsbfhjdsbfhjdsdsjfbdskjhfbdhsjkfbdsjkfbhdsjkfbsjkdd</p>
 					<div class="el">
 					<img class="" src="../static/icons/img.jpg" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
 					<div class="post-footer" style="margin-top: 3%;">
                     <div class="input-group" style="display: inline-block;padding-left: 15%;">
-                        	
-                            <a href="like_post" onClick="fill(this)" class="far fa-heart fa-2x" style="float: left;font-size: 150%"></a> 
+
+                            <a href="like_post" onClick="fill(this)" class="far fa-heart fa-2x" style="float: left;font-size: 150%"></a>
 							<a style="float:left;font-size:medium;padding-left: 2%;padding-top: 0.2%;color: #657786;text-decoration: none" >32</a>
                             <a href="/post" onClick="fill(this)" class="fas fa-sign-in-alt fa-2x" style="float: left;padding-left: 30%;font-size: 150%"></a>
 							<a href="/post" style="float:left;font-size:medium;padding-left: 2%;padding-top: 0.2%;color: #657786;text-decoration: none">31</a>
@@ -66,13 +66,13 @@
                     </div>
                 </div>
                 </div>
-                
+
             <p style="line-height: 0.05"><br></p>
 		</div></div>
-	
-	
-	
+
+
+
 </div>
-	
+
 </body>
 </html>
