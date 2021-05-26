@@ -1,6 +1,5 @@
 package com.example.demo384test.controller;
 
-import ch.qos.logback.classic.spi.LoggerComparator;
 import com.example.demo384test.Logger.LogController;
 import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Subclub;
@@ -8,7 +7,6 @@ import com.example.demo384test.model.Member;
 import com.example.demo384test.model.post.Comment;
 import com.example.demo384test.model.post.Like;
 import com.example.demo384test.model.post.Post;
-import com.example.demo384test.model.post.Question;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.MemberProfileUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +92,54 @@ public class MemberController {
         return String.format("redirect:/members/%s", mpur.getId());
     }
 
+    @RequestMapping("/members/report/{commentID}")
+    public String reportComment(@PathVariable String commentID) {
+        Long id = Long.parseLong(commentID);
+        Comment comment = commentRepository.findByID(id);
 
+        if(comment == null) {
+            LogController.createLog("WARN", String.format("Comment with id of %s not found!", commentID));
+            return "redirect:/";
+        }
+
+        LogController.createLog("REP", String.format("%s;%s;%s;%s;%s", Util.getCurrentUsername(), comment.getMember().getUsername(), comment.getContent(), comment.getMember().getId().toString(), comment.getId().toString()));
+        LogController.createLog("INFO", String.format("%s created a report on comment %s", Util.getCurrentUsername(), comment.getId()));
+        return "redirect:/";
+    }
+
+    /*
+    * Warn the user, if he had 3 warnings
+    * ban him, delete his comment
+    * */
+    @RequestMapping("/members/warn/{memberID}_{commentID}")
+    public String warnMember(@PathVariable String memberID, @PathVariable String commentID) {
+        Long id = Long.parseLong(memberID);
+        Member member = memberRepository.findByID(id);
+
+        if(member == null) {
+            LogController.createLog("WARN", "Member not found!");
+            return "redirect:/admin";
+        } else if (member.getUsername().equals("admin")) {
+            LogController.createLog("WARN", "You cannot warn an admin!");
+            return "redirect:/admin";
+        }
+
+        Comment comment = commentRepository.findByID(Long.parseLong(commentID));
+        commentRepository.delete(comment);
+        LogController.createLog("INFO", String.format("Comment %s deleted by the %s due to report accept...", commentID, Util.getCurrentUsername()));
+
+        member.setWarnCount(member.getWarnCount() + 1);
+
+        // if he received 3 warns ban him
+        if(member.getWarnCount() >= 3)
+            return String.format("redirect:/members/ban/%s", memberID);
+
+        return "redirect:/admin";
+    }
+
+    /*
+    * Ban the member
+    * */
     @RequestMapping("/members/ban/{memberID}")
     public String banMember(@PathVariable String memberID) {
         Long id = Long.parseLong(memberID);
@@ -107,6 +152,7 @@ public class MemberController {
             LogController.createLog("WARN", "You cannot ban an admin!");
             return "redirect:/admin";
         }
+
         if(!member.isBanned()) {
             member.setBanned(true);
             LogController.createLog("INFO", String.format("Member %s has banned by %s\n", member.getUsername(), Util.getCurrentUsername()));

@@ -33,6 +33,8 @@ public class Member {
     private String photoPath;
     @Column
     private boolean isBanned;
+    @Column
+    private int warnCount;
 
     private boolean enabled;
     private boolean tokenExpired;
@@ -132,5 +134,13 @@ public class Member {
 
     public void setBanned(boolean banned) {
         isBanned = banned;
+    }
+
+    public int getWarnCount() {
+        return warnCount;
+    }
+
+    public void setWarnCount(int warnCount) {
+        this.warnCount = warnCount;
     }
 }

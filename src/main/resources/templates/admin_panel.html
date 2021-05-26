@@ -598,27 +598,39 @@
         <table class="table table-dark table-hover">
             <thead class="thead-dark">
             <tr>
-                <th style="width: 10%">ID</th>
-                <th style="width: 10%">Reported</th>
-                <th style="width: 20%">Reason</th>
-                <th style="width: 5%">Ban</th>
+                <th style="width: 10%">Date</th>
+                <th style="width: 10%">Timestamp</th>
+                <th style="width: 10%">Content</th>
+                <th style="width: 10%">Reported By</th>
+                <th style="width: 10%">Member</th>
+                <th style="width: 5%">Ban Member</th>
                 <th style="width: 5%">Deny</th>
+                <th style="width: 5%">Send Warning</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="lrequest: ${reports}">
-                <td th:text="${lrequest.id}"></td>
-                <td th:text="${lrequest.content}"></td>
+            <tr th:each="report: ${reports}">
+                <td th:text="${report.getDate()}"></td>
+                <td th:text="${report.getTimestamp()}"></td>
+                <td th:text="${report.getContent().split(';')[2]}"></td>
+                <td th:text="${report.getContent().split(';')[0]}"></td>
+                <td th:text="${report.getContent().split(';')[1]}"></td>
                 <td class="minimal_cell">
-                    <a th:href="|/process_remove_club/${lrequest.id}|">
+                    <a th:href="|/members/ban/${report.getContent().split(';')[3]}|">
                         <i class="fas fa-user-times fa-lg"></i>
                     </a>
                 </td>
                 <td class="minimal_cell">
-                    <a th:href="|/clubs/${lrequest.id}/edit|">
+                    <a th:href="|/reports/delete/${report.getId()}|">
                         <i class="fas fa-times fa-lg"></i>
                     </a>
                 </td>
+                <td class="minimal_cell">
+                    <a th:href="|/members/warn/${report.getContent().split(';')[3]}_${report.getContent().split(';')[4]}|">
+                        <i class="fas fa-exclamation fa-lg"></i>
+                    </a>
+                </td>
+
             </tr>
             </tbody>
         </table>
