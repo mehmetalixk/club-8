@@ -6,7 +6,6 @@ import com.example.demo384test.config.Util;
 import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
-import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Event;
 import com.example.demo384test.model.post.Poll;
@@ -185,7 +184,6 @@ public class HomeController {
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-
 
 
         // get initial poll
