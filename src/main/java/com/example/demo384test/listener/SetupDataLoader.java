@@ -342,9 +342,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             // Clubs to add
 
             Permission permission1 = permissionRepository.findByName("READ_PERMISSION_books_fantastic");
+            Permission permission5 = permissionRepository.findByName("WRITE_PERMISSION_books_fantastic");
             Permission permission2 = permissionRepository.findByName("READ_PERMISSION_movies_horror");
+            Permission permission6 = permissionRepository.findByName("WRITE_PERMISSION_movies_horror");
             Permission permission3 = permissionRepository.findByName("READ_PERMISSION_games_horror");
+            Permission permission7 = permissionRepository.findByName("WRITE_PERMISSION_games_horror");
             Permission permission4 = permissionRepository.findByName("READ_PERMISSION_games_sci-fi");
+            Permission permission8 = permissionRepository.findByName("WRITE_PERMISSION_games_sci-fi");
 
             Role specificRole = new Role();
             specificRole.setName(member.getUsername()+"_ROLE");
@@ -353,6 +357,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             customPermissions.add(permission2);
             customPermissions.add(permission3);
             customPermissions.add(permission4);
+            customPermissions.add(permission5);
+            customPermissions.add(permission6);
+            customPermissions.add(permission7);
+            customPermissions.add(permission8);
             specificRole.setPermissions(customPermissions);
             roleRepository.save(specificRole);
             roleRepository.flush();

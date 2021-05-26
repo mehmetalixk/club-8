@@ -80,9 +80,10 @@ public class PostController {
         // Get subclub
         Subclub sc = subclubRepository.findByClubTitle(pcr.getSubclubTitle(), pcr.getClubTitle());
 
-        boolean isMember = Util.checkRole(sc, m);
+        boolean isAdmin = Util.isAdmin(m);
+        boolean isMember = Util.checkWritePermission(m, pcr.getClubTitle(), pcr.getSubclubTitle());
 
-        if(isMember){
+        if(isMember || isAdmin){
             post.setMember(m);
             post.setSubclub(sc);
 
