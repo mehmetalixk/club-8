@@ -1,11 +1,11 @@
 package com.example.demo384test.controller;
 
-
 import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.post.Post;
+import com.example.demo384test.model.Security.Permission;
+import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.ClubRepository;
 import com.example.demo384test.repository.MemberRepository;
 import com.example.demo384test.repository.PostRepository;
@@ -37,22 +37,22 @@ public class ClubController {
         return new ModelAndView("club");
     }
 
+
     @RequestMapping(value="/clubs/{title}/{subclub}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model, @PathVariable String subclub) {
         model.addAttribute("club", clubRepository.findByTitle(title));
         model.addAttribute("subclub", subclubRepository.findByClubTitle(subclub, title).getTitle());
         model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub, title));
 
+
+        // Check permission to read this subclub
         String username = Util.getCurrentUsername();
         Member currentUser = memberRepository.findByUsername(username);
-        Subclub currentSubclub = subclubRepository.findByClubTitle(subclub, title);
-        boolean isMember = currentSubclub.getMembers().contains(currentUser);
-
-        if(isMember)
+        if(Util.isAdmin(currentUser))
             return new ModelAndView("subclub");
-        else
-            return new ModelAndView("error");
-
+        if(Util.checkReadPermission(currentUser,title, subclub))
+            return new ModelAndView("subclub");
+        return new ModelAndView("error");
     }
 
     @GetMapping(value="/clubs/all")

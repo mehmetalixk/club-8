@@ -1,9 +1,10 @@
 package com.example.demo384test.controller;
 
-import com.example.demo384test.detail.CustomMemberDetails;
+import com.example.demo384test.config.Util;
 import com.example.demo384test.model.*;
 import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
@@ -28,17 +29,21 @@ import java.util.List;
 
 @RestController
 public class HomeController {
-
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PermissionRepository permissionRepository;
     @Autowired
     private ClubRepository clubRepository;
     @Autowired
     private SubclubRepository subclubRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private EventRepository eventRepository;
+
     @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
 
@@ -47,6 +52,9 @@ public class HomeController {
         List<Post> posts = postRepository.findAll();
         Collections.reverse(posts);
         model.addAttribute("posts", posts);
+        String username = Util.getCurrentUsername();
+        model.addAttribute("subclubs", subclubRepository.findByMembers_username(username));
+        model.addAttribute("events", eventRepository.findBySubclub_members_username(username));
         return new ModelAndView("home");
     }
 
@@ -72,14 +80,15 @@ public class HomeController {
 
     @GetMapping("/admin")
     public ModelAndView adminPanel(Model model) {
-
         List<Member> listMembers = memberRepository.findAll();
         List<Subclub> listSubclubs = subclubRepository.findAll();
         List<Role> listRoles = roleRepository.findAll();
         List<Club> listClubs = clubRepository.findAll();
+        List<Permission> listPermissions = permissionRepository.findAll();
 
         model.addAttribute("listMembers", listMembers);
         model.addAttribute("listRoles", listRoles);
+        model.addAttribute("listPermission", listPermissions);
         model.addAttribute("listSubclubs", listSubclubs);
         model.addAttribute("listClubs", listClubs);
 
@@ -115,6 +124,6 @@ public class HomeController {
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-        return new ModelAndView("register_success");
+        return new ModelAndView("home");
     }
 }

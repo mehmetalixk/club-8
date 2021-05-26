@@ -51,5 +51,4 @@ public class CommentController {
         return "redirect:/posts/" + ccr.getId();
     }
 
-
 }

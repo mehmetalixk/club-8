@@ -13,5 +13,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "SELECT * FROM members WHERE USERNAME = ?1 LIMIT 1", nativeQuery = true)
     Member findByUsername(String username);
 
-
+    @Query(value = "SELECT * FROM members WHERE id = ?1", nativeQuery = true)
+    Member findByID(Long id);
 }

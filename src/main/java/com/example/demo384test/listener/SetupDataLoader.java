@@ -6,12 +6,12 @@
 
 package com.example.demo384test.listener;
 
+import com.example.demo384test.Logger.LogController;
+import com.example.demo384test.Logger.LogRepository;
 import com.example.demo384test.model.Club.Club;
-import com.example.demo384test.model.post.Comment;
+import com.example.demo384test.model.post.*;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
-import com.example.demo384test.model.post.Like;
-import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.repository.*;
@@ -54,6 +54,18 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private LikeRepository likeRepository;
 
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private PollRepository pollRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private LogRepository logRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -61,9 +73,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
 
+        LogController lc = new LogController(logRepository);
+
         Permission readPermission = createPermissionIfNotFound("READ_PERMISSION");
         Permission writePermission = createPermissionIfNotFound("WRITE_PERMISSION");
+
         List<Permission> adminPermissions = Arrays.asList(readPermission, writePermission);
+
         createRoleIfNotFound("ROLE_ADMIN", adminPermissions);
         createRoleIfNotFound("ROLE_USER", Arrays.asList(readPermission));
 
@@ -105,12 +121,83 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Like l = createLike(admin, post);
 
+        // Here create a user with test clubs assigned
+        createUserWithClubsIfNotFound();
+
+        Event event = new Event();
+        event.setContent("We will meet");
+        event.setMember(admin);
+        event.setDate(java.time.LocalDate.now());
+        event.setSubclub(horror_books);
+        event.setLocation("Zoom");
+        eventRepository.save(event);
+
+        Question q1 = new Question();
+        Question q2 = new Question();
+        Question q3 = new Question();
+
+        q1.setContent("Which one do you like the most?");
+        q2.setContent("Which one do you like the most?");
+        q3.setContent("Which one do you like the most?");
+
+        ArrayList<String> q1_Options = new ArrayList<>();
+        q1_Options.add("footbaall");
+        q1_Options.add("basketball");
+        q1_Options.add("volleyball");
+        q1_Options.add("tennis");
+
+        ArrayList<String> q2_Options = new ArrayList<>();
+        q2_Options.add("rpg");
+        q2_Options.add("fps");
+        q2_Options.add("horror");
+        q2_Options.add("sci-fi");
+
+        ArrayList<String> q3_Options = new ArrayList<>();
+        q3_Options.add("horror");
+        q3_Options.add("drama");
+        q3_Options.add("fantastic");
+        q3_Options.add("documentary");
+
+        q1.setOptions(String.join(";", q1_Options));
+        q2.setOptions(String.join(";", q2_Options));
+        q3.setOptions(String.join(";", q3_Options));
+
+        questionRepository.save(q1);
+        questionRepository.save(q2);
+        questionRepository.save(q3);
+
+        HashSet<Question> qs = new HashSet<>();
+        qs.add(q1);
+        qs.add(q2);
+        qs.add(q3);
+
+        Poll p = new Poll();
+        p.setTitle("Initial Poll");
+        p.setQuestions(qs);
+
+        pollRepository.save(p);
+
         alreadySetup = true;
     }
 
     /*
+    *
+    *
+    * */
+    @Transactional
+    Poll createPollIfNotFound() {
+
+        return null;
+    }
+
+    @Transactional
+    Question createQuestionIfNotFound() {
+
+        return null;
+    }
+
+    /*
      * Add a like on the given post
-     * This method will be deleted while publishing the source code
      * */
     @Transactional
     Like createLike(Member member, Post post) {
@@ -128,7 +215,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     /*
      * Create a comment on the given post
-     * This method will be deleted while publishing the source code
      * */
     @Transactional
     Comment createComment(Member member, String content, Post post) {
@@ -171,11 +257,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
      * */
     @Transactional
     Permission createPermissionIfNotFound(String name) {
-
         Permission permission = permissionRepository.findByName(name);
+
         if (permission == null) {
             permission = new Permission(name);
             permissionRepository.save(permission);
+            LogController.createLog("INFO",  permission.getName() + " created and added to the permission repository");
         }
         return permission;
     }
@@ -192,6 +279,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             role.setName(name);
             role.setPermissions(permissions);
             roleRepository.save(role);
+            LogController.createLog("INFO",  role.getName() + " created and added to the role repository");
         }
 
         return role;
@@ -222,6 +310,70 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             member.setEnabled(true);
 
             memberRepository.save(member);
+            LogController.createLog("INFO",  member.getName() + " created and added to the member repository");
+        }
+
+        return member;
+    }
+
+    @Transactional
+    Member createUserWithClubsIfNotFound(){
+        Member member = memberRepository.findByUsername("Haydar");
+
+        if(member == null) {
+
+            member = new Member();
+            member.setEmailAddress("haydar@haydar.com");
+            member.setUsername("haydar");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String encodedPassword = encoder.encode("haydar");
+            member.setPassword(encodedPassword);
+            member.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+            member.setName("Haydar");
+            member.setSurname("Haydar");
+            member.setGender("Male");
+            member.setBirthDate(new Date(Calendar.getInstance().getTime().getTime()));
+
+            member.setEnabled(true);
+
+            Member haydar = memberRepository.save(member);
+            memberRepository.flush();
+
+            // Clubs to add
+
+            Permission permission1 = permissionRepository.findByName("READ_PERMISSION_books_fantastic");
+            Permission permission5 = permissionRepository.findByName("WRITE_PERMISSION_books_fantastic");
+            Permission permission2 = permissionRepository.findByName("READ_PERMISSION_movies_horror");
+            Permission permission6 = permissionRepository.findByName("WRITE_PERMISSION_movies_horror");
+            Permission permission3 = permissionRepository.findByName("READ_PERMISSION_games_horror");
+            Permission permission7 = permissionRepository.findByName("WRITE_PERMISSION_games_horror");
+            Permission permission4 = permissionRepository.findByName("READ_PERMISSION_games_sci-fi");
+            Permission permission8 = permissionRepository.findByName("WRITE_PERMISSION_games_sci-fi");
+
+            Role specificRole = new Role();
+            specificRole.setName(member.getUsername()+"_ROLE");
+            List<Permission> customPermissions = new ArrayList<>();
+            customPermissions.add(permission1);
+            customPermissions.add(permission2);
+            customPermissions.add(permission3);
+            customPermissions.add(permission4);
+            customPermissions.add(permission5);
+            customPermissions.add(permission6);
+            customPermissions.add(permission7);
+            customPermissions.add(permission8);
+            specificRole.setPermissions(customPermissions);
+            roleRepository.save(specificRole);
+            roleRepository.flush();
+
+            Role customRole = roleRepository.findByName(member.getUsername()+"_ROLE");
+
+            Member savedMember = memberRepository.findByUsername("haydar");
+
+            List<Role> customRoleList = new ArrayList();
+            customRoleList.add(customRole);
+            savedMember.setRoles(customRoleList);
+            memberRepository.save(savedMember);
+            memberRepository.flush();
         }
 
         return member;
@@ -240,6 +392,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             club.setTitle(title);
 
             clubRepository.save(club);
+            LogController.createLog("INFO",  club.getTitle() + " created and added to the club repository");
         }
 
         return club;
@@ -253,8 +406,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     Subclub createSubclubIfNotFound(String title, String clubTitle) {
         Club club = clubRepository.findByTitle(clubTitle);
         // club does not exist
-        if(club == null)
+        if(club == null) {
+            LogController.createLog("WARN", clubTitle + " not found in club repository. Sub club " + title + " could not created.");
             return null;
+        }
+
 
         Subclub subclub = subclubRepository.findByClubTitle(title, clubTitle);
 
@@ -265,6 +421,18 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             subclub.setTitle(title);
             subclub.setClub(club);
             subclubRepository.save(subclub);
+            LogController.createLog("INFO",  subclub.getTitle() + " created and added to the sub club repository");
+
+            Permission subClubReadPermission = new Permission("READ_PERMISSION_" + clubTitle + "_" + title);
+            Permission subClubWritePermission = new Permission("WRITE_PERMISSION_" + clubTitle + "_" + title);
+
+            permissionRepository.save(subClubReadPermission);
+            LogController.createLog("INFO",  subClubReadPermission.getName() + " created and added to the permission repository");
+
+            permissionRepository.save(subClubWritePermission);
+            LogController.createLog("INFO",  subClubWritePermission.getName() + " created and added to the permission repository");
+
+            permissionRepository.flush();
         }
 
         return subclub;

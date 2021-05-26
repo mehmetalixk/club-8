@@ -49,4 +49,10 @@ public class Role {
     public void setPermissions(Collection<Permission> permissions) {
         this.permissions = permissions;
     }
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
+
 }
