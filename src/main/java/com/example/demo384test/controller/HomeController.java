@@ -9,6 +9,7 @@ import com.example.demo384test.model.Security.Role;
 import com.example.demo384test.model.post.Poll;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
+import com.example.demo384test.request.HomePostRequest;
 import com.example.demo384test.request.SubclubCreationRequest;
 import com.example.demo384test.service.CustomMemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,10 @@ public class HomeController {
     @Autowired
     private PollRepository pollRepository;
     @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
 
     @GetMapping("/")
@@ -61,7 +66,19 @@ public class HomeController {
         Collections.sort(posts_user, Comparator.comparing(Post::getDate).thenComparing(Post::getTimestamp).reversed());
 
         Collections.reverse(posts);
-        model.addAttribute("posts", posts_user);
+
+        List<HomePostRequest> hprs = new ArrayList<>();
+
+        for(Post p : posts_user) {
+            HomePostRequest hpr = new HomePostRequest();
+            hpr.setPost(p);
+            hpr.setComments(commentRepository.findByPostID(p.getId()).size());
+            hpr.setLikes(likeRepository.findAllByPostTitle(p.getTitle()).size());
+            hprs.add(hpr);
+        }
+
+
+        model.addAttribute("hprs", hprs);
         model.addAttribute("subclubs", subclubs);
         model.addAttribute("events", eventRepository.findBySubclub_members_username(username));
         return new ModelAndView("home");

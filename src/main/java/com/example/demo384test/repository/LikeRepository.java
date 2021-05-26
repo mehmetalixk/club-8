@@ -20,4 +20,9 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query(value = "SELECT * FROM likes l JOIN posts p ON l.post_id = p.id JOIN members m ON l.member_id = m.id WHERE p.title = ?1 AND m.username = ?2", nativeQuery = true)
     Like findByPostTitleAndMember(String postTitle, String memberUsername);
 
+
+    // get all likes of a post
+    @Query(value = "Select * from likes l left join posts p on l.post_id = p.id where p.id =?1", nativeQuery = true)
+    ArrayList<Like> findAllByPostID(Long id);
+
 }

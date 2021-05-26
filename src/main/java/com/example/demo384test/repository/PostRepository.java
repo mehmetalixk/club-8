@@ -21,7 +21,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT * FROM posts WHERE ID = ?1", nativeQuery = true)
     Post findByid(Long id);
 
-
     ArrayList<Post> findByMember_username(String username);
 
 }

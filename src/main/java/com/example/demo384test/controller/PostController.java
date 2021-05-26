@@ -3,10 +3,12 @@ package com.example.demo384test.controller;
 
 import com.example.demo384test.config.Util;
 import com.example.demo384test.model.Member;
+import com.example.demo384test.model.post.Comment;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.CommentCreationRequest;
+import com.example.demo384test.request.HomePostRequest;
 import com.example.demo384test.request.PostCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -32,6 +34,8 @@ public class PostController {
     private ClubRepository clubRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private LikeRepository likeRepository;
 
     @GetMapping(path="/posts/all")
     public @ResponseBody Iterable<Post> getAllPosts() {
@@ -63,10 +67,15 @@ public class PostController {
                 CommentCreationRequest ccr = new CommentCreationRequest();
                 ccr.setId(postID);
 
+
+                HomePostRequest hpr = new HomePostRequest();
+                hpr.setPost(p);
+                hpr.setComments(commentRepository.findByPostID(idLong).size());
+                hpr.setLikes(likeRepository.findAllByPostID(idLong).size());
             model.addAttribute("ccr",  ccr);
             model.addAttribute("comments", commentRepository.findByPostID(idLong));
-            model.addAttribute("post", p);
-            return new ModelAndView("post_page");
+            model.addAttribute("hpr", hpr);
+            return new ModelAndView("show_post");
             }
         }
         return new ModelAndView("error");
