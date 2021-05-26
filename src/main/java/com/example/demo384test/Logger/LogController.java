@@ -1,17 +1,27 @@
 package com.example.demo384test.Logger;
 
 
+import com.example.demo384test.config.Util;
+import com.example.demo384test.model.Club.Club;
+import com.example.demo384test.repository.ClubRepository;
+import com.example.demo384test.repository.MemberRepository;
+import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.request.SubclubCreationRequest;
+import lombok.extern.java.Log;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LogController {
 
     private static LogRepository logRepository;
+    private static ClubRepository clubRepository;
+    private static SubclubRepository subclubRepository;
+    private static MemberRepository memberRepository;
 
     public static Logger createLog(String level, String content) {
         Logger logger = new Logger();
@@ -24,8 +34,11 @@ public class LogController {
     }
 
     @Autowired
-    public LogController(LogRepository logRepository) {
+    public LogController(LogRepository logRepository, ClubRepository clubRepository, SubclubRepository subclubRepository, MemberRepository memberRepository) {
         LogController.logRepository = logRepository;
+        LogController.clubRepository = clubRepository;
+        LogController.subclubRepository = subclubRepository;
+        LogController.memberRepository = memberRepository;
     }
 
     @GetMapping(path="/logs/all")
@@ -50,6 +63,30 @@ public class LogController {
         logRepository.delete(log);
 
         return "redirect:/admin";
+    }
+
+    @GetMapping(path="/requests/subclub")
+    public ModelAndView deleteReport(Model model) {
+
+        model.addAttribute("scr", new SubclubCreationRequest());
+        model.addAttribute("clubs", LogController.clubRepository.findAllTitles());
+        return new ModelAndView("requests");
+    }
+
+    @PostMapping(path="/process_submit_request")
+    public String processSubmitRequest(SubclubCreationRequest scr) {
+        Club club = LogController.clubRepository.findByTitle(scr.getClubTitle());
+
+        // club not found
+        if(club == null) {
+            LogController.createLog("WARN", String.format("Club with title %s not found on the repository", scr.getClubTitle()));
+            return "redirect:/requests/subclub";
+        }
+
+        // Otherwise create the subclub request
+        LogController.createLog("INFO", String.format("Member %s requested to open subclub %s on club %s", Util.getCurrentUsername(), scr.getTitle(), scr.getClubTitle()));
+        LogController.createLog("REQ", String.format("%s;%s;%s", Util.getCurrentUsername(), scr.getTitle(), scr.getClubTitle()));
+        return "redirect:/";
     }
 
 }
