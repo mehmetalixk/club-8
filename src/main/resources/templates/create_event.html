@@ -15,7 +15,7 @@
 <head th:fragment="header">
     <meta charset="UTF-8">
     <title>
-        Club-8 | Create a Post
+        Club-8 | Create a Event
     </title>
 </head>
 
@@ -23,13 +23,13 @@
 <body>
 <div class="container" style="width: 50%">
     <div>
-        <h2 style="text-align: center"><br><br>Create Post</h2>
+        <h2 style="text-align: center"><br><br>Create Event</h2>
     </div>
 	<div class="row" style="border: solid;margin-top: 60px;">
     <form th:action="@{/process_add_post}" method="post" th:object="${pcr}" style="padding: 5%">
             <div class="row">
                 <div class="col col-lg-4">
-                <label for="title">Title</label>
+                <label for="title">Location</label>
                 <input type="text" id="title" class="form-control" th:field="*{title}" required
                        minlength="2" maxlength="128" style="background-color: #212529;color: aliceblue;"/>
                 </div>
@@ -39,12 +39,18 @@
                         <option th:each="club : ${clubList}" th:value="${club}" th:text="${club}"></option>
                     </select>
                 </div>
-                <div class="col col-lg-2" style="margin-left: -40px;">
+                <div class="col col-lg-2" style="margin-left: -10px;">
                     <label for="subClub">SubClub</label>
                     <select class="form-select selectpicker" id="subClub" style="width: 80%;background-color: #212529;color: aliceblue;" th:field="*{subclubTitle}" data-live-search="true">
                         <option th:each="subclub : ${subclubList}" th:value="${subclub}" th:text="${subclub}"></option>
                     </select>
                 </div>
+				<div class="col col-lg-4">
+                            <div class="form-group" >
+                              <label>Event Date</label>
+                              <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" style="background-color: #212529;color: aliceblue;text-decoration: none">
+                            </div>
+                          </div>
                 </div>
 		<hr style="color: #EFEFEF"/>
                 <div class="row">
@@ -52,11 +58,10 @@
                     <textarea class="form-control" id="postArea" rows="8" cols="24" style="margin-left:10px;background-color: #212529;color: aliceblue;"
                               th:field="*{content}" required></textarea>
                 </div><br>
-		
                 <div class="col text-center" style="display: inline;">
 					<input type="file" class="form-control" id="inputGroupFile01" style="float:left;width:30%;">
                     <button type="submit" class="btn btn-primary" id="btnfetch"
-                                          style="float: right;width:30%;">Create Post</button>
+                                          style="float: right;width:30%;">Create Event</button>
                 </div>
     </form></div>
 </div>

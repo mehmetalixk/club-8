@@ -1,45 +1,205 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-      rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-      crossorigin="anonymous"/>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="../static/css/bootstrap.css"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="../static/js/admin.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
+<script>
+	$(function () {
+    $('.selectpicker').selectpicker();
+});</script>
+	<style>
+		.btn-outline-light {
+			width: 200px;
+		}
+		.card {
+			background-color: inherit;
+            border-style: none;
+        }
+		.card:hover {
+			opacity: 1;
+		}
+		.card-header {
+			width: 200px;
+		}
+		
+		.dropdown-menu {
+			background-color: #212529 !important;
+		}
+		.dropdown-item:hover {
+			background-color:darkcyan;
+		}
+		.filter-option-inner-inner {
+			color: aliceblue;
+		}
+		
+		.bootstrap-select .bs-ok-default::after {
+    width: 0.3em;
+    height: 0.6em;
+    border-width: 0 0.1em 0.1em 0;
+    transform: rotate(45deg) translateY(0.5rem);
+}
 
+.btn.dropdown-toggle:focus {
+    outline: none !important;
+}
+	</style>
+	
 <head th:fragment="header">
     <meta charset="UTF-8">
     <title>
-        Admin Panel
+        Club-8 | Admin Panel
     </title>
 </head>
 <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 
 <body>
 <div th:replace="fragments/navbar :: header"></div>
-    <div style="margin: 100px;text-align: center">
-        <a type="button" onclick="display_admin('list_members_id')"
-           class="btn btn-outline-dark">List Members</a>
-
-        <a type="button" onclick="display_admin('add_role_id')"
-           class="btn btn-outline-dark">Add Role</a>
-
-        <a type="button" onclick="display_admin('list_roles_id')"
-           class="btn btn-outline-dark">List Roles</a>
-
-        <a type="button" onclick="display_admin('list_permissions_id')"
-           class="btn btn-outline-dark">List Permissions</a>
-
-        <a type="button" onclick="display_admin('add_club_id')"
-           class="btn btn-outline-dark">Add Club</a>
-        <a type="button" onclick="display_admin('list_clubs_id')"
-           class="btn btn-outline-dark">List Clubs</a>
-
-        <a type="button" onclick="display_admin('add_subClub_id')"
-           class="btn btn-outline-dark">Add subClub</a>
-        <a type="button" onclick="display_admin('list_subClubs_id')"
-           class="btn btn-outline-dark">List subClubs</a>
+	<div class="row">
+	<div class="col-2">
+	<div id="accordion">
+  <div class="card" style="background-color: inherit">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-outline-light" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+           <i class="fas fa-clipboard-list fa-lg" style="margin-right: 10px"></i><b>Logs</b>
+        </button>
+      </h5>
     </div>
 
-<div id="add_role_id" style="display:none;">
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body text-center">
+          <ul style="list-style-type: none">
+              <li style="margin-bottom: 10px">
+                  <a type="button" onclick="display_admin('list_warnings_id')"
+                     class="btn btn-outline-light"><i class="fas fa-exclamation-circle" style="margin-right: 8px"></i>Warnings</a>
+              </li>
+              <li style="margin-bottom: 10px">
+                  <a type="button" onclick="display_admin('list_errors_id')"
+                     class="btn btn-outline-light"><i class="fas fa-exclamation-triangle" style="margin-right: 8px"></i>Errors</a>
+              </li>
+              <li style="margin-bottom: 10px">
+                  <a type="button" onclick="display_admin('list_infos_id')"
+                     class="btn btn-outline-light"><i class="fas fa-exclamation" style="margin-right: 8px"></i>Info</a>
+              </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+        <button class="btn btn-outline-light collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <i class="fas fa-plus-square fa-lg" style="margin-right: 8px"></i><b>Creation</b>
+        </button>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+        <ul style="list-style-type: none">
+		<li style="margin-bottom: 10px">
+        <a type="button" onclick="display_admin('add_role_id')"
+           class="btn btn-outline-light"><i class="fas fa-user-tag" style="margin-right: 8px"></i>Role</a>
+		</li>
+		<li style="margin-bottom: 10px">
+        <a type="button" onclick="display_admin('add_club_id')"
+           class="btn btn-outline-light"><i class="fas fa-sitemap" style="margin-right: 8px"></i>Club</a>
+        </li>
+			<li style="margin-bottom: 10px">
+        <a type="button" onclick="display_admin('add_subClub_id')"
+           class="btn btn-outline-light"><i class="fas fa-users" style="margin-right: 8px"></i>subClub</a>
+		</li>
+			<li style="margin-bottom: 10px">
+        <button type="button" onclick="display_admin('add_poll_id')"
+           class="btn btn-outline-light"><i class="fas fa-poll" style="margin-right: 8px"></i>Poll</button>
+		</li>
+		<li style="margin-bottom: 10px">
+        <button type="button" onclick="display_admin('add_permission_id')"
+           class="btn btn-outline-light"><i class="fas fa-prescription" style="margin-right: 8px"></i>Permission</button>
+		</li>
+		<li style="margin-bottom: 10px">
+        <button type="button" onclick="display_admin('add_question_id')"
+           class="btn btn-outline-light"><i class="fas fa-question" style="margin-right: 8px"></i>Question</button>
+		</li>
+		</ul>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+        <button class="btn btn-outline-light collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" >
+          <i class="fas fa-list fa-lg" style="margin-right: 10px"></i><b>Listing</b>
+        </button>
+      
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+		  <ul style="list-style-type: none">
+        	<li style="margin-bottom: 10px">
+			<a type="button" onclick="display_admin('list_members_id')"
+           class="btn btn-outline-light"><i class="fas fa-user-friends" style="margin-right: 8px"></i>Members</a>
+			</li>
+		  	<li style="margin-bottom: 10px">
+		<a type="button" onclick="display_admin('list_clubs_id')"
+           class="btn btn-outline-light"><i class="fas fa-sitemap" style="margin-right: 8px"></i>Clubs</a>
+		</li>
+		  <li style="margin-bottom: 10px">
+        <a type="button" onclick="display_admin('list_subClubs_id')"
+           class="btn btn-outline-light"><i class="fas fa-users" style="margin-right: 8px"></i>SubClubs</a>
+		</li>
+			  <li style="margin-bottom: 10px">	
+        <a type="button" onclick="display_admin('list_roles_id')"
+           class="btn btn-outline-light"><i class="fas fa-user-tag" style="margin-right: 8px"></i>Roles</a>
+		</li>
+			  <li style="margin-bottom: 10px">	
+        <a type="button" onclick="display_admin('list_polls_id')"
+           class="btn btn-outline-light"><i class="fas fa-poll" style="margin-right: 8px"></i>Polls</a>
+		</li>
+			  <li style="margin-bottom: 10px">	
+        <a type="button" onclick="display_admin('list_questions_id')"
+           class="btn btn-outline-light"><i class="fas fa-question" style="margin-right: 8px"></i>Questions</a>
+		</li>
+		</ul>
+	</div>
+    </div>
+  </div>
+		
+		<div class="card" style="background-color: inherit">
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-0">
+        <button class="btn btn-outline-light" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+           <i class="fas fa-exclamation-triangle fa-lg" style="margin-right: 10px"></i><b>Requests</b>
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+      <div class="card-body text-center">
+          <ul style="list-style-type: none">
+
+              <li style="margin-bottom: 10px">
+                  <a type="button" onclick="display_admin('list_subrequest_id')"
+                     class="btn btn-outline-light"><i class="fas fa-handshake" style="margin-right: 8px"></i>SubClub</a>
+              </li>
+              <li style="margin-bottom: 10px">
+                  <a type="button" onclick="display_admin('list_reports_id')"
+                     class="btn btn-outline-light"><i class="fas fa-flag" style="margin-right: 8px"></i>Reports</a>
+              </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+
+<div class="col-8 text-center" id="add_role_id" style="display:none;margin-top:100px;">
+	<h3 style="margin-bottom: 30px"> Create Role</h3>
     <form th:action="@{/process_add_role}" method="post" th:object="${role}">
+		
         <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
             <input type="text" class="form-control" id="name" placeholder="name" th:field="*{name}">
             <label for="name">Role name</label><br>
@@ -48,22 +208,23 @@
     </form>
 </div>
 
-<div id="list_members_id" style="display:none;">
+<div class="col-8 text-center" id="list_members_id" style="display:none;margin-top:100px;">
     <div>
-        <h1>List of Members of Club-8</h1>
+        <h1 style="text-align: left;margin-bottom:20px">List of Members of Club-8</h1>
     </div>
 
     <div>
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
-                <th>User ID</th>
+                <th style="width: 5%">ID</th>
                 <th>E-Mail</th>
                 <th>Username</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Gender</th>
                 <th>Birthday</th>
+				<th style="width:10%">Ban User</th>
             </tr>
             </thead>
             <tbody>
@@ -75,16 +236,21 @@
                 <td th:text="${member.surname}"></td>
                 <td th:text="${member.gender}"></td>
                 <td th:text="${member.birthDate}"></td>
+				<td class="minimal_cell">
+                <a th:href="|/process_remove_subclub/${subclub.id}|">
+                    <i class="fas fa-user-times fa-lg"></i>
+                </a>
+            </td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<div id="list_roles_id" style="display:none;" >
-    <div class="container text-center" style="margin: 100px">
+<div class="col-4 text-center" id="list_roles_id" style="display:none;margin-top:100px;" >
+    <div class="container text-center" >
         <div>
-            <h1>List of Roles</h1>
+            <h1 style="text-align: left;margin-bottom: 30px">Listing Roles</h1>
         </div>
 
         <div>
@@ -106,38 +272,13 @@
     </div>
 </div>
 
-<div id="list_permissions_id" style="display:none;" >
-    <div class="container text-center" style="margin: 100px">
-        <div>
-            <h1>List of Permissions</h1>
-        </div>
-
-        <div>
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                <tr >
-                    <th style="width: 5%">Permission ID</th>
-                    <th style="width: 20%">Permission</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="permission: ${listPermission}">
-                    <td th:text="${permission.id}"></td>
-                    <td th:text="${permission.name}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="container text-center" style="display:none;" id="add_club_id">
+<div class="col-8 text-center" style="display:none;margin-top:100px;" id="add_club_id">
     <div>
-        <h1>Add Club</h1>
+        <h1>Create Club</h1>
     </div>
     <form th:action="@{/process_add_club}" method="post" th:object="${club}">
         <div class="m-3">
-            <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
+            <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
                 <input type="text" class="form-control" id="title" placeholder="name" th:field="*{title}">
                 <label for="name">Club Title</label><br>
                 <button type="submit" class="btn btn-primary">Add Club</button>
@@ -146,13 +287,29 @@
     </form>
 </div>
 
+        <div class="col-8 text-center" style="display:none;margin-top:100px;" id="edit_club_id">
+            <div>
+                <h1>Edit Club</h1>
+            </div>
+            <form th:action="@{/process_add_club}" method="post" th:object="${club}">
+                <div class="m-3">
+                    <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
+                        <input type="text" class="form-control" id="clubname" placeholder="name" th:field="*{title}"
+                        th:value="clubtitle">
+                        <label for="name">Club Title</label><br>
+                        <button type="submit" class="btn btn-primary">Add Club</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-<div class="container text-center" style="display: none;" id="add_subClub_id">
+
+<div class="col-8 text-center" style="display: none;margin-top: 100px" id="add_subClub_id">
     <div>
-        <h1>Add SubClub</h1>
+        <h1 style="margin-bottom: 30px">Create SubClub</h1>
     </div>
     <form th:action="@{/process_add_subclub}" method="post" th:object="${scr}" enctype="multipart/form-data">
-        <div class="form-floating" style="width: 20%; margin: auto;text-align: center">
+        <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
             <input type="text" class="form-control" id="subtitle" placeholder="name" th:field="*{title}">
             <label for="name">SubClub Title</label><br>
             <div class="form-floating">
@@ -163,22 +320,39 @@
                 <label for="clubTitle">Club Title</label>
             </div><br>
             <input type="file" name="subclubImageFile" th:field="*{subclubImage}">
-            <button type="submit" class="btn btn-primary">Add SubClub</button>
+            <button type="submit" class="btn btn-primary" style="display: inline">Add SubClub</button>
         </div>
     </form>
-
 </div>
 
+        <div class="col-8 text-center" style="display: none;margin-top: 100px" id="edit_subClub_id">
+            <div>
+                <h1 style="margin-bottom: 30px">Edit SubClub</h1>
+            </div>
+            <form th:action="@{/process_add_subclub}" method="post" th:object="${scr}" enctype="multipart/form-data">
+                <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
+                    <input type="text" class="form-control" id="subclubtitle" placeholder="name" th:field="*{title}"
+                    th:text="titleofsubclub">
+                    <label for="name">SubClub Title</label><br>
+                    <br>
+                    <input type="file" name="subclubImageFile" th:field="*{subclubImage}">
+                    <button type="submit" class="btn btn-primary" style="display: inline">Add SubClub</button>
+                </div>
+            </form>
+        </div>
 
-<div class="container text-center" style="display: none;" id="list_clubs_id">
+
+<div class="col-4 text-center" style="display: none;margin-top: 100px" id="list_clubs_id">
     <div>
-        <h1>List Clubs</h1>
+        <h1 style="text-align: left;margin-bottom:20px">Listing Clubs</h1>
     </div>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th>ID</th>
-            <th>Clubs</th>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">Clubs</th>
+			<th style="width: 5%">Delete</th>
+			<th style="width: 5%">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -187,17 +361,12 @@
             <td th:text="${lclub.title}"></td>
             <td class="minimal_cell">
                 <a th:href="|/process_remove_club/${lclub.id}|">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <i class="fas fa-trash fa-lg"></i>
                 </a>
             </td>
             <td class="minimal_cell">
                 <a th:href="|/clubs/${lclub.id}/edit|">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                    </svg>
+                    <i class="fas fa-edit fa-lg"></i>
                 </a>
             </td>
         </tr>
@@ -206,16 +375,18 @@
 </div>
 
 
-<div class="container text-center" style="display: none;" id="list_subClubs_id">
+<div class="col-6 text-center" style="display: none;margin-top:100px;" id="list_subClubs_id">
     <div>
-        <h1>List SubClubs</h1>
+        <h1 style="text-align: left;margin-bottom:20px">Listing SubClubs</h1>
     </div>
-    <table class="table table-hover">
+    <table class="table table-hover" style="width: 70%">
         <thead class="thead-dark">
         <tr>
-            <th>ID</th>
-            <th>SubClub</th>
-            <th>Club</th>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">SubClub</th>
+            <th style="width: 20%">Club</th>
+			<th style="width: 5%">Delete</th>
+			<th style="width: 5%">Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -225,17 +396,12 @@
             <td th:text="${subclub.getClub().getTitle()}"></td>
             <td class="minimal_cell">
                 <a th:href="|/process_remove_subclub/${subclub.id}|">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <i class="fas fa-trash fa-lg"></i>
                 </a>
             </td>
             <td class="minimal_cell">
                 <a th:href="|/clubs/${subclub.getClub().getTitle()}/${subclub.id}/edit|">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                    </svg>
+                    <i class="fas fa-edit fa-lg"></i>
                 </a>
             </td>
         </tr>
@@ -243,5 +409,287 @@
     </table>
 </div>
 
+<div class="col-lg-6 mx-auto" style="display: none;" id="edit_poll_id">
+	<h2 style="margin-top: 100px;margin-bottom: 40px">Edit Poll</h2>
+	<label for="posttitle" style="color: aliceblue;">Title</label>
+                <input type="text" id="polltitle" class="form-control" th:field="*{title}" required
+                       minlength="2" maxlength="128" style="background-color: #212529;color: aliceblue;width: 50%;margin-bottom: 20px" th:value="polltitle"/>
+            <label class="text-white mb-3 lead">Questions</label><br>
+            <select multiple data-style="bg-dark rounded-pill px-4 py-3 shadow-sm" class="selectpicker w-50" >
+                <div th:each="selectedquestion">
+                    <option selected="selected" th:text="questionn"></option></div>
+                <div th:each="questions">
+				<option th:text="question1"></option>
+					</div>
+            </select>
+			<div class="form-actions">
+                <button class="w-50 btn btn-lg btn-primary" id="pollbutton" type="submit" style="margin-top: 20px">Save Poll</button>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mx-auto" style="display: none;" id="add_poll_id">
+            <h2 style="margin-top: 100px;margin-bottom: 40px">Create Poll</h2>
+            <label for="posttitle" style="color: aliceblue;">Title</label>
+            <input type="text" id="posttitle" class="form-control" th:field="*{title}" required
+                   minlength="2" maxlength="128" style="background-color: #212529;color: aliceblue;width: 50%;margin-bottom: 20px"/>
+            <label class="text-white mb-3 lead">Questions</label><br>
+            <select multiple data-style="bg-dark rounded-pill px-4 py-3 shadow-sm" class="selectpicker w-50" >
+                <div th:each="questions">
+                    <option th:text="question1"></option>
+                </div>
+            </select>
+            <div class="form-actions">
+                <button class="w-50 btn btn-lg btn-primary" id="btnfetch" type="submit" style="margin-top: 20px">Add Poll</button>
+            </div>
+        </div>
+
+
+		<div class="col-6 text-center" style="display: none;margin-top: 100px" id="list_polls_id">
+    <div>
+        <h1 style="text-align: left;margin-bottom:20px">List Polls</h1>
+    </div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">Poll</th>
+			<th style="width: 10%">Questions</th>
+			<th style="width: 5%">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lpoll: ${lpolls}">
+            <td th:text="${lpoll.id}"></td>
+            <td th:text="${lpoll.title}"></td>
+			<td th:text="${lpoll.questionnum}"></td>
+            <td class="minimal_cell">
+                <a th:href="|/clubs/${lclub.id}/edit|">
+                    <i class="fas fa-edit fa-lg"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+		
+	<div class="col-6 text-center" style="display: none;margin-top: 100px" id="list_questions_id">
+    <div>
+        <h1 style="text-align: left;margin-bottom:20px">Listing Questions</h1>
+    </div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 50%">Question</th>
+			<th style="width: 10%">Options</th>
+			<th style="width: 5%">Delete</th>
+			<th style="width: 5%">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lquestion: ${lquestions}">
+            <td th:text="${lquestion.id}"></td>
+            <td th:text="${lquestion.title}"></td>
+			<td th:text="${lquestion.optionsize}"></td>
+			<td class="minimal_cell">
+                <a th:href="|/process_remove_subclub/${subclub.id}|">
+                    <i class="fas fa-trash fa-lg"></i>
+                </a>
+            </td>
+            <td class="minimal_cell">
+                <a onclick="display_admin('edit_question_id')">
+                    <i class="fas fa-edit fa-lg"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+        <div class="col-8 text-center" style="display:none;margin-top:100px;" id="add_question_id">
+            <div>
+                <h1>Create Question</h1>
+            </div>
+            <form th:action="@{/question add}" method="post" th:object="${}">
+                <div class="m-3">
+                    <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
+                        <input type="text" class="form-control" id="question_title" placeholder="name" th:field="*{qtitle}">
+                        <label for="question_title">Question Content</label><br>
+                        <h3 style="margin-bottom: 10px;">Options</h3>
+                    </div>
+                    <div class="form-floating" style="width: 40%;;margin: auto; text-align: center">
+                        <input type="text" class="form-control" id="option_title" placeholder="opt" th:field="*{otitle}">
+                        <label for="option_title">Options</label>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 20px">Add Question</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-8 text-center" style="display:none;margin-top:100px;" id="edit_question_id">
+            <div>
+                <h1>Edit Question</h1>
+            </div>
+            <form th:action="@{/question add}" method="post" th:object="${}">
+                <div class="m-3">
+                    <div class="form-floating" style="width: 40%; margin: auto;text-align: center">
+                        <input type="text" class="form-control" id="question_cont" placeholder="name" th:field="*{qtitle}"
+                        th:value="*{questioncontent}">
+                        <label for="question_title">Question Content</label><br>
+                        <h3 style="margin-bottom: 10px;">Options</h3>
+                    </div>
+                    <div class="form-floating" style="width: 40%;;margin: auto; text-align: center">
+                        <input type="text" class="form-control" id="option_title" placeholder="opt" th:field="*{otitle}"
+                               th:value="*{options}">
+                        <label for="option_title">Options</label>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 20px">Save Question</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="col-6 text-center" style="display: none;margin-top: 100px" id="list_warnings_id">
+            <div>
+                <h1 style="text-align: left;margin-bottom:20px">Listing Warnings</h1>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 15%">Date</th>
+                    <th style="width: 15%">TimeStamp</th>
+                    <th style="width: 50%">Log</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-warning" th:each="llog: ${llogs}">
+                    <td th:text="${llog.date}"></td>
+                    <td th:text="${llog.timestamp}"></td>
+                    <td th:text="${llog.title}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-6 text-center" style="display: none;margin-top: 100px" id="list_errors_id">
+            <div>
+                <h1 style="text-align: left;margin-bottom:20px">Listing Errors</h1>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 15%">Date</th>
+                    <th style="width: 15%">TimeStamp</th>
+                    <th style="width: 50%">Log</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-danger" th:each="llog: ${llogs}">
+                    <td th:text="${llog.date}"></td>
+                    <td th:text="${llog.timestamp}"></td>
+                    <td th:text="${llog.title}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-6 text-center" style="display: none;margin-top: 100px" id="list_infos_id">
+            <div>
+                <h1 style="text-align: left;margin-bottom:20px">Listing Infos</h1>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 15%">Date</th>
+                    <th style="width: 15%">TimeStamp</th>
+                    <th style="width: 50%">Log</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-info" th:each="llog: ${llogs}">
+                    <td th:text="${llog.date}"></td>
+                    <td th:text="${llog.timestamp}"></td>
+                    <td th:text="${llog.title}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-8 text-center" style="display: none;margin-top: 100px" id="list_subrequest_id">
+            <div>
+                <h1 style="text-align: left;margin-bottom:20px">Listing SubClub Requests</h1>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 10%">ID</th>
+                    <th style="width: 10%">SubClub</th>
+                    <th style="width: 20%">Request</th>
+                    <th style="width: 5%">Accept</th>
+                    <th style="width: 5%">Deny</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="lrequest: ${lrequests}">
+                    <td th:text="${lclub.id}"></td>
+                    <td th:text="${lclub.subclub}"></td>
+                    <td th:text="${lclub.request}"></td>
+                    <td class="minimal_cell">
+                        <a th:href="|/process_remove_club/${lclub.id}|">
+                            <i class="fas fa-check fa-lg"></i>
+                        </a>
+                    </td>
+                    <td class="minimal_cell">
+                        <a th:href="|/clubs/${lclub.id}/edit|">
+                            <i class="fas fa-times fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-8 text-center" style="display: none;margin-top: 100px" id="list_reports_id">
+            <div>
+                <h1 style="text-align: left;margin-bottom:20px">Listing Reports</h1>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th style="width: 10%">ID</th>
+                    <th style="width: 10%">Reported</th>
+                    <th style="width: 20%">Reason</th>
+                    <th style="width: 5%">Ban</th>
+                    <th style="width: 5%">Deny</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="lrequest: ${lrequests}">
+                    <td th:text="${lclub.id}"></td>
+                    <td th:text="${lclub.subclub}"></td>
+                    <td th:text="${lclub.request}"></td>
+                    <td class="minimal_cell">
+                        <a th:href="|/process_remove_club/${lclub.id}|">
+                            <i class="fas fa-user-times fa-lg"></i>
+                        </a>
+                    </td>
+                    <td class="minimal_cell">
+                        <a th:href="|/clubs/${lclub.id}/edit|">
+                            <i class="fas fa-times fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+	</div>	
+	
+	
+	
+	
+	
 </body>
 </html>
