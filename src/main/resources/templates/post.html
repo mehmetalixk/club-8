@@ -36,13 +36,13 @@
 				 <div class="col col-lg-2" style="margin-left: -40px; padding-left: 5%">
                     <label for="club">Club</label>
                      <select class="form-select" id="club" style="width: 130%;" th:field="*{clubTitle}">
-                         <option th:value="${club}" th:text="${club}"></option>
+                         <option type="hidden" th:value="${club}" th:text="${club}"></option>
                      </select>
                 </div>
                 <div class="col col-lg-2" style="margin-left: -40px; padding-left: 8%">
                     <label for="subclub">SubClub</label>
                     <select class="form-select" id="subClub" style="width: 190%;" th:field="*{subclubTitle}">
-                        <option th:value="${subclub}" th:text="${subclub}"></option>
+                        <option type="hidden" th:value="${subclub}" th:text="${subclub}"></option>
                     </select>
                 </div>
                 </div>
@@ -52,7 +52,7 @@
                     <textarea class="form-control" id="postArea" rows="8" cols="24" style="margin-left:10px;background-color: #212529;color: aliceblue;"
                               th:field="*{content}" required></textarea>
                 </div><br>
-		
+
                 <div class="col text-center" style="display: inline;">
 					<input type="file" class="form-control" id="inputGroupFile01" style="float:left;width:30%;">
                     <button type="submit" class="btn btn-primary" id="btnfetch"

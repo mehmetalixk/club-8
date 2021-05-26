@@ -1,10 +1,12 @@
 package com.example.demo384test.repository;
 
 import com.example.demo384test.model.Club.Subclub;
+import com.example.demo384test.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
+import java.util.Set;
 
 
 public interface SubclubRepository extends JpaRepository<Subclub, Long> {
@@ -25,4 +27,6 @@ public interface SubclubRepository extends JpaRepository<Subclub, Long> {
     Subclub findByID(Long id);
 
     Collection<Subclub> findByMembers_username(String username);
+
+
 }
