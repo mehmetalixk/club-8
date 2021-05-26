@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class ClubController {
@@ -46,6 +48,12 @@ public class ClubController {
         model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub, title));
         List<Event> events = eventRepository.findAllBySubclubTitle(subclub, title);
         List<Event> lastThreeEvents = events.subList(Math.max(events.size() - 3, 0), events.size());
+        List<Member> members = subclubRepository.findByClubTitle(subclub, title).getMembers().
+                stream().collect(Collectors.toList());
+        List<Member> lastThreeMembers = members;
+        if(Math.max(members.size() - 3, 0) > members.size()){
+            lastThreeMembers = members.subList(Math.max(members.size() - 3, 0), members.size());}
+        model.addAttribute("members", lastThreeMembers);
         model.addAttribute("events", lastThreeEvents);
 
 
