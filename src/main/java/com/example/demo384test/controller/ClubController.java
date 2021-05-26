@@ -6,10 +6,8 @@ import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Member;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
-import com.example.demo384test.repository.ClubRepository;
-import com.example.demo384test.repository.MemberRepository;
-import com.example.demo384test.repository.PostRepository;
-import com.example.demo384test.repository.SubclubRepository;
+import com.example.demo384test.model.post.Event;
+import com.example.demo384test.repository.*;
 import com.example.demo384test.request.ClubEditionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class ClubController {
@@ -29,6 +28,8 @@ public class ClubController {
     private PostRepository postRepository;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private EventRepository eventRepository;
 
     @RequestMapping(value="/clubs/{title}", method = RequestMethod.GET)
     public ModelAndView getClubPage (@PathVariable String title, Model model) {
@@ -43,6 +44,9 @@ public class ClubController {
         model.addAttribute("club", clubRepository.findByTitle(title));
         model.addAttribute("subclub", subclubRepository.findByClubTitle(subclub, title).getTitle());
         model.addAttribute("posts", postRepository.findAllBySubclubTitle(subclub, title));
+        List<Event> events = eventRepository.findAllBySubclubTitle(subclub, title);
+        List<Event> lastThreeEvents = events.subList(Math.max(events.size() - 3, 0), events.size());
+        model.addAttribute("events", lastThreeEvents);
 
 
         // Check permission to read this subclub

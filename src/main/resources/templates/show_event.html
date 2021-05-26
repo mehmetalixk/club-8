@@ -34,7 +34,7 @@
 <div th:each="event : ${events}" class="row d-none d-md-block d-lg-block" style="">
 	<a th:href="'/events/' + ${event.getId} + '/'" style="text-decoration: none;display: block;width: 100%">
 		<div style="display: inline;">
-			<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+			<img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
 			<b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}"></b>
 			<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
 		</i></p>
@@ -50,7 +50,7 @@
 		<div th:each="event : ${allEvents}" class="row d-none d-md-block d-lg-block" style="">
 			<a th:href="'/events/' + ${event.getId} + '/'" style="text-decoration: none;display: block;width: 100%">
 				<div style="display: inline;">
-					<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+					<img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
 					<b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}"></b>
 					<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
 				</i></p>

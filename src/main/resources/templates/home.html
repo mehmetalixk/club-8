@@ -54,7 +54,7 @@
 				</nav></div>
 				<nav class="events">
 					<h3 style="color:#F5F8FA;text-align: center;opacity: 1!important;">Events</h3><hr/>
-					<div th:each="event : ${events}" class="row d-none d-md-block d-lg-block" style="">
+					<div th:each="event : ${events}" class="row d-none d-md-block d-lg-block">
 					<a th:href="@{'/events/' + ${event.getId()}}" style="text-decoration: none;display: block;width: 100%">
 						<div style="display: inline;">
 						<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
