@@ -6,6 +6,7 @@ import com.example.demo384test.model.Club.Club;
 import com.example.demo384test.model.Club.Subclub;
 import com.example.demo384test.model.Security.Permission;
 import com.example.demo384test.model.Security.Role;
+import com.example.demo384test.model.post.Poll;
 import com.example.demo384test.model.post.Post;
 import com.example.demo384test.repository.*;
 import com.example.demo384test.request.SubclubCreationRequest;
@@ -41,6 +42,8 @@ public class HomeController {
     private PostRepository postRepository;
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private PollRepository pollRepository;
     @Autowired
     private CustomMemberDetailsService customMemberDetailsService;
 
@@ -130,6 +133,14 @@ public class HomeController {
         member.setRoles(Arrays.asList(userRole));
         member.setEnabled(true);
         memberRepository.save(member);
-        return new ModelAndView("home");
+
+
+
+        // get initial poll
+        Poll initialPoll = pollRepository.findByID(1L);
+        model.addAttribute("poll", initialPoll);
+        model.addAttribute("questions", initialPoll.getQuestions());
+        // redirect to poll
+        return new ModelAndView("poll");
     }
 }

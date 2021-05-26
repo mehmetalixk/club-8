@@ -10,5 +10,8 @@ public interface PollRepository extends JpaRepository<Poll, Long> {
     @Query(value = "SELECT * FROM polls WHERE title = ?1 LIMIT 1", nativeQuery = true)
     Poll findByTitle(String title);
 
+    // get poll by id
+    @Query(value = "SELECT * FROM polls WHERE id = ?1", nativeQuery = true)
+    Poll findByID(Long id);
 
 }
