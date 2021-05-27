@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,7 +27,8 @@ public interface SubclubRepository extends JpaRepository<Subclub, Long> {
     @Query(value = "SELECT * FROM subclubs WHERE id = ?1", nativeQuery = true)
     Subclub findByID(Long id);
 
-    Collection<Subclub> findByMembers_username(String username);
+    List<Subclub> findByMembers_username(String username);
 
 
 }
+

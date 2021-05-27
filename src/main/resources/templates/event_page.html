@@ -5,8 +5,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="../static/css/bootstrap.css"/>
-<script type="text/javascript" src="../static/js/admin.js"></script>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+<script type="text/javascript" th:src="@{/js/admin.js}"></script>
 <!------ Include the above in your HEAD tag ---------->
 <script src="https://kit.fontawesome.com/1cd3ed33b5.js" crossorigin="anonymous"></script>
 
@@ -42,8 +42,8 @@
 								 ${ecr.getEvent().getSubclub().getTitle()}">subclub</h6></a>
                     <h6 style="float: right!important;color:#657786" th:text="${ecr.getEvent().getDate()}">01/02</h6>
                     <p><br/></p>
-                    <a href="#userpage" style="text-decoration: none" >
-                        <img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 64px">
+                    <a th:href="@{'/profile/' + ${ecr.getEvent().getMember().getUsername()}}" style="text-decoration: none" >
+                        <img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 64px">
                         <b style="color: #F5F8FA; vertical-align: 20%;margin-left: 2%;font-size: 20pt" th:text="${ecr.getEvent().getMember().getUsername()}">User</b></a>
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="post-description" style="overflow-wrap: break-word;z-index: 1">
                 <p style="color: rgb(217, 217, 217);padding-top: 30px;padding-left: 11%;margin-right: 75px;margin-bottom: 30px" th:text="${ecr.getEvent().getContent()}"></p>
                 <div class="el">
-                    <img class="" th:src="@{icons/img.jpg}" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
+                    <img class="" th:src="@{/icons/img.jpg}" alt="ContentImg" style="margin-left: 30px;border-radius: 10px;background-size: cover;object-fit: cover"/></div>
                 <div class="post-footer" style="margin-top: 3%;">
                     <div class="input-group" style="display: inline-block;padding-left: 15%;">
                         <i onClick="fill(this); clip('#postlink');" id="share_ico" class="far fa-share-square fa-2x popup" style="float: left;padding-left: 30%;font-size: 150%">

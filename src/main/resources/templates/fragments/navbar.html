@@ -24,10 +24,10 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="fas fa-home fa-2x" style="text-decoration: none"></a></li>
 					<li><div class="input-group mb-3" style="margin-left: 20px">
-					  <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+					  <!--<input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
 					  <div class="input-group-append">
 						<button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-					  </div>
+					  </div>-->
 					</div></li>
                 </ul>
 
@@ -44,11 +44,11 @@
 						  <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 							 sec:authorize="isAuthenticated()" 
 							 style="text-decoration: none">
-							<img src="icons/avatar.png" alt="avatar" style="border-radius: 50%!important;width: 42px">
+							<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 42px">
 						  </a>
 						  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: #212529">
 							
-							<a class="dropdown-item" href="#">Profile</a>
+							<a class="dropdown-item" th:href="@{'/processProfile'}">Profile</a>
 							  <a class="dropdown-item" href="#">Settings</a>
 							<a class="dropdown-item" href="#">Dark Mode<label class="switch" for="checkbox" style="vertical-align: -50%;margin-left: 7%"><input type="checkbox" id="checkbox" /><div class="slider round"></div></label></a>
 							 <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" type="button" class="dropdown-item">Admin Panel</a>

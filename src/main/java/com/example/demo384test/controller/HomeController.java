@@ -89,8 +89,8 @@ public class HomeController {
         model.addAttribute("hprs", hprs);
         model.addAttribute("subclubs", subclubs);
         List<Event> events = eventRepository.findBySubclub_members_username(username);
-        List<Event> lastThreeEvents = events.subList(Math.max(events.size() - 3, 0), events.size());
-        model.addAttribute("events", lastThreeEvents);
+        List<Event> lastTwoEvents = events.subList(Math.max(events.size() - 2, 0), events.size());
+        model.addAttribute("events", lastTwoEvents);
         return new ModelAndView("home");
     }
 
@@ -99,13 +99,13 @@ public class HomeController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(value = "/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return new ModelAndView("logout_success");
+        return new ModelAndView("login");
     }
 
     @GetMapping("/register")
