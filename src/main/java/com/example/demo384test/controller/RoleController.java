@@ -28,8 +28,8 @@ public class RoleController {
     }
 
     @PostMapping("/process_add_role")
-    public ModelAndView processAddRole(Role role) {
+    public String processAddRole(Role role) {
         roleRepository.save(role);
-        return new ModelAndView("success");
+        return ("redirect:/admin");
     }
 }

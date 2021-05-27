@@ -47,6 +47,9 @@ public class SubclubController {
         sc.setTitle(scr.getTitle());
         sc.setClub(c);
 
+        System.out.println("Cemocancu");
+        System.out.println(scr.getSubclubImage());
+
         if(scr.getSubclubImage() != null) {
             // get sub club image
             String folder = "src/main/resources/static/photos/subclubs/";
