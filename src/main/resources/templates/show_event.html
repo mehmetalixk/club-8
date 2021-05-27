@@ -24,40 +24,46 @@
 
 </style>
 <head>
-    <meta charset="UTF-8">
-    <title th:text="username"></title>
+	<meta charset="UTF-8">
+	<title th:text="username"></title>
 </head>
 <body>
 <header><div th:replace="fragments/navbar :: header"></div></header>
 <div sec:authorize="!hasRole('ROLE_ADMIN')">
-<div class="col-12 col-md-8">
-<div th:each="event : ${events}" class="row d-none d-md-block d-lg-block" style="">
-	<a th:href="'/events/' + ${event.getId} + '/'" style="text-decoration: none;display: block;width: 100%">
-		<div style="display: inline;">
-			<img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
-			<b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}"></b>
-			<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
-		</i></p>
-			<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i th:text="${event.getLocation()}"> </i></p>
-		</div>
-		<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%" th:text="${event.getContent()}"></p></a><hr style="color:#AAB8C2"/>
-</div>
-</div>
-</div>
-
-<div sec:authorize="hasRole('ROLE_ADMIN')">
+	<div class="container">
 	<div class="col-12 col-md-8">
-		<div th:each="event : ${allEvents}" class="row d-none d-md-block d-lg-block" style="">
+		<div th:each="event : ${events}" class="row d-none d-md-block d-lg-block" style="">
 			<a th:href="'/events/' + ${event.getId} + '/'" style="text-decoration: none;display: block;width: 100%">
-				<div style="display: inline;">
-					<img th:src="@{icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+				<div style="display: inline; margin-top: 60px">
+					<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
 					<b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}"></b>
 					<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
 				</i></p>
 					<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i th:text="${event.getLocation()}"> </i></p>
 				</div>
-				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%" th:text="${event.getContent()}"></p></a><hr style="color:#AAB8C2"/>
+				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%" th:text="${event.getContent()}"></p><hr style="color:#AAB8C2"/>
+			<img th:src="@{/icons/img.jpg}" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%;margin-right: 20px"/></a>
+		</div>
+	</div>
+	</div>
+</div>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+	<div class="container">
+	<div class="col-12 col-md-8">
+		<div th:each="event : ${allEvents}" class="row d-none d-md-block d-lg-block" style="">
+			<a th:href="'/events/' + ${event.getId} + '/'" style="text-decoration: none;display: block;width: 100%">
+				<div style="display: inline; margin-top: 60px">
+					<img th:src="@{/icons/avatar.png}" alt="avatar" style="border-radius: 50%!important;width: 28px;margin-left: 1%;float:left;">
+					<b style="color: #F5F8FA;margin-left: 1%;font-size: 80%;float: left;" th:text="${event.getSubclub().getClub().getTitle()} + '/' + ${event.getSubclub().getTitle()}"></b>
+					<p style=""><i class="fa fa-calendar-o" style="float: right;padding-left: 1.5%"></i></p><p class="eventinfo" style="float: right;font-size: 80%;"><i th:text="${event.getDate()}">
+				</i></p>
+					<i class="fas fa-map-marker-alt" style="float: right;padding-left: 1.5%;padding-right: 1.5%"></i><p class="eventinfo" style="float: right;font-size: 80%;padding-right: 0.5%"><i th:text="${event.getLocation()}"> </i></p>
+				</div>
+				<p style="padding-top: 15%;padding-left: 1%;margin-left: 12%;font-size: 80%" th:text="${event.getContent()}"></p><hr style="color:#AAB8C2"/>
+			<img th:src="@{/icons/img.jpg}" alt="ContentImg" style="object-fit: cover; margin-left: 10%;border-radius: 10px;max-width: 87%;margin-right: 20px"/></a>
 		</div></div>
+	</div>
 </div>
 </body>
 </html>

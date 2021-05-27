@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 @Controller
@@ -34,7 +35,7 @@ public class LikeController {
     }
 
     @GetMapping("/process_add_like/{id}")
-    public String processAddLike(@PathVariable Long id, HomePostRequest hpr) {
+    public String processAddLike(@PathVariable Long id, HomePostRequest hpr, HttpServletRequest request) {
         Post p = postRepository.findByid(id);
 
 
@@ -45,7 +46,7 @@ public class LikeController {
 
         for(Like like : likes){
             if(like.getPost().getId().equals(p.getId())){
-                return "redirect:/";
+                return "redirect:/posts/" + id.toString();
             }
         }
 
@@ -54,6 +55,6 @@ public class LikeController {
         l.setPost(p);
         likeRepository.save(l);
         hpr.setLike(l);
-        return "redirect:/";
+        return "redirect:/posts/" + id.toString();
     }
 }

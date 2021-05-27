@@ -123,4 +123,16 @@ public class ClubController {
 
         return "redirect:/admin";
     }
+
+    @GetMapping("/viewAllSubclubs")
+    public ModelAndView viewAllSubclubs(Model model){
+        String currentUsername = Util.getCurrentUsername();
+        Member m = memberRepository.findByUsername(currentUsername);
+
+        List<Subclub> subclubs = subclubRepository.findByMembers_username(currentUsername);
+        List<Subclub> allSubclubs = subclubRepository.findAll();
+        model.addAttribute("subclubs", subclubs);
+        model.addAttribute("allSubclubs", allSubclubs);
+        return new ModelAndView("show_allSubclubs");
+    }
 }
